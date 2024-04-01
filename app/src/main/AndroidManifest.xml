@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Deposits"
         tools:targetApi="31">
         <activity
-            android:name=".modules.home.presentation.HomeScreen"
+            android:name=".ui.MainScreen"
             android:exported="true"
             android:theme="@style/Theme.Deposits">
             <intent-filter>
