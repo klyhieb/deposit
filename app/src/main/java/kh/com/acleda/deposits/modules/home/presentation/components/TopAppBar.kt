@@ -10,21 +10,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,8 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.util.lerp
 import kh.com.acleda.deposits.R
-import kh.com.acleda.deposits.components.TransparentCard
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.White
 import kh.com.acleda.deposits.ui.theme.md_theme_light_inverseSurface
 import kotlin.math.max
 import kotlin.math.min
@@ -53,7 +50,7 @@ private val ImageOverlap = 32.dp
 private val MinTitleOffset = 64.dp
 private val MinImageOffset = 12.dp
 private val MaxTitleOffset = ImageOverlap + MinTitleOffset + GradientScroll
-private val ExpandedImageSize = 64.dp
+private val ExpandedImageSize = 52.dp
 private val CollapsedImageSize = 40.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
@@ -118,20 +115,24 @@ fun ImageProfile(
             modifier = modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .border(2.dp, Color.Gray, CircleShape)
+                .border(2.dp, color = White, CircleShape)
         )
 
         Column (modifier = Modifier
             .alpha(1f - scrollStateProvider())
             .clickable { onViewProfile() }
         ) {
-            Text(text = "Hello, Lyhieb!", style = MaterialTheme.typography.titleLarge, color = Color.White)
-            Row {
-                Text(text = "See profile", style = MaterialTheme.typography.titleMedium, color = Color.White)
+            Text(text = "Hello, Lyhieb!", style = MaterialTheme.typography.titleSmall, color = DepositsTheme.colors.textPrimary)
+            Spacer(modifier = Modifier.height(4.dp))
+            Row (
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "See profile", style = MaterialTheme.typography.labelMedium, color = DepositsTheme.colors.textSecondary)
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowRight,
-                    tint = Color.White,
-                    contentDescription = null
+                    tint = DepositsTheme.colors.textSecondary,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
                 )
             }
 

@@ -31,7 +31,9 @@ private val LightColorPalette = DepositColors(
     uiBackground = Gray0,
     uiBorder = Gray6,
     uiFloated = Gray1,
-    textSecondary = Gray9,
+    textPrimary = Gray0,
+    textSecondary = Gray3,
+    textHelpLabel = Blue10,
     textHelp = Gray9,
     textInteractive = Gray0,
     textLink = Blue8,
@@ -42,7 +44,7 @@ private val LightColorPalette = DepositColors(
     gradient6_1 = listOf(Blue5, GlowingBlue5, Blue4, GlowingBlue4, Blue3),
     gradient6_2 = listOf(Red4, Gold3, Red2, Gold3, Red4),
     gradient3_1 = listOf(Blue2, GlowingBlue3, Blue4),
-    gradient3_2 = listOf(Red2, Gold3, Red4),
+    gradientButton = listOf(Color(0xFF003986), Color(0xFF5B6D71), Color(0xFFEFC04F)),
     gradient2_1 = listOf(Blue4,  Blue10),
     gradient2_2 = listOf(GlowingBlue3, Blue3),
     gradient2_3 = listOf(Gold3, Red2),
@@ -58,7 +60,9 @@ private val DarkColorPalette = DepositColors(
     uiBackground = Gray0,
     uiBorder = Gray6,
     uiFloated = Gray1,
-    textSecondary = Gray9,
+    textPrimary = Gray0,
+    textSecondary = Gray3,
+    textHelpLabel = Blue10,
     textHelp = Gray9,
     textInteractive = Gray0,
     textLink = Blue8,
@@ -69,7 +73,7 @@ private val DarkColorPalette = DepositColors(
     gradient6_1 = listOf(Blue5, GlowingBlue5, Blue4, GlowingBlue4, Blue3),
     gradient6_2 = listOf(Red4, Gold3, Red2, Gold3, Red4),
     gradient3_1 = listOf(Blue2, GlowingBlue3, Blue4),
-    gradient3_2 = listOf(Red2, Gold3, Red4),
+    gradientButton = listOf(Color(0xFF003986), Color(0xFF5B6D71), Color(0xFFEFC04F)),
     gradient2_1 = listOf(Blue4,  Blue10),
     gradient2_2 = listOf(GlowingBlue3, Blue3),
     gradient2_3 = listOf(Gold3, Red2),
@@ -106,7 +110,7 @@ fun DepositsTheme(
 }
 
 object DepositsTheme {
-    val colorsScheme: DepositColors
+    val colors: DepositColors
         @Composable
         get() = LocalDepositsColor.current
 }
@@ -119,7 +123,7 @@ class DepositColors(
     gradient6_1: List<Color>,
     gradient6_2: List<Color>,
     gradient3_1: List<Color>,
-    gradient3_2: List<Color>,
+    gradientButton: List<Color>,
     gradient2_1: List<Color>,
     gradient2_2: List<Color>,
     gradient2_3: List<Color>,
@@ -134,6 +138,7 @@ class DepositColors(
     interactiveMask: List<Color> = gradient6_1,
     textPrimary: Color = brand,
     textSecondary: Color,
+    textHelpLabel: Color,
     textHelp: Color,
     textInteractive: Color,
     textLink: Color,
@@ -155,7 +160,7 @@ class DepositColors(
         private set
     var gradientMainAppBackground by mutableStateOf(gradientMainAppBackground)
         private set
-    var gradient3_2 by mutableStateOf(gradient3_2)
+    var gradientButton by mutableStateOf(gradientButton)
         private set
     var gradient2_1 by mutableStateOf(gradient2_1)
         private set
@@ -182,6 +187,8 @@ class DepositColors(
     var textPrimary by mutableStateOf(textPrimary)
         private set
     var textSecondary by mutableStateOf(textSecondary)
+        private set
+    var textHelpLabel by mutableStateOf(textHelpLabel)
         private set
     var textHelp by mutableStateOf(textHelp)
         private set
@@ -212,7 +219,7 @@ class DepositColors(
         gradient6_1 = other.gradient6_1
         gradient6_2 = other.gradient6_2
         gradient3_1 = other.gradient3_1
-        gradient3_2 = other.gradient3_2
+        gradientButton = other.gradientButton
         gradient2_1 = other.gradient2_1
         gradient2_2 = other.gradient2_2
         gradient2_3 = other.gradient2_3
@@ -227,6 +234,7 @@ class DepositColors(
         interactiveMask = other.interactiveMask
         textPrimary = other.textPrimary
         textSecondary = other.textSecondary
+        textHelpLabel = other.textHelpLabel
         textHelp = other.textHelp
         textInteractive = other.textInteractive
         textLink = other.textLink
@@ -245,7 +253,7 @@ class DepositColors(
         gradient6_1 = gradient6_1,
         gradient6_2 = gradient6_2,
         gradient3_1 = gradient3_1,
-        gradient3_2 = gradient3_2,
+        gradientButton = gradientButton,
         gradient2_1 = gradient2_1,
         gradient2_2 = gradient2_2,
         gradient2_3 = gradient2_3,
@@ -260,6 +268,7 @@ class DepositColors(
         interactiveMask = interactiveMask,
         textPrimary = textPrimary,
         textSecondary = textSecondary,
+        textHelpLabel = textHelpLabel,
         textHelp = textHelp,
         textInteractive = textInteractive,
         textLink = textLink,
@@ -296,7 +305,7 @@ private val LocalDepositsColor = staticCompositionLocalOf<DepositColors> {
 
 /**
  * A Material [Colors] implementation which sets all colors to [debugColor] to discourage usage of
- * [MaterialTheme.colorScheme] in preference to [DepositsTheme.colorsScheme].
+ * [MaterialTheme.colorScheme] in preference to [DepositsTheme.colors].
  */
 fun debugColors(
     debugColor: Color = Color.Magenta

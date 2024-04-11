@@ -10,11 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kh.com.acleda.deposits.R
+import kh.com.acleda.deposits.components.BTN_TYPE
+import kh.com.acleda.deposits.components.DepositButton
 import kh.com.acleda.deposits.components.TransparentCard
 import kh.com.acleda.deposits.components.WaveLines
+import kh.com.acleda.deposits.modules.home.presentation.components.BadgeAdd
 import kh.com.acleda.deposits.modules.home.presentation.components.BodyContainer
+import kh.com.acleda.deposits.modules.home.presentation.components.BadgeCurrency
+import kh.com.acleda.deposits.modules.home.presentation.components.BadgeProfit
+import kh.com.acleda.deposits.modules.home.presentation.components.CCY
+import kh.com.acleda.deposits.modules.home.presentation.components.CTA
+import kh.com.acleda.deposits.modules.home.presentation.components.MainBalance
+import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
 import kh.com.acleda.deposits.modules.home.presentation.components.TopAppBar
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
@@ -22,14 +33,14 @@ import kh.com.acleda.deposits.ui.theme.DepositsTheme
 fun DepositsApp() {
     DepositsTheme {
         Box {
-            val mainBackgroundColor = DepositsTheme.colorsScheme.gradientMainAppBackground
+            val mainBackgroundColor = DepositsTheme.colors.gradientMainAppBackground
             val scrollState = rememberScrollState(0)
 
             /* Animate wave line background */
             Box(
                 modifier = Modifier.background(Brush.verticalGradient(colors = mainBackgroundColor))
             ) {
-                WaveLines(lineColor = DepositsTheme.colorsScheme.brandSecondary)
+                WaveLines(lineColor = DepositsTheme.colors.brandSecondary)
             }
 
             /* Main Contain */
@@ -39,25 +50,18 @@ fun DepositsApp() {
                 scrollState = scrollState
             ) {
                 BodyContainer(scrollState = scrollState) {
-                    TransparentCard(widthBorder = 0.5.dp, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                    }
+                    MainBalance(
+                        onViewBalance = {},
+                        onAddNewWallet = {}
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    TransparentCard(widthBorder = 0.5.dp, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                        Text(text = "Hello, World!")
-                    }
+                    CTA(
+                        onWithdraw = {},
+                        onDeposit = {},
+                        onChangeMainWallet = {}
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 

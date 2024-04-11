@@ -21,7 +21,7 @@ import kotlin.math.sin
 @Composable
 fun WaveLines(
     modifier: Modifier = Modifier,
-    lineColor: Color = DepositsTheme.colorsScheme.brand,
+    lineColor: Color = DepositsTheme.colors.brand,
     numberOfWaves: Int = 5,
     strokeWidth: Float = 1f,
     speed: Int = 2000,
