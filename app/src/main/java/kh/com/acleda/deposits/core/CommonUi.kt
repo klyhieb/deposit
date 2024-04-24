@@ -1,0 +1,71 @@
+package kh.com.acleda.deposits.core
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import kh.com.acleda.deposits.modules.home.presentation.components.CCY
+import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
+import java.text.DecimalFormat
+
+/**
+ * Used with accounts and bills to create the animated circle.
+ */
+fun <E> List<E>.extractProportions(selector: (E) -> Float): List<Float> {
+    val total = this.sumOf { selector(it).toDouble() }
+    return this.map { (selector(it) / total).toFloat() }
+}
+
+fun formatAmount(amount: Float): String {
+    return AmountDecimalFormat.format(amount)
+}
+
+private val AccountDecimalFormat = DecimalFormat("####")
+private val AmountDecimalFormat = DecimalFormat("#,###.##")
+
+/**
+ * A vertical colored line that is used in a to differentiate accounts.
+ */
+@Composable
+private fun TermIndicator(color: Color, modifier: Modifier = Modifier) {
+    Spacer(
+        modifier
+            .size(4.dp, 12.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = color)
+    )
+}
+
+@Composable
+fun TermRow(
+    modifier: Modifier = Modifier,
+    color: Color,
+    amount: String,
+    ccy: CCY
+) {
+    Row (verticalAlignment = Alignment.CenterVertically) {
+        TermIndicator(color = color)
+        Spacer(modifier = Modifier.width(4.dp))
+        TextBalance(balance = amount, ccy = ccy, textStyle = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    TermRow(
+        color = Color.Red,
+        amount = "200.10",
+        ccy = CCY.DOLLAR
+    )
+}

@@ -1,0 +1,322 @@
+{
+  "status": "success",
+  "msg": "success",
+  "hi_growth": {
+    "ID": "21011",
+    "Label": "Hi-Growth",
+    "Desc": "Maturity Date Interest Settlement",
+    "MinKHRAmount": "400000.00",
+    "MinUSDAmount": "100.00",
+    "ProductRollOverOption": "PI#P",
+    "RateDetails": [
+      {
+        "Term": "1",
+        "Type": "MONTH",
+        "RateTermMaxRange": "1",
+        "KhrRate": "2.40",
+        "UsdRate": "1.65"
+      },
+      {
+        "Term": "2",
+        "Type": "MONTH",
+        "RateTermMaxRange": "3",
+        "KhrRate": "3.15",
+        "UsdRate": "1.99"
+      },
+      {
+        "Term": "3",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "4.15",
+
+        "UsdRate": "2.50"
+      },
+      {
+        "Term": "4",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "4.50",
+        "UsdRate": "3.00"
+      },
+      {
+        "Term": "5",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "5.05",
+        "UsdRate": "3.40"
+      },
+      {
+        "Term": "6",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.60",
+        "UsdRate": "3.90"
+      },
+      {
+        "Term": "7",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.75",
+        "UsdRate": "4.00"
+      },
+      {
+        "Term": "8",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.85",
+        "UsdRate": "4.15"
+      },
+      {
+        "Term": "9",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "6.25",
+        "UsdRate": "4.30"
+      },
+      {
+        "Term": "10",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "6.40",
+        "UsdRate": "4.45"
+      },
+      {
+        "Term": "11",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "6.55",
+        "UsdRate": "4.60"
+      },
+      {
+        "Term": "12",
+        "Type": "MONTH",
+        "RateTermMaxRange": "23",
+        "KhrRate": "6.90",
+        "UsdRate": "5.55"
+      },
+      {
+        "Term": "18",
+        "Type": "MONTH",
+        "RateTermMaxRange": "0",
+        "KhrRate": "7.10",
+        "UsdRate": "5.60"
+      },
+      {
+        "Term": "24",
+        "Type": "MONTH",
+        "RateTermMaxRange": "0",
+        "KhrRate": "7.30",
+        "UsdRate": "5.70"
+      }
+    ]
+  },
+  "hi_income": {
+    "ID": "21010",
+    "Label": "Hi-Income",
+    "Desc": "Monthly Interest Settlement",
+    "MinKHRAmount": "400000.00",
+    "MinUSDAmount": "100.00",
+    "ProductRollOverOption": "P",
+    "RateDetails": [
+      {
+        "Term": "1",
+        "Type": "MONTH",
+        "RateTermMaxRange": "1",
+        "KhrRate": "2.40",
+        "UsdRate": "1.60"
+      },
+      {
+        "Term": "2",
+        "Type": "MONTH",
+        "RateTermMaxRange": "3",
+        "KhrRate": "2.50",
+        "UsdRate": "1.70"
+      },
+      {
+        "Term": "3",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "3.65",
+        "UsdRate": "2.15"
+      },
+      {
+        "Term": "4",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "4.35",
+        "UsdRate": "2.25"
+      },
+      {
+        "Term": "5",
+        "Type": "MONTH",
+        "RateTermMaxRange": "5",
+        "KhrRate": "4.40",
+        "UsdRate": "2.50"
+      },
+      {
+        "Term": "6",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.15",
+        "UsdRate": "3.65"
+      },
+      {
+        "Term": "7",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.30",
+        "UsdRate": "3.75"
+      },
+      {
+        "Term": "8",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.40",
+        "UsdRate": "3.85"
+      },
+      {
+        "Term": "9",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.85",
+        "UsdRate": "4.00"
+      },
+      {
+        "Term": "10",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "5.95",
+        "UsdRate": "4.10"
+      },
+      {
+        "Term": "11",
+        "Type": "MONTH",
+        "RateTermMaxRange": "11",
+        "KhrRate": "6.05",
+        "UsdRate": "4.20"
+      },
+      {
+        "Term": "12",
+        "Type": "MONTH",
+        "RateTermMaxRange": "23",
+        "KhrRate": "6.80",
+        "UsdRate": "5.20"
+      },
+      {
+        "Term": "18",
+        "Type": "MONTH",
+        "RateTermMaxRange": "0",
+        "KhrRate": "6.85",
+        "UsdRate": "5.35"
+      },
+      {
+        "Term": "24",
+        "Type": "MONTH",
+        "RateTermMaxRange": "0",
+        "KhrRate": "6.90",
+        "UsdRate": "5.55"
+      }
+    ]
+  },
+  "long_term": {
+    "ID": "21034",
+    "Label": "Long Term",
+    "Desc": "Quarterly Interest Settlement",
+    "MinKHRAmount": "400000.00",
+    "MinUSDAmount": "100.00",
+    "ProductRollOverOption": "P",
+    "RateDetails": [
+      {
+        "Term": "36",
+        "Type": "MONTH",
+        "RateTermMaxRange": "47",
+        "KhrRate": "7.45",
+        "UsdRate": "5.80"
+      },
+      {
+        "Term": "48",
+        "Type": "MONTH",
+        "RateTermMaxRange": "59",
+        "KhrRate": "7.55",
+        "UsdRate": "6.10"
+      },
+      {
+        "Term": "60",
+        "Type": "MONTH",
+        "RateTermMaxRange": "71",
+        "KhrRate": "7.65",
+        "UsdRate": "6.25"
+      },
+      {
+        "Term": "72",
+        "Type": "MONTH",
+        "RateTermMaxRange": "83",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "84",
+        "Type": "MONTH",
+        "RateTermMaxRange": "95",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "96",
+        "Type": "MONTH",
+        "RateTermMaxRange": "107",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "108",
+        "Type": "MONTH",
+        "RateTermMaxRange": "119",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "120",
+        "Type": "MONTH",
+        "RateTermMaxRange": "131",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "132",
+        "Type": "MONTH",
+        "RateTermMaxRange": "143",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "144",
+        "Type": "MONTH",
+        "RateTermMaxRange": "155",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "156",
+        "Type": "MONTH",
+        "RateTermMaxRange": "167",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "168",
+        "Type": "MONTH",
+        "RateTermMaxRange": "179",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      },
+      {
+        "Term": "180",
+        "Type": "MONTH",
+        "RateTermMaxRange": "0",
+        "KhrRate": "7.75",
+        "UsdRate": "6.35"
+      }
+    ]
+  }
+}

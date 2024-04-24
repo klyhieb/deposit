@@ -101,7 +101,6 @@ fun DepositsTheme(
 
     ProvidesDepositsColors(colors) {
         MaterialTheme(
-            colorScheme = debugColors(),
             typography = Typography,
             /*shapes = Shapes,*/
             content = content

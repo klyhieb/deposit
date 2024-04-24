@@ -79,6 +79,9 @@ val White = Color(0xFFFFFFFF)
 
 val Badge = Color(0xFFE8FB5B)
 val TransparentCardBorder = Color(0xFF5178B6)
+val Promotion1 = Color(0xFF6060AA)
+val Promotion2 = Color(0xFF8A8CE3)
+val Promotion3 = Color(0xFF9B9DF2)
 
 val md_theme_light_primary = Color(0xFF285EA7)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
