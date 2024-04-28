@@ -2,6 +2,7 @@ package kh.com.acleda.deposits.modules.home.domain.model
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 
 @Keep
 data class DepositRatesModel(
@@ -29,5 +30,13 @@ data class DepositRateDetailsModel(
     @SerializedName("Type") var type: String? = "",
     @SerializedName("RateTermMaxRange") var rateTermMaxRange: String? = "",
     @SerializedName("KhrRate") var khrRate: String? = "",
-    @SerializedName("UsdRate") var usdRate: String? = ""
-)
+    @SerializedName("UsdRate") var usdRate: String? = "",
+
+    // add-on
+    @SerializedName("ccy") var ccy: CCY? = null // when it change the the re-composable will run for relate remember
+) {
+    var index: Int? = null
+    var month: String = "Months"
+    var currentPA: String = ""
+}
+

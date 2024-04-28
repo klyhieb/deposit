@@ -1,6 +1,7 @@
 package kh.com.acleda.deposits.modules.home.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.core.fromJson
@@ -8,13 +9,13 @@ import kh.com.acleda.deposits.core.util.JsonFile
 import kh.com.acleda.deposits.modules.home.domain.model.CATOpenTermModel
 import kh.com.acleda.deposits.modules.home.domain.model.CATTermModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositRateDetailsModel
+import kh.com.acleda.deposits.modules.home.domain.model.DepositRateObjectModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositRatesModel
+import kh.com.acleda.deposits.modules.home.domain.model.TermType
+import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.ui.theme.Blue1
 import kh.com.acleda.deposits.ui.theme.Blue3
-import kh.com.acleda.deposits.ui.theme.Gold1
-import kh.com.acleda.deposits.ui.theme.Gold2
 import kh.com.acleda.deposits.ui.theme.Gold4
-import kh.com.acleda.deposits.ui.theme.Gold5
 import kh.com.acleda.deposits.ui.theme.Gold6
 import kh.com.acleda.deposits.ui.theme.Green1
 import kh.com.acleda.deposits.ui.theme.Green3
@@ -27,7 +28,10 @@ object DepositRateRepo {
     private val gson = Gson()
     private val jsonFile = JsonFile()
 
+    private val depositRateModel: DepositRatesModel? = null
+
     private fun getDepositRateData(context: Context): DepositRatesModel {
+        if (depositRateModel != null) return depositRateModel
         // read json data from file
         // convert it into object model
         val fileName = "json/deposit_rate.json"
@@ -85,5 +89,39 @@ object DepositRateRepo {
             "km" -> rate.usdRate
             else -> rate.usdRate
         }?.toFloat() ?: 0.0f
+    }
+
+    private fun getDepositRateByType(context: Context, termType: TermType): DepositRateObjectModel {
+        val depositRate = getDepositRateData(context)
+
+        return when (termType)
+        {
+            TermType.HI_INCOME -> depositRate.hiIncome!!
+            TermType.HI_GROWTH -> depositRate.hiGrowth!!
+            TermType.LONG_TERM -> depositRate.longTerm!!
+        }
+    }
+
+    fun getDepositRateByTypeAndCcy(context: Context, termType: TermType, ccy: CCY): DepositRateObjectModel {
+        val rateByType = getDepositRateByType(context, termType)
+
+        rateByType.rateDetails?.mapIndexed { index, rateDetail ->
+            rateDetail.ccy = ccy
+            rateDetail.index = index
+            rateDetail.currentPA = getCurrentPAByCcy(rateDetail, ccy)
+            if (rateDetail.term == "1") {
+                rateDetail.month = "Month"
+            }
+            rateDetail
+        }
+
+        return rateByType
+    }
+
+    private fun getCurrentPAByCcy(rate: DepositRateDetailsModel, ccy: CCY): String {
+        return when (ccy) {
+            CCY.RIEL -> "${rate.khrRate} p.a."
+            CCY.DOLLAR -> "${rate.usdRate} p.a."
+        }
     }
 }
