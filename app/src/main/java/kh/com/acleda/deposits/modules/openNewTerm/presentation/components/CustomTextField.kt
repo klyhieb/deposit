@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import kh.com.acleda.deposits.core.util.decimalAmountTransformation.DecimalAmountTransformation
@@ -159,7 +160,10 @@ fun TextFieldInput(
             }
         },
         visualTransformation = DecimalAmountTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
         modifier = modifier.fillMaxWidth()
     )
 }
