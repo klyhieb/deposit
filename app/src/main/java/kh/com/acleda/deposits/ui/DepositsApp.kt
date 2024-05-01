@@ -72,7 +72,13 @@ fun DepositsApp() {
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Section(label = "Total Deposits") {
+                    Section(
+                        label = "Deposit List",
+                        isClickable = true,
+                        onClick = {
+
+                        }
+                    ) {
                         Row (
                             verticalAlignment = Alignment.CenterVertically,
                         ) {

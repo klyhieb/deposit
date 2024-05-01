@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             DepositsTheme {
-                OpenNewTermScreen()
+                DepositsApp()
             }
         }
     }
