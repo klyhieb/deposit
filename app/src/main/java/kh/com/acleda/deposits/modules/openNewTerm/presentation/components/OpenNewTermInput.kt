@@ -27,7 +27,9 @@ import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.termHorizontalPager.AnimatedViewPagerTermMonth
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.Gray10
 import kh.com.acleda.deposits.ui.theme.Gray5
+import kh.com.acleda.deposits.ui.theme.Gray9
 import kh.com.acleda.deposits.ui.theme.Red10
 
 @Composable
@@ -102,7 +104,8 @@ fun OpenNewTermInput(
                 placeHolderText = "",
                 labelText = placeHolderText,
                 borderColor = Gray5,
-                textColor = Gray5,
+                textColor = Gray9,
+                supportTextColor = Gray5,
                 onClick = {
                     onSelectSourceAccountClick()
                 }
@@ -138,7 +141,8 @@ fun OpenNewTermInput(
                 valueText = amount,
                 labelText = "Amount",
                 borderColor = Gray5,
-                textColor = Red10,
+                textColor = Gray9,
+                supportTextColor = Gray5,
                 onValueChange = {
                     onInputAmount(it)
                 }

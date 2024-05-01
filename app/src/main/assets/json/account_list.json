@@ -1,0 +1,58 @@
+{
+  "status": "success",
+  "msg": "",
+  "accountList": [
+    {
+      "showAccNumber": "8551247175-96",
+      "accNumber": "855124717596",
+      "balanceAvailable": "487,702.00",
+      "balanceWorking": "487,702.00",
+      "odType": "",
+      "accStatus": "",
+      "accType": "VT",
+      "ccy": "KHR",
+      "t24type": "",
+      "linkCorporate": "",
+      "originCcy": "KHR"
+    },
+    {
+      "showAccNumber": "8551247176-04",
+      "accNumber": "855124717604",
+      "balanceAvailable": "2,821.51",
+      "balanceWorking": "2,821.51",
+      "odType": "",
+      "accStatus": "",
+      "accType": "VT",
+      "ccy": "USD",
+      "t24type": "",
+      "linkCorporate": "",
+      "originCcy": "USD"
+    },
+    {
+      "showAccNumber": "0001-04704825-12",
+      "accNumber": "00010470482512",
+      "balanceAvailable": "3,273,800.00",
+      "balanceWorking": "3,273,800.00",
+      "odType": "",
+      "accStatus": "CUR",
+      "accType": "T24",
+      "ccy": "KHR",
+      "t24type": "6001",
+      "linkCorporate": "",
+      "originCcy": "KHR"
+    },
+    {
+      "showAccNumber": "0001-04704825-13",
+      "accNumber": "00010470482513",
+      "balanceAvailable": "5,400.76",
+      "balanceWorking": "5,400.76",
+      "odType": "",
+      "accStatus": "CUR",
+      "accType": "T24",
+      "ccy": "USD",
+      "t24type": "6001",
+      "linkCorporate": "",
+      "originCcy": "USD"
+    }
+  ]
+}

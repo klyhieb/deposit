@@ -35,6 +35,7 @@ fun TextFieldSelect(
     placeHolderText: String,
     borderColor: Color,
     textColor: Color,
+    supportTextColor: Color,
     @DrawableRes leadingIcon: Int? = null,
     @DrawableRes trailingIcon: Int? = null,
     onClick: () -> Unit
@@ -46,16 +47,17 @@ fun TextFieldSelect(
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedTextColor = textColor,
                 unfocusedBorderColor = borderColor,
-                unfocusedLabelColor = textColor,
+                unfocusedLabelColor = supportTextColor,
                 unfocusedLeadingIconColor = borderColor,
                 unfocusedTrailingIconColor = borderColor,
                 focusedTextColor = textColor,
                 focusedBorderColor = borderColor,
-                focusedLabelColor = textColor,
+                focusedLabelColor = supportTextColor,
                 focusedLeadingIconColor = borderColor,
                 focusedTrailingIconColor = borderColor,
             ),
             value = valueText,
+            textStyle = MaterialTheme.typography.labelLarge,
             label = {
                 if (labelText.isNotEmpty()) {
                     Text(labelText, style = MaterialTheme.typography.labelLarge)
@@ -74,7 +76,7 @@ fun TextFieldSelect(
             },
             singleLine = true,
             readOnly = true,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .align(Alignment.Center)
         )
@@ -129,6 +131,7 @@ fun TextFieldInput(
     labelText: String,
     borderColor: Color,
     textColor: Color,
+    supportTextColor: Color,
     onValueChange: (TextFieldValue) -> Unit
 ) {
     var text by remember { mutableStateOf(valueText) }
@@ -136,16 +139,17 @@ fun TextFieldInput(
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedTextColor = textColor,
             unfocusedBorderColor = borderColor,
-            unfocusedLabelColor = textColor,
+            unfocusedLabelColor = supportTextColor,
             unfocusedLeadingIconColor = borderColor,
             unfocusedTrailingIconColor = borderColor,
             focusedTextColor = textColor,
             focusedBorderColor = borderColor,
-            focusedLabelColor = textColor,
+            focusedLabelColor = supportTextColor,
             focusedLeadingIconColor = borderColor,
             focusedTrailingIconColor = borderColor,
         ),
         value = text,
+        textStyle = MaterialTheme.typography.labelLarge,
         onValueChange = {
             if (!it.text.contains(InputFilterRegex.DecimalInput)) {
                 return@OutlinedTextField
@@ -153,7 +157,7 @@ fun TextFieldInput(
             text = filteredDecimalText(it)
             onValueChange(text)
         },
-        label = { Text(labelText) },
+        label = { Text(labelText, style = MaterialTheme.typography.labelLarge) },
         leadingIcon = {
             if (leadingIcon != null) {
                 Icon(painterResource(leadingIcon), contentDescription = null)

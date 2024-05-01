@@ -122,6 +122,7 @@ object DepositRateRepo {
         return when (ccy) {
             CCY.RIEL -> "${rate.khrRate} p.a."
             CCY.DOLLAR -> "${rate.usdRate} p.a."
+            CCY.DEFAULT -> ""
         }
     }
 }

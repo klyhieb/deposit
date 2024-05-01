@@ -10,8 +10,8 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
 
-private val groupingSymbol = ','
-private val decimalSymbol = '.'
+private const val groupingSymbol = ','
+private const val decimalSymbol = '.'
 
 private val numberFormatter: DecimalFormat = DecimalFormat("#,###").apply {
     decimalFormatSymbols = DecimalFormatSymbols(Locale.getDefault()).apply {

@@ -61,7 +61,10 @@ fun TermRow(
     amount: String,
     ccy: CCY
 ) {
-    Row (verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
         TermIndicator(color = color)
         Spacer(modifier = Modifier.width(4.dp))
         TextBalance(balance = amount, ccy = ccy, textStyle = MaterialTheme.typography.labelSmall)
