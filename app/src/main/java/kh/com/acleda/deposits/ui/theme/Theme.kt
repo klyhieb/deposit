@@ -32,7 +32,8 @@ private val LightColorPalette = DepositColors(
     uiBorder = Gray6,
     uiFloated = Gray1,
     textPrimary = Gray0,
-    textSecondary = Gray6,
+    textSecondary = Gray3,
+    textSupport = Gray6,
     textHelpLabel = Blue10,
     textHelp = Gray9,
     textInteractive = Gray0,
@@ -61,7 +62,8 @@ private val DarkColorPalette = DepositColors(
     uiBorder = Gray6,
     uiFloated = Gray1,
     textPrimary = Gray0,
-    textSecondary = Gray6,
+    textSecondary = Gray3,
+    textSupport = Gray6,
     textHelpLabel = Blue10,
     textHelp = Gray9,
     textInteractive = Gray0,
@@ -137,6 +139,7 @@ class DepositColors(
     interactiveMask: List<Color> = gradient6_1,
     textPrimary: Color = brand,
     textSecondary: Color,
+    textSupport: Color,
     textHelpLabel: Color,
     textHelp: Color,
     textInteractive: Color,
@@ -187,6 +190,8 @@ class DepositColors(
         private set
     var textSecondary by mutableStateOf(textSecondary)
         private set
+    var textSupport by mutableStateOf(textSupport)
+        private set
     var textHelpLabel by mutableStateOf(textHelpLabel)
         private set
     var textHelp by mutableStateOf(textHelp)
@@ -233,6 +238,7 @@ class DepositColors(
         interactiveMask = other.interactiveMask
         textPrimary = other.textPrimary
         textSecondary = other.textSecondary
+        textSupport = other.textSupport
         textHelpLabel = other.textHelpLabel
         textHelp = other.textHelp
         textInteractive = other.textInteractive
@@ -267,6 +273,7 @@ class DepositColors(
         interactiveMask = interactiveMask,
         textPrimary = textPrimary,
         textSecondary = textSecondary,
+        textSupport = textSupport,
         textHelpLabel = textHelpLabel,
         textHelp = textHelp,
         textInteractive = textInteractive,

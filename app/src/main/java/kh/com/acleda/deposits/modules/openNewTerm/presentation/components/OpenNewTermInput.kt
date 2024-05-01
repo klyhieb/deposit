@@ -169,7 +169,7 @@ fun OpenNewTermInput(
             Text(
                 text = "Total Interest: $totalInterest ${currencyList[selectedIndex].ccy.dec.uppercase()}",
                 style = MaterialTheme.typography.labelMedium,
-                color = DepositsTheme.colors.textSecondary,
+                color = DepositsTheme.colors.textSupport,
                 modifier = Modifier.padding(start = 20.dp)
             )
 

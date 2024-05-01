@@ -60,7 +60,7 @@ fun OpenTermSummary(
                         Text(
                             "Deposit Type:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -80,7 +80,7 @@ fun OpenTermSummary(
                         Text(
                             "Deposit Term:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -100,7 +100,7 @@ fun OpenTermSummary(
                         Text(
                             "Deposit Amount:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -120,7 +120,7 @@ fun OpenTermSummary(
                         Text(
                             "Interest Rate",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -140,7 +140,7 @@ fun OpenTermSummary(
                         Text(
                             "Interest Amount",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -160,7 +160,7 @@ fun OpenTermSummary(
                         Text(
                             "Tax $taxDisplay%:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -180,7 +180,7 @@ fun OpenTermSummary(
                         Text(
                             "Effective Date:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -200,7 +200,7 @@ fun OpenTermSummary(
                         Text(
                             "Maturity Date:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -220,7 +220,7 @@ fun OpenTermSummary(
                         Text(
                             "Auto-Renewal:",
                             style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
@@ -232,7 +232,7 @@ fun OpenTermSummary(
 
                     DashLine(
                         Modifier.padding(top = 8.dp),
-                        lineColor = DepositsTheme.colors.textSecondary
+                        lineColor = DepositsTheme.colors.textSupport
                     )
 
                     Row(
@@ -245,7 +245,7 @@ fun OpenTermSummary(
                         Text(
                             "Total to Receive:",
                             style = MaterialTheme.typography.titleMedium,
-                            color = DepositsTheme.colors.textSecondary
+                            color = DepositsTheme.colors.textSupport
                         )
 
                         Text(

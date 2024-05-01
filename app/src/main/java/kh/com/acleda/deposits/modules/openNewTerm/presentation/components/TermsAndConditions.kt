@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -20,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +34,8 @@ import kh.com.acleda.deposits.ui.theme.White
 @Composable
 fun TermsAndConditions(
     modifier: Modifier = Modifier,
-    onClick: (Boolean) -> Unit
+    onToggleClick: (Boolean) -> Unit,
+    onTermClick: () -> Unit
 ) {
     var selected by remember { mutableStateOf(false) }
 
@@ -48,7 +52,7 @@ fun TermsAndConditions(
                     selected = selected,
                     onClick = {
                         selected = !selected
-                        onClick(selected)
+                        onToggleClick(selected)
                     },
                     colors = RadioButtonDefaults.colors(
                         selectedColor = Gold8,
@@ -56,19 +60,58 @@ fun TermsAndConditions(
                     )
                 )
 
-                Text(
+                /*Text(
                     buildAnnotatedString {
-                        append("I have read and agree to the")
-                        withStyle(style = SpanStyle(color = Gold8)) {
-                            append("Terms & Conditions ")
+                        append("I have read and agree to the ")
+
+                        pushStringAnnotation(
+                            tag = "TermAndCondition",
+                            annotation = "TermAndCondition"
+                        )
+
+                        withStyle(style = SpanStyle(color = Gold8, textDecoration = TextDecoration.Underline)) {
+                            append("Terms & Conditions.")
                         }
+
+                        pop()
                     },
-                    color = DepositsTheme.colors.textSecondary,
+                    color = DepositsTheme.colors.textSupport,
                     style = MaterialTheme.typography.labelSmall,
                     modifier = modifier.clickable {
                         selected = !selected
                         onClick(selected)
                     }
+                )*/
+
+                val annotationText = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = DepositsTheme.colors.textSupport)) {
+                        append("I have read and agree to the ")
+                    }
+
+                    pushStringAnnotation(
+                        tag = "TermAndCondition",
+                        annotation = "TermAndCondition"
+                    )
+
+                    withStyle(style = SpanStyle(color = Gold8, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
+                        append("Terms & Conditions.")
+                    }
+
+                    pop()
+                }
+
+                ClickableText(
+                    text = annotationText,
+                    onClick = { offset ->
+                        annotationText.getStringAnnotations(
+                            tag = "TermAndCondition",
+                            start = offset,
+                            end = offset
+                        ).firstOrNull()?.let { _ ->
+                            onTermClick()
+                        }
+                    },
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
 
@@ -81,8 +124,9 @@ fun TermsAndConditions(
 @Composable
 private fun Preview() {
     DepositsTheme {
-        TermsAndConditions {
-
-        }
+        TermsAndConditions(
+            onToggleClick = {},
+            onTermClick = {}
+        )
     }
 }

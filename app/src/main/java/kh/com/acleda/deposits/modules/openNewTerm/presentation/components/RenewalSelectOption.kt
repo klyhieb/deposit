@@ -97,7 +97,7 @@ fun SingleSelectionCard(selectionOption: SelectionOption, onOptionClicked: (Sele
                     Text(
                         text = selectionOption.model.des,
                         style = MaterialTheme.typography.labelMedium,
-                        color = DepositsTheme.colors.textSecondary
+                        color = DepositsTheme.colors.textSupport
                     )
                 }
 
