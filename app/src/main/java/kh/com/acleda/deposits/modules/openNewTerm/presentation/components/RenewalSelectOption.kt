@@ -88,7 +88,7 @@ fun SingleSelectionCard(selectionOption: SelectionOption, onOptionClicked: (Sele
                 Column {
                     Text(
                         text = selectionOption.model.title,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         color = DepositsTheme.colors.textHelpLabel
                     )
 
