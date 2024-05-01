@@ -21,7 +21,7 @@ import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gold1
 
 @Composable
-fun BadgeProfit(
+fun  BadgeProfit(
     modifier: Modifier = Modifier,
     amount: String,
 ) {

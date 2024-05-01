@@ -36,7 +36,7 @@ fun SUButton(
 
         ),
         shape = shape,
-        modifier = modifier.height(54.dp)
+        modifier = modifier.height(54.dp).fillMaxWidth()
     ) {
         Text(
             text = text.uppercase(),

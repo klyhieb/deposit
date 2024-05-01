@@ -231,7 +231,7 @@ fun OpenTermSummary(
                     }
 
                     DashLine(
-                        modifier.padding(top = 8.dp),
+                        Modifier.padding(top = 8.dp),
                         lineColor = DepositsTheme.colors.textSecondary
                     )
 

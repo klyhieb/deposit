@@ -46,7 +46,10 @@ fun OpenNewTermScreen(
     val totalInterest by remember { mutableFloatStateOf(0.0f) }
 
 
-    CenterTopAppBar(title = "Open New Term", onBackClick = { /*TODO*/ }) { innerPadding ->
+    CenterTopAppBar(
+        title = "Open New Term",
+        onBackClick = { /*TODO*/ }
+    ) { innerPadding ->
         Column(
             modifier = modifier
                 .padding(innerPadding)
@@ -94,7 +97,6 @@ fun OpenNewTermScreen(
             }
 
             SUButton(
-                modifier = Modifier.fillMaxWidth(),
                 shape = RectangleShape,
                 text = "Deposit",
                 textColor = Gray1,

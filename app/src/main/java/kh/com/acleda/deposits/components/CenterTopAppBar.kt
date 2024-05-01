@@ -23,7 +23,8 @@ fun CenterTopAppBar(
     modifier: Modifier = Modifier,
     title: String,
     containerColor: Color = DepositsTheme.colors.uiBackground.copy(alpha = 0.8f),
-    onBackClick: () -> Unit,
+    hasBackButton: Boolean = true,
+    onBackClick: () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (paddingValues: PaddingValues) -> Unit
 ) {
@@ -43,12 +44,14 @@ fun CenterTopAppBar(
                     ))
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow),
-                            contentDescription = null,
-                            tint = DepositsTheme.colors.textPrimary
-                        )
+                    if (hasBackButton) {
+                        IconButton(onClick = onBackClick) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_back_arrow),
+                                contentDescription = null,
+                                tint = DepositsTheme.colors.textPrimary
+                            )
+                        }
                     }
                 }
             )
