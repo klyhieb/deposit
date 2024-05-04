@@ -10,6 +10,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -30,6 +34,8 @@ fun DepositListScreen(
 
 ) {
     val summaryTermDeposit = DepositListRepo.getSummaryTermDeposit(LocalContext.current)
+    var expended by remember { mutableStateOf(false) }
+    val expandHeight = if(expended) 220.dp else 90.dp
 
     val depositList = DepositListRepo.getDepositList(LocalContext.current)
     val listGroupByDate = depositList.listMM.groupBy { it.ValueDateOri }
@@ -49,15 +55,21 @@ fun DepositListScreen(
         val state = rememberLazyListState()
 
         LazyColumn(
-            modifier = modifier.padding(innerPadding).padding(horizontal = 12.dp),
+            modifier = modifier
+                .padding(innerPadding)
+                .padding(horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             state = state
         ) {
             item {
                 SummaryDepositList(
-                    modifier = Modifier.height(210.dp),
+                    modifier = Modifier.height(expandHeight),
+                    isExpanded = expended,
                     summaryTermDeposit = summaryTermDeposit,
-                    onClick = {}
+                    onClick = {},
+                    onExpendClick = {
+                        expended = !expended
+                    }
                 )
             }
 
