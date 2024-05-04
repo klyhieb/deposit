@@ -13,9 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.TransparentCard
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.Gold2
 
 @Composable
 fun MainBalance(
@@ -56,7 +58,11 @@ fun MainBalance(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                BadgeAdd(modifier = Modifier.clickable { onAddNewWallet() })
+                BadgeAdd(
+                    iconColor = Gold2,
+                    borderColor = Color.Transparent,
+                    onClick = onAddNewWallet
+                )
             }
         }
     }

@@ -1,6 +1,7 @@
 package kh.com.acleda.deposits.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,6 +25,7 @@ fun CenterTopAppBar(
     title: String,
     containerColor: Color = DepositsTheme.colors.uiBackground.copy(alpha = 0.8f),
     hasBackButton: Boolean = true,
+    action: @Composable (RowScope.() -> Unit) = {},
     onBackClick: () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     content: @Composable (paddingValues: PaddingValues) -> Unit
@@ -53,7 +55,8 @@ fun CenterTopAppBar(
                             )
                         }
                     }
-                }
+                },
+                actions = action
             )
         }
     ) { innerPadding ->

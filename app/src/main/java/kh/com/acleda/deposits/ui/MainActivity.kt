@@ -7,6 +7,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
+import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             DepositsTheme {
-                OpenNewTermScreen()
+                DepositListScreen()
             }
         }
     }

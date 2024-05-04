@@ -25,13 +25,19 @@ fun TextBalance(
     val values: List<String> = balance.split('.')
     val currency = when (ccy) {
         CCY.DOLLAR -> "$"
-        CCY.RIEL -> "៛"
+        CCY.RIEL -> "៛ "
         CCY.DEFAULT -> ""
     }
 
     val dec = DecimalFormat("#,###.##")
     val decimal = dec.format(values[0].toInt())
-    val float = if (values[1].toInt() == 0) "00" else values[1]
+    val float = if (values.size > 1)
+        when {
+            values[1].toInt() == 0 -> "00"
+            values[1].count() == 1 -> values[1] + "0"
+            values[1].isEmpty() -> "00"
+            else -> values[1]
+        } else "00"
 
     Text(
         modifier = modifier,

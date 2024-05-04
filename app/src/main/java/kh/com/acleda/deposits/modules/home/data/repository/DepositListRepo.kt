@@ -5,8 +5,10 @@ import com.google.gson.Gson
 import kh.com.acleda.deposits.core.fromJson
 import kh.com.acleda.deposits.core.util.ExchangeRate
 import kh.com.acleda.deposits.core.util.JsonFile
+import kh.com.acleda.deposits.modules.home.domain.model.AccountListModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositListModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositTypeModel
+import kh.com.acleda.deposits.modules.home.domain.model.SummaryCurrencyModel
 import kh.com.acleda.deposits.modules.home.domain.model.SummaryDepositModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermAmountModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
@@ -14,7 +16,9 @@ import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray0
+import kh.com.acleda.deposits.ui.theme.Green2
 import kh.com.acleda.deposits.ui.theme.Green7
+import kh.com.acleda.deposits.ui.theme.Red2
 
 /**
  * Pretend repository for DepositList's data.
@@ -24,7 +28,10 @@ object DepositListRepo {
     private val jsonFile = JsonFile()
     private val exchangeRate = ExchangeRate()
 
+    private val depositList: DepositListModel? = null
+
     private fun getDepositListData(context: Context): DepositListModel {
+        if (depositList != null) return depositList
         // read json data from file
         // convert it into object model
         val fileName = "json/deposit_list.json"
@@ -35,6 +42,17 @@ object DepositListRepo {
 
     fun getSummaryTermDeposit(context: Context): SummaryDepositModel {
         val depositList = getDepositListData(context)
+
+        // total in KHR
+        val totalAmountInRiel = depositList.listMM
+                .filter{ it.currency == CCY.RIEL.dec.uppercase() }
+            .map { it.AmountOri }.sum()
+
+        // total in US
+        val totalAmountInDollar = depositList.listMM
+            .filter{ it.currency == CCY.DOLLAR.dec.uppercase() }
+            .map { it.AmountOri }.sum()
+
 
         // Hi-Income
         val totalHiIncomeInDollar = depositList.listMM.filter {
@@ -76,6 +94,24 @@ object DepositListRepo {
         }.sum()
 
         return SummaryDepositModel(
+            summaryByCurrency = listOf(
+                SummaryCurrencyModel(
+                    name = "KHR",
+                    amountModel = TermAmountModel(
+                        color = Green2,
+                        ccy = CCY.RIEL,
+                        amount = totalAmountInRiel
+                    )
+                ),
+                SummaryCurrencyModel(
+                    name = "US",
+                    amountModel = TermAmountModel(
+                        color = Red2,
+                        ccy = CCY.DOLLAR,
+                        amount = totalAmountInDollar
+                    )
+                )
+            ),
             summaryInDollarByTypes = listOf(
                 DepositTypeModel(
                     termType = TermType.HI_INCOME,
@@ -152,4 +188,6 @@ object DepositListRepo {
             )
         )
     }
+
+    fun getDepositList(context: Context) = getDepositListData(context)
 }

@@ -18,11 +18,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
+import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import java.text.DecimalFormat
 
 /**
@@ -78,7 +81,11 @@ fun DashLine(
     stroke: Dp = 1.dp
 ) {
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-    Canvas(modifier.fillMaxWidth().padding(top = stroke).height(stroke)) {
+    Canvas(
+        modifier
+            .fillMaxWidth()
+            .padding(top = stroke)
+            .height(stroke)) {
 
         drawLine(
             color = lineColor,

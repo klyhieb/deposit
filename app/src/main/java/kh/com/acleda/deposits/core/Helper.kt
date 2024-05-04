@@ -15,6 +15,20 @@ fun safeConvertAccountBalance(termAmount: TermAmountModel): Float {
         termAmount.amount
 }
 
+fun <T> safeConvertAccountBalance(
+    model: T,
+    ccy: (T) -> CCY,
+    amount: (T) -> Float
+): Float {
+    val exchangeRate = ExchangeRate()
+
+    // we try to safe convert Amount to Dollar in case it CCY.RIEL
+    return if (ccy(model) == CCY.RIEL)
+        exchangeRate.riel2Dollar(amount(model))
+    else
+        amount(model)
+}
+
 /**
  * our reflection fromJson on compile time
  */

@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.WaveLines
+import kh.com.acleda.deposits.components.horizontalLineChart.HorizontalSumChat
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.data.repository.DepositRateRepo
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
