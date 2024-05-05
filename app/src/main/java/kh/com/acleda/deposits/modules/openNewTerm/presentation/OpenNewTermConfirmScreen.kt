@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.verticalScroll
@@ -19,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,12 +26,10 @@ import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.SUButton
 import kh.com.acleda.deposits.core.DashLine
 import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
-import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.ticketShape.TicketShape
+import kh.com.acleda.deposits.components.shape.TicketShape
 import kh.com.acleda.deposits.ui.theme.Blue0
 import kh.com.acleda.deposits.ui.theme.Blue1
-import kh.com.acleda.deposits.ui.theme.Blue2
 import kh.com.acleda.deposits.ui.theme.Blue4
-import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gold2
 import kh.com.acleda.deposits.ui.theme.Gold6

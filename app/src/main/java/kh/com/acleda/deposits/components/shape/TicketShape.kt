@@ -1,4 +1,4 @@
-package kh.com.acleda.deposits.modules.openNewTerm.presentation.components.ticketShape
+package kh.com.acleda.deposits.components.shape
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -90,7 +90,7 @@ class TicketShape(
 }
 
 @Composable
-fun ShapeDemo() {
+fun TicketShapeDemo() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -104,6 +104,6 @@ fun ShapeDemo() {
 
 @Preview
 @Composable
-private fun Preview() {
-    ShapeDemo()
+private fun TicketShapeDemoPreview() {
+    TicketShapeDemo()
 }
