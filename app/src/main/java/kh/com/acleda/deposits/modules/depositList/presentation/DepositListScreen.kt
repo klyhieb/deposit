@@ -2,6 +2,7 @@ package kh.com.acleda.deposits.modules.depositList.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,7 +44,7 @@ fun DepositListScreen(
     CenterTopAppBar(
         title = "Deposit List",
         action = {
-            IconButton(onClick = {/*TODO*/ }) {
+            IconButton(onClick = {/*TODO*/}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
@@ -59,14 +60,16 @@ fun DepositListScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            state = state
+            contentPadding = PaddingValues(bottom = 16.dp),
+            state = state,
         ) {
             item {
                 SummaryDepositList(
                     modifier = Modifier.height(expandHeight),
                     isExpanded = expended,
                     summaryTermDeposit = summaryTermDeposit,
-                    onClick = {},
+                    onClick = {/*TODO*/},
+                    onAddClick = {/*TODO*/},
                     onExpendClick = {
                         expended = !expended
                     }

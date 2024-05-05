@@ -13,7 +13,10 @@ import kh.com.acleda.deposits.modules.home.domain.model.SummaryDepositModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermAmountModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
+import kh.com.acleda.deposits.ui.theme.Blue3
 import kh.com.acleda.deposits.ui.theme.Blue7
+import kh.com.acleda.deposits.ui.theme.GlowingBlue3
+import kh.com.acleda.deposits.ui.theme.Gold3
 import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray0
 import kh.com.acleda.deposits.ui.theme.Green2
@@ -104,7 +107,7 @@ object DepositListRepo {
                     )
                 ),
                 SummaryCurrencyModel(
-                    name = "US",
+                    name = "USD",
                     amountModel = TermAmountModel(
                         color = Red2,
                         ccy = CCY.DOLLAR,
@@ -115,21 +118,21 @@ object DepositListRepo {
             summaryInDollarByTypes = listOf(
                 DepositTypeModel(
                     termType = TermType.HI_INCOME,
-                    color = Gold7,
+                    color = GlowingBlue3,
                     summaryAmountInDollar = totalHiIncomeInDollar + exchangeRate.riel2Dollar(
                         totalHiIncomeInRiel
                     )
                 ),
                 DepositTypeModel(
                     termType = TermType.HI_GROWTH,
-                    color = Blue7,
+                    color = Blue3,
                     summaryAmountInDollar = totalHiGrowthInDollar + exchangeRate.riel2Dollar(
                         totalHiGrowthInRiel
                     )
                 ),
                 DepositTypeModel(
                     termType = TermType.LONG_TERM,
-                    color = Green7,
+                    color = Gold3,
                     summaryAmountInDollar = totalLongTermInDollar + exchangeRate.riel2Dollar(
                         totalLongTermInRiel
                     )
@@ -139,7 +142,7 @@ object DepositListRepo {
             summaryByTypes = listOf(
                 DepositTypeModel(
                     termType = TermType.HI_INCOME,
-                    color = Gold7,
+                    color = GlowingBlue3,
                     listOf(
                         TermAmountModel(
                             color = Gold7,
@@ -155,10 +158,10 @@ object DepositListRepo {
                 ),
                 DepositTypeModel(
                     termType = TermType.HI_GROWTH,
-                    color = Blue7,
+                    color = Blue3,
                     listOf(
                         TermAmountModel(
-                            color = Blue7,
+                            color = Blue3,
                             ccy = CCY.RIEL,
                             amount = totalHiGrowthInRiel
                         ),
@@ -171,10 +174,10 @@ object DepositListRepo {
                 ),
                 DepositTypeModel(
                     termType = TermType.LONG_TERM,
-                    color = Green7,
+                    color = Gold3,
                     listOf(
                         TermAmountModel(
-                            color = Green7,
+                            color = Gold3,
                             ccy = CCY.RIEL,
                             amount = totalLongTermInRiel
                         ),

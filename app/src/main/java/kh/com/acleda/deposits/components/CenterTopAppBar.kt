@@ -23,7 +23,7 @@ import kh.com.acleda.deposits.ui.theme.DepositsTheme
 fun CenterTopAppBar(
     modifier: Modifier = Modifier,
     title: String,
-    containerColor: Color = DepositsTheme.colors.uiBackground.copy(alpha = 0.8f),
+    containerColor: Color = DepositsTheme.colors.uiBackground,
     hasBackButton: Boolean = true,
     action: @Composable (RowScope.() -> Unit) = {},
     onBackClick: () -> Unit = {},

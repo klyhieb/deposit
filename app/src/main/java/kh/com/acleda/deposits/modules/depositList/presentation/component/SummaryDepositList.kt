@@ -1,6 +1,5 @@
 package kh.com.acleda.deposits.modules.depositList.presentation.component
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -34,13 +33,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.TransparentCard
 import kh.com.acleda.deposits.components.horizontalLineChart.HorizontalSumChat
-import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.SummaryDepositModel
 import kh.com.acleda.deposits.modules.home.presentation.components.BadgeAdd
 import kh.com.acleda.deposits.modules.home.presentation.components.BadgeCurrency
@@ -50,15 +47,23 @@ import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Green2
 import kh.com.acleda.deposits.ui.theme.Green5
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SummaryDepositList(
     modifier: Modifier = Modifier,
     summaryTermDeposit: SummaryDepositModel,
     isExpanded: Boolean,
     onClick: () -> Unit,
+    onAddClick: () -> Unit,
     onExpendClick: () -> Unit
 ) {
+
+    val totalKHR = summaryTermDeposit.summaryByCurrency
+        .firstOrNull { it.name == CCY.RIEL.dec.uppercase() }
+        ?.amountModel?.amount
+
+    val totalInUSD = summaryTermDeposit.summaryByCurrency
+        .firstOrNull { it.name == CCY.DOLLAR.dec.uppercase() }
+        ?.amountModel?.amount
 
     val iconButton = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown
 
@@ -68,7 +73,6 @@ fun SummaryDepositList(
         targetValue = 10.dp,
         typeConverter = Dp.VectorConverter,
         animationSpec = infiniteRepeatable(
-            /*tween(1000, easing = LinearEasing),*/
             animation = keyframes {
                 durationMillis = 1000
                 0.dp at 700 // ms
@@ -76,7 +80,6 @@ fun SummaryDepositList(
             },
             RepeatMode.Reverse
         ), label = "offsetY",
-
     )
 
     Surface(
@@ -109,13 +112,13 @@ fun SummaryDepositList(
                         modifier = Modifier.fillMaxHeight()
                     ) {
                         TextBalance(
-                            balance = "3332.50",
+                            balance = totalKHR.toString(),
                             ccy = CCY.RIEL,
                             textStyle = MaterialTheme.typography.titleLarge
                         )
 
                         TextBalance(
-                            balance = "4000",
+                            balance = totalInUSD.toString(),
                             ccy = CCY.DOLLAR,
                             textStyle = MaterialTheme.typography.titleLarge
                         )
@@ -129,7 +132,7 @@ fun SummaryDepositList(
                         BadgeAdd(
                             iconColor = Green5,
                             borderColor = Green2,
-                            onClick = {/*TODO*/ }
+                            onClick = onAddClick
                         )
 
                         BadgeCurrency(text = "click to view detail")
@@ -200,12 +203,6 @@ fun SummaryDepositList(
 @Composable
 private fun Preview() {
     DepositsTheme {
-        val summaryTermDeposit = DepositListRepo.getSummaryTermDeposit(LocalContext.current)
 
-        /*SummaryDepositList(
-            summaryTermDeposit = summaryTermDeposit,
-            onClick = { },
-            onExpendClick =
-        )*/
     }
 }

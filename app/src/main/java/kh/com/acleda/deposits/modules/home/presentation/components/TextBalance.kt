@@ -25,7 +25,7 @@ fun TextBalance(
     val values: List<String> = balance.split('.')
     val currency = when (ccy) {
         CCY.DOLLAR -> "$"
-        CCY.RIEL -> "៛ "
+        CCY.RIEL -> " ៛"
         CCY.DEFAULT -> ""
     }
 

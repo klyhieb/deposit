@@ -41,9 +41,12 @@ import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
 import kh.com.acleda.deposits.ui.theme.Black
+import kh.com.acleda.deposits.ui.theme.Blue3
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.GlowingBlue3
+import kh.com.acleda.deposits.ui.theme.Gold3
 import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray10
 import kh.com.acleda.deposits.ui.theme.Gray9
@@ -230,9 +233,9 @@ fun DepositItem(
 
 fun getTermIndicatorColorById(id: String?): Color {
     return when (id) {
-        TermType.HI_INCOME.id -> Gold7
-        TermType.HI_GROWTH.id -> Blue7
-        TermType.LONG_TERM.id -> Green7
+        TermType.HI_INCOME.id -> GlowingBlue3
+        TermType.HI_GROWTH.id -> Blue3
+        TermType.LONG_TERM.id -> Gold3
         else -> White
     }
 }
