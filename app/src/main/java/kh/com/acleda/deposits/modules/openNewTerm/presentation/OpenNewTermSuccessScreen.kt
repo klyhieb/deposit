@@ -31,6 +31,7 @@ import kh.com.acleda.deposits.ui.theme.White
 @Composable
 fun OpenNewTermSuccessScreen(
     modifier: Modifier = Modifier,
+    onClickViewDepositList: () -> Unit = {}
 ) {
     CenterTopAppBar(
         title = "Open New Term",
@@ -84,10 +85,9 @@ fun OpenNewTermSuccessScreen(
                 text = "view deposit list",
                 shape = RectangleShape,
                 textColor = Gray1,
-                bodyColor = Gold6
-            ) {
-
-            }
+                bodyColor = Gold6,
+                onClick = onClickViewDepositList
+            )
         }
     }
 }

@@ -50,6 +50,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OpenNewTermScreen(
     modifier: Modifier = Modifier,
+    onClickDeposit: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -140,10 +141,9 @@ fun OpenNewTermScreen(
                 shape = RectangleShape,
                 text = "Deposit",
                 textColor = Gray1,
-                bodyColor = Gold6
-            ) {
-
-            }
+                bodyColor = Gold6,
+                onClick = onClickDeposit
+            )
         }
     }
 }

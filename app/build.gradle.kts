@@ -95,4 +95,7 @@ dependencies {
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
+
+    // Navigation
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
 }

@@ -39,7 +39,8 @@ import kh.com.acleda.deposits.ui.theme.White
 @Composable
 fun OpenNewTermConfirmScreen(
     modifier: Modifier = Modifier,
-    summary: OpenTermDepositModel
+    summary: OpenTermDepositModel,
+    onClickConfirm: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
 
@@ -184,12 +185,11 @@ fun OpenNewTermConfirmScreen(
 
             SUButton(
                 shape = RectangleShape,
-                text = "Deposit",
+                text = "Confirm",
                 textColor = Gray1,
-                bodyColor = Gold6
-            ) {
-
-            }
+                bodyColor = Gold6,
+                onClick = onClickConfirm
+            )
         }
     }
 }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.CenterTopAppBar
@@ -20,22 +19,21 @@ import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailL
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermBackgroundColorByCcy
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermIconById
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermIndicatorColorById
-import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
-import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gray2
 
 @Composable
 fun DepositDetailScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    term: DepositItemModel,
+    onBackPress: () -> Unit = {}
 ) {
-    val termList = DepositListRepo.getDepositList(LocalContext.current)
-    val term: DepositItemModel = termList.listMM.last()
 
     val convertedListData = convertToDetailList()
 
     CenterTopAppBar(
         title = "Deposit Detail",
+        onBackClick = onBackPress
     ) { innerPadding ->
         val state = rememberLazyListState()
 
@@ -121,8 +119,8 @@ fun convertToDetailList(/*term: DepositItemModel*/): List<DetailListItemModel> {
 @Preview
 @Composable
 private fun Preview() {
-    DepositsTheme{
+    /*DepositsTheme{
         DepositDetailScreen()
-    }
+    }*/
 
 }

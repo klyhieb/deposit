@@ -26,13 +26,15 @@ import kh.com.acleda.deposits.modules.depositList.presentation.component.Deposit
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositItem
 import kh.com.acleda.deposits.modules.depositList.presentation.component.SummaryDepositList
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
+import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DepositListScreen(
     modifier: Modifier = Modifier,
-
+    onBackPress: () -> Unit = {},
+    onSingleTermClick: (DepositItemModel) -> Unit = {}
 ) {
     val summaryTermDeposit = DepositListRepo.getSummaryTermDeposit(LocalContext.current)
     var expended by remember { mutableStateOf(false) }
@@ -43,6 +45,7 @@ fun DepositListScreen(
 
     CenterTopAppBar(
         title = "Deposit List",
+        onBackClick = onBackPress,
         action = {
             IconButton(onClick = {/*TODO*/}) {
                 Icon(
@@ -83,7 +86,7 @@ fun DepositListScreen(
                 items(items) { item ->
                     DepositItem(
                         term = item,
-                        onClick = {},
+                        onClick = { term -> onSingleTermClick(term) },
                         onOptionClick = {}
                     )
                 }

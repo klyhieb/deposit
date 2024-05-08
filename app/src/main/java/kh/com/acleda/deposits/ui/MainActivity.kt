@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
@@ -21,10 +22,6 @@ class MainActivity : ComponentActivity() {
                 Color.TRANSPARENT, Color.TRANSPARENT
             )
         )
-        setContent {
-            DepositsTheme {
-                DepositDetailScreen()
-            }
-        }
+        setContent { DepositsApp() }
     }
 }

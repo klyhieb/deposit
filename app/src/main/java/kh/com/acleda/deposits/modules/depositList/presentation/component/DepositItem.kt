@@ -183,7 +183,7 @@ fun DepositItem(
                 Spacer(modifier = Modifier.height(7.dp))
 
                 Text(
-                    text = term.interestRate ?: "",
+                    text = /*term.interestRate*/ "1.00%-T",
                     style = MaterialTheme.typography.labelSmall,
                     color = DepositsTheme.colors.textSupport
                 )
