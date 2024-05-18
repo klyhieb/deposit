@@ -16,6 +16,7 @@ import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositMo
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSuccessScreen
+import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 
 @Composable
 fun DepositNavHost(
@@ -26,9 +27,21 @@ fun DepositNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = Home.route,
+        startDestination = SplashScreen.route,
         modifier = modifier
     ) {
+        composable(route = SplashScreen.route) {
+            SplashScreen(
+                onSplashScreenFinish = {
+                    navController.navigate(Home.route) {
+                        popUpTo(SplashScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
         composable(route = Home.route) {
             HomeScreen(
                 onClickViewDepositList = {
@@ -42,9 +55,7 @@ fun DepositNavHost(
 
         composable(route = DepositList.route) {
             DepositListScreen(
-                onBackPress = {
-                    navController.popBackStack()
-                },
+                onBackPress = { navController.popBackStack() },
                 onSingleTermClick = { term ->
                     val dataString = gson.toJson(term)
                     navController.navigateDepositDetailDefault(dataString)
@@ -59,17 +70,15 @@ fun DepositNavHost(
             val termObjectString: String =
                 backStackEntry.arguments?.getString(DepositDetail.depositDetailWithTermArg) ?: ""
             val term: DepositItemModel = gson.fromJson(termObjectString)
-            val breakSTr = ""
             DepositDetailScreen(
                 term = term,
-                onBackPress = {
-                    navController.popBackStack()
-                }
+                onBackPress = { navController.popBackStack() }
             )
         }
 
         composable(route = OpenNewTerm.route) {
             OpenNewTermScreen(
+                onBackPress = { navController.popBackStack() },
                 onClickDeposit = {
                     navController.navigateSingleTopTo(OpenNewTermConfirm.route)
                 }
@@ -79,6 +88,7 @@ fun DepositNavHost(
         composable(route = OpenNewTermConfirm.route) {
             OpenNewTermConfirmScreen(
                 summary = OpenTermDepositModel(),
+                onBackPress = { navController.popBackStack() },
                 onClickConfirm = {
                     navController.navigateSingleTopTo(OpenNewTermSuccess.route)
                 }

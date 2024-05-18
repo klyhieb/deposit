@@ -50,6 +50,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OpenNewTermScreen(
     modifier: Modifier = Modifier,
+    onBackPress: () -> Unit = {},
     onClickDeposit: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -70,7 +71,7 @@ fun OpenNewTermScreen(
 
     CenterTopAppBar(
         title = "Open New Term",
-        onBackClick = { /*TODO*/ }
+        onBackClick = onBackPress
     ) { innerPadding ->
 
         BottomSheetSelectAccount(

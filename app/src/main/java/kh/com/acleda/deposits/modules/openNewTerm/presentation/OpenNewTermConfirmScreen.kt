@@ -40,6 +40,7 @@ import kh.com.acleda.deposits.ui.theme.White
 fun OpenNewTermConfirmScreen(
     modifier: Modifier = Modifier,
     summary: OpenTermDepositModel,
+    onBackPress: () -> Unit = {},
     onClickConfirm: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()

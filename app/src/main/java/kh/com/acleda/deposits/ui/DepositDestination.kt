@@ -14,6 +14,10 @@ interface DepositDestination {
 /**
  * Deposit app navigation destinations
  */
+object SplashScreen: DepositDestination {
+    override val route = "splash_screen"
+}
+
 object Home: DepositDestination {
     override val route = "home"
 }
