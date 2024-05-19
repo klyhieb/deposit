@@ -1,5 +1,13 @@
 package kh.com.acleda.deposits.ui
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -30,14 +38,21 @@ fun DepositNavHost(
         startDestination = SplashScreen.route,
         modifier = modifier
     ) {
-        composable(route = SplashScreen.route) {
+        composable(
+            route = SplashScreen.route,
+            exitTransition = {
+                scaleOutOfContainer(direction = ScaleTransitionDirection.INWARDS)
+            },
+            popEnterTransition = {
+                scaleIntoContainer(direction = ScaleTransitionDirection.OUTWARDS)
+            },
+            popExitTransition = {
+                scaleOutOfContainer()
+            }
+        ) {
             SplashScreen(
                 onSplashScreenFinish = {
-                    navController.navigate(Home.route) {
-                        popUpTo(SplashScreen.route) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigateFromSplashScreen(Home.route)
                 }
             )
         }
@@ -123,10 +138,47 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
+fun NavHostController.navigateFromSplashScreen(route: String) =
+    this.navigate(route) {
+        popUpTo(SplashScreen.route) {
+            inclusive = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+
 private fun NavHostController.navigateDepositDetail(term: String) {
     this.navigateSingleTopTo("${DepositDetail.route}/$term")
 }
 
 private fun NavHostController.navigateDepositDetailDefault(term: String) {
     this.navigate("${DepositDetail.route}/$term")
+}
+
+// ================================================================================================
+
+fun scaleIntoContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.INWARDS,
+    initialScale: Float = if (direction == ScaleTransitionDirection.OUTWARDS) 0.9f else 1.1f
+): EnterTransition {
+    return scaleIn(
+        animationSpec = tween(220, delayMillis = 90),
+        initialScale = initialScale
+    ) + fadeIn(animationSpec = tween(220, delayMillis = 90))
+}
+
+fun scaleOutOfContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.OUTWARDS,
+    targetScale: Float = if (direction == ScaleTransitionDirection.INWARDS) 0.9f else 1.1f
+): ExitTransition {
+    return scaleOut(
+        animationSpec = tween(
+            durationMillis = 220,
+            delayMillis = 90
+        ), targetScale = targetScale
+    ) + fadeOut(tween(delayMillis = 90))
+}
+
+enum class ScaleTransitionDirection {
+    INWARDS, OUTWARDS
 }
