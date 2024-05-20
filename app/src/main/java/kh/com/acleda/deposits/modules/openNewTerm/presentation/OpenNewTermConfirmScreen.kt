@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.BadgeWithText
 import kh.com.acleda.deposits.components.CenterTopAppBar
-import kh.com.acleda.deposits.components.button.SUButton
+import kh.com.acleda.deposits.components.button.BaseButton
 import kh.com.acleda.deposits.core.DashLine
 import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
 import kh.com.acleda.deposits.components.shape.TicketShape
@@ -184,7 +184,7 @@ fun OpenNewTermConfirmScreen(
                 }
             }
 
-            SUButton(
+            BaseButton(
                 shape = RectangleShape,
                 text = "Confirm",
                 textColor = Gray1,

@@ -18,9 +18,10 @@ import kh.com.acleda.deposits.ui.theme.Gold6
 import kh.com.acleda.deposits.ui.theme.Gray1
 
 @Composable
-fun SUButton(
+fun BaseButton(
     modifier: Modifier = Modifier,
     shape: Shape = ButtonDefaults.shape,
+    enable: Boolean = true,
     text: String,
     textColor: Color,
     bodyColor: Color,
@@ -36,6 +37,7 @@ fun SUButton(
 
         ),
         shape = shape,
+        enabled = enable,
         modifier = modifier.height(54.dp).fillMaxWidth()
     ) {
         Text(
@@ -50,7 +52,7 @@ fun SUButton(
 @Preview
 @Composable
 private fun Preview() {
-    SUButton(
+    BaseButton(
         modifier = Modifier.fillMaxWidth(),
         shape = RectangleShape,
         text = "Deposit",

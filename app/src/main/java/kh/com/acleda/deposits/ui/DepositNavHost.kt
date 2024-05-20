@@ -1,6 +1,5 @@
 package kh.com.acleda.deposits.ui
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -15,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.gson.Gson
+import kh.com.acleda.deposits.components.dialog.CloseTermDialog
 import kh.com.acleda.deposits.core.fromJson
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
@@ -87,7 +87,9 @@ fun DepositNavHost(
             val term: DepositItemModel = gson.fromJson(termObjectString)
             DepositDetailScreen(
                 term = term,
-                onBackPress = { navController.popBackStack() }
+                isFromCloseTermRequested = true,
+                onBackPress = { navController.popBackStack() },
+                onCloseTermDialogConfirm = { /*TODO*/}
             )
         }
 
@@ -112,7 +114,7 @@ fun DepositNavHost(
 
         composable(route = OpenNewTermSuccess.route) {
             OpenNewTermSuccessScreen(
-                onClickViewDepositList = {
+                onClick = {
                     navController.navigateSingleTopTo(DepositList.route)
                 }
             )

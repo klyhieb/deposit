@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -29,14 +32,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.shape.BottomCurveShape
+import kh.com.acleda.deposits.modules.depositList.presentation.convertToDetailList
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.Gray2
 import kh.com.acleda.deposits.ui.theme.Red10
 import kh.com.acleda.deposits.ui.theme.White
 
@@ -140,6 +146,21 @@ fun DetailListItem(
     data: DetailListItemModel,
     backgroundColor: Color
 ) {
+    var corner: RoundedCornerShape = RoundedCornerShape(0.dp)
+    var extraPadding: PaddingValues = PaddingValues()
+
+    when (data.cornerType) {
+        CornerType.NON -> { /*use default inited */}
+        CornerType.TOP -> {
+            corner = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+            extraPadding = PaddingValues(top = 8.dp)
+        }
+        CornerType.BOTTOM -> {
+            corner = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+            extraPadding = PaddingValues(bottom = 8.dp)
+        }
+    }
+
     when (data.type)
     {
         DetailListItemType.DEFAULT ->
@@ -148,9 +169,11 @@ fun DetailListItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = modifier
+                    .clip(corner)
                     .background(backgroundColor)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(extraPadding)
             ) {
                 Text(
                     text = data.title,
@@ -169,19 +192,24 @@ fun DetailListItem(
 
         DetailListItemType.BREAK_LINE ->
         {
-            Spacer(modifier = modifier.height(4.dp).background(Red10))
+            Spacer(modifier = modifier.height(8.dp).background(Color.Transparent))
         }
     }
 }
 
 data class DetailListItemModel(
     val type: DetailListItemType,
+    val cornerType: CornerType = CornerType.NON,
     val title: String = "",
     val value: String = ""
 )
 
 enum class DetailListItemType {
     DEFAULT, BREAK_LINE
+}
+
+enum class CornerType {
+    NON, TOP, BOTTOM
 }
 
 
@@ -194,7 +222,7 @@ private fun Preview() {
         val termList = DepositListRepo.getDepositList(LocalContext.current)
         val term: DepositItemModel = termList.listMM.last()
 
-        DepositDetailHeader(
+        /*DepositDetailHeader(
             term = term,
             backgroundColor = { Red10 },
             currencyColor = {
@@ -206,6 +234,14 @@ private fun Preview() {
             termIcon = {
                 getTermIconById(term.termTypeId)
             }
+        )*/
+
+        val convertedListData = convertToDetailList()
+
+
+        DetailListItem(
+            backgroundColor = Gray2.copy(alpha = 0.8f),
+            data = convertedListData[4]
         )
     }
 }
