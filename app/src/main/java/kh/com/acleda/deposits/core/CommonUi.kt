@@ -1,11 +1,13 @@
 package kh.com.acleda.deposits.core
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +28,7 @@ import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
+import kh.com.acleda.deposits.ui.theme.White
 import java.text.DecimalFormat
 
 /**
@@ -77,20 +80,23 @@ fun TermRow(
 @Composable
 fun DashLine(
     modifier: Modifier = Modifier,
-    lineColor: Color,
-    stroke: Dp = 1.dp
+    lineColor: Color = White,
+    strokeWidth: Float = 1f,
+    itemWidth: Float = 10F,
+    spacing: Float = 10F
 ) {
-    val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+    val pathEffect = PathEffect.dashPathEffect(floatArrayOf(itemWidth, spacing), 0f)
     Canvas(
         modifier
             .fillMaxWidth()
-            .padding(top = stroke)
-            .height(stroke)) {
+            .padding(top = 1.dp)
+            .height(1.dp)) {
 
         drawLine(
             color = lineColor,
             start = Offset(0f, 0f),
             end = Offset(size.width, 0f),
+            strokeWidth = strokeWidth,
             pathEffect = pathEffect
         )
     }
@@ -100,9 +106,5 @@ fun DashLine(
 @Preview
 @Composable
 private fun Preview() {
-    TermRow(
-        color = Color.Red,
-        amount = "200.10",
-        ccy = CCY.DOLLAR
-    )
+    DashLine()
 }

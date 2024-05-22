@@ -52,7 +52,7 @@ fun DepositNavHost(
         ) {
             SplashScreen(
                 onSplashScreenFinish = {
-                    navController.navigateFromSplashScreen(Home.route)
+                    navController.navigateClearTop(Home.route, navController)
                 }
             )
         }
@@ -70,7 +70,7 @@ fun DepositNavHost(
 
         composable(route = DepositList.route) {
             DepositListScreen(
-                onBackPress = { navController.popBackStack() },
+                onBackPress = { navController.navigateClearTop(Home.route, navController) },
                 onSingleTermClick = { term ->
                     val dataString = gson.toJson(term)
                     navController.navigateDepositDetailDefault(dataString)
@@ -115,7 +115,7 @@ fun DepositNavHost(
         composable(route = OpenNewTermSuccess.route) {
             OpenNewTermSuccessScreen(
                 onClick = {
-                    navController.navigateSingleTopTo(DepositList.route)
+                    navController.navigateClearTop(DepositList.route, navController)
                 }
             )
         }
@@ -140,13 +140,12 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
-fun NavHostController.navigateFromSplashScreen(route: String) =
-    this.navigate(route) {
-        popUpTo(SplashScreen.route) {
+fun NavHostController.navigateClearTop(toRoute: String, navController: NavHostController) =
+    this.navigate(toRoute) {
+        popUpTo(navController.graph.id) {
             inclusive = true
         }
         launchSingleTop = true
-        restoreState = true
     }
 
 private fun NavHostController.navigateDepositDetail(term: String) {

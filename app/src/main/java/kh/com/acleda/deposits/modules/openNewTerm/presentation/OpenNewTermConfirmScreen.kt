@@ -44,6 +44,7 @@ fun OpenNewTermConfirmScreen(
     onClickConfirm: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
+    val ticketShape = TicketShape(circleVerticalPercentage = 0.5f, circleRadius = 8.dp, cornerSize = CornerSize(4.dp))
 
     CenterTopAppBar(
         title = "Open New Term",
@@ -66,13 +67,14 @@ fun OpenNewTermConfirmScreen(
                         .height(274.dp)
                         .padding(horizontal = 32.dp),
                     color = Blue4.copy(0.7f),
-                    shape = TicketShape(circleRadius = 8.dp, cornerSize = CornerSize(4.dp))
+                    shape = ticketShape
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        DashLine(lineColor = White, stroke = 6.dp)
+
+                        DashLine()
 
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,

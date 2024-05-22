@@ -24,22 +24,32 @@ import kh.com.acleda.deposits.ui.theme.Red1
 
 
 class TicketShape(
+    val circleVerticalPercentage: Float,
     private val circleRadius: Dp,
     private val cornerSize: CornerSize
 ) : Shape {
 
-    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
         return Outline.Generic(path = getPath(size, density))
     }
 
     private fun getPath(size: Size, density: Density): Path {
         val roundedRect = RoundRect(size.toRect(), CornerRadius(cornerSize.toPx(size, density)))
         val roundedRectPath = Path().apply { addRoundRect(roundedRect) }
-        return Path.combine(operation = PathOperation.Intersect, path1 = roundedRectPath, path2 = getTicketPath(size, density))
+        return Path.combine(
+            operation = PathOperation.Intersect,
+            path1 = roundedRectPath,
+            path2 = getTicketPath(size, density)
+        )
     }
 
     private fun getTicketPath(size: Size, density: Density): Path {
-        val middleY = size.height.div(other = 2)
+        val circleVerticalPosition = circleVerticalPercentage / 1 * size.height
         val circleRadiusInPx = with(density) { circleRadius.toPx() }
         return Path().apply {
             reset()
@@ -48,14 +58,14 @@ class TicketShape(
             // Draw line to top right
             lineTo(x = size.width, y = 0F)
             // Draw line to middle right
-            lineTo(x = size.width, y = middleY)
+            lineTo(x = size.width, y = circleVerticalPosition)
             // Draw right cutout
             arcTo(
                 rect = Rect(
                     left = size.width.minus(circleRadiusInPx),
-                    top = middleY - circleRadiusInPx,
-                    right =  size.width.plus(circleRadiusInPx),
-                    bottom = middleY + circleRadiusInPx
+                    top = circleVerticalPosition - circleRadiusInPx,
+                    right = size.width.plus(circleRadiusInPx),
+                    bottom = circleVerticalPosition + circleRadiusInPx
                 ),
                 startAngleDegrees = 270F,
                 sweepAngleDegrees = -180F, // Sweep angle adjusted for the correct direction
@@ -66,14 +76,14 @@ class TicketShape(
             // Draw line to bottom left
             lineTo(x = 0F, y = size.height)
             // Draw line to middle left
-            lineTo(x = 0F, y = middleY)
+            lineTo(x = 0F, y = circleVerticalPosition)
             // Draw left cutout
             arcTo(
                 rect = Rect(
                     left = 0F.minus(circleRadiusInPx),
-                    top = middleY - circleRadiusInPx,
-                    right =  circleRadiusInPx,
-                    bottom = middleY + circleRadiusInPx
+                    top = circleVerticalPosition - circleRadiusInPx,
+                    right = circleRadiusInPx,
+                    bottom = circleVerticalPosition + circleRadiusInPx
                 ),
                 startAngleDegrees = 90F,
                 sweepAngleDegrees = -180F, // Sweep angle adjusted for the correct direction
@@ -83,27 +93,21 @@ class TicketShape(
             lineTo(x = 0F, y = 0F)
         }
     }
-
-
-
-
-}
-
-@Composable
-fun TicketShapeDemo() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp),
-        color = Red1,
-        shape = TicketShape(circleRadius = 10.dp, cornerSize = CornerSize(20.dp))
-    ) {
-
-    }
 }
 
 @Preview
 @Composable
 private fun TicketShapeDemoPreview() {
-    TicketShapeDemo()
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(500.dp),
+        color = Red1,
+        shape = TicketShape(
+            circleVerticalPercentage = 0.3f,
+            circleRadius = 10.dp,
+            cornerSize = CornerSize(20.dp))
+    ) {
+
+    }
 }
