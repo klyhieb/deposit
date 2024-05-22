@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,16 +33,17 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
+import kh.com.acleda.deposits.ui.theme.Blue4
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gold6
 import kh.com.acleda.deposits.ui.theme.Gray1
 import kh.com.acleda.deposits.ui.theme.Green3
-import kh.com.acleda.deposits.ui.theme.White
 
 @Composable
 fun BaseSuccess(
     modifier: Modifier = Modifier,
     title: String,
+    containerColor: Color = Blue4.copy(0.7f),
     successDescription: String,
     textButton: String,
     onClick: () -> Unit = {},
@@ -67,7 +69,7 @@ fun BaseSuccess(
             ) {
                 Surface(
                     shape = RoundedCornerShape(14.dp),
-                    color = White.copy(alpha = 0.2f),
+                    color = containerColor,
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
                 ) {

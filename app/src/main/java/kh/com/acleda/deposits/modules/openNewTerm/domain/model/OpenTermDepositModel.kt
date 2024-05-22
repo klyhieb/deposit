@@ -9,6 +9,7 @@ data class OpenTermDepositModel(
     val tax: Float? = 0.0f,
     val effectiveDate: String? = "",
     val maturityDate: String? = "",
+    val rolloverTime: Int? = 0,
     val autoRenewal: String? = "",
     val totalToReceive: Float? = 0.0f
 )
