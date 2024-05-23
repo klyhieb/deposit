@@ -57,5 +57,5 @@ fun TextBalance(
 enum class CCY(val dec: String) {
     DOLLAR("usd"),
     RIEL("khr"),
-    DEFAULT("default")
+    DEFAULT("")
 }

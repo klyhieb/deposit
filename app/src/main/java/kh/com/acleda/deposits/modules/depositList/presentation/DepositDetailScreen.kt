@@ -41,7 +41,7 @@ fun DepositDetailScreen(
     term: DepositItemModel,
     isFromCloseRequest: Boolean = false,
     onBackPress: () -> Unit = {},
-    onCloseTermDialogConfirm: () -> Unit = {}
+    onCloseTermDialogConfirm: (DepositItemModel) -> Unit = {}
 ) {
 
     val convertedListData = convertToDetailList()
@@ -57,11 +57,12 @@ fun DepositDetailScreen(
         if (popupCloseTermDialog) {
             CloseTermDialog(
                 onDismissRequest = { popupCloseTermDialog = false },
-                onConfirm = onCloseTermDialogConfirm
+                onConfirm = {
+                    popupCloseTermDialog = false
+                    onCloseTermDialogConfirm(term)
+                }
             )
         }
-
-
 
         LazyColumn(
             modifier = modifier

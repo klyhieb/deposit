@@ -78,7 +78,7 @@ fun BaseSuccess(
                         verticalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 40.dp, vertical = 24.dp)
+                            .padding(horizontal = 16.dp, vertical = 24.dp)
                     ) {
                         /* success animate lottie */
                         Box(

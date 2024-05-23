@@ -53,3 +53,20 @@ object OpenNewTermConfirm: DepositDestination {
 object OpenNewTermSuccess: DepositDestination {
     override val route = "open_new_term_ath"
 }
+
+object CloseTermSuccess: DepositDestination {
+    override val route = "close_term_ath"
+    const val totalReceivedArg = "totalReceived"
+    const val ccyArg = "ccy"
+    val routWithArg = "$route?$totalReceivedArg={$totalReceivedArg}&$ccyArg={$ccyArg}"
+    val argument = listOf(
+        navArgument(totalReceivedArg) {
+            type = NavType.FloatType
+            defaultValue = 0.0f
+        },
+        navArgument(ccyArg) {
+            type = NavType.StringType
+            nullable = true
+        }
+    )
+}
