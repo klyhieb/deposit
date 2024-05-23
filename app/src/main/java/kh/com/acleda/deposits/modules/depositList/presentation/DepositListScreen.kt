@@ -24,6 +24,8 @@ import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositDateHeader
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositItem
+import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenu
+import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenuDialog
 import kh.com.acleda.deposits.modules.depositList.presentation.component.SummaryDepositList
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
@@ -34,7 +36,8 @@ import kh.com.acleda.deposits.ui.theme.DepositsTheme
 fun DepositListScreen(
     modifier: Modifier = Modifier,
     onBackPress: () -> Unit = {},
-    onSingleTermClick: (DepositItemModel) -> Unit = {}
+    onSingleTermClick: (DepositItemModel) -> Unit = {},
+    onPopupMenuClick: (DepositMenu,DepositItemModel) -> Unit = { _, _ -> }
 ) {
     val summaryTermDeposit = DepositListRepo.getSummaryTermDeposit(LocalContext.current)
     var expended by remember { mutableStateOf(false) }
@@ -42,6 +45,20 @@ fun DepositListScreen(
 
     val depositList = DepositListRepo.getDepositList(LocalContext.current)
     val listGroupByDate = depositList.listMM.groupBy { it.ValueDateOri }
+
+    var popupMenuDialog by remember { mutableStateOf(false) }
+    var selectedTerm by remember { mutableStateOf(DepositItemModel()) }
+
+    if (popupMenuDialog) {
+        DepositMenuDialog (
+            term = selectedTerm,
+            onDismissRequest = { popupMenuDialog = false },
+            onMenuClick = { menu ->
+                popupMenuDialog = false
+                onPopupMenuClick(menu, selectedTerm)
+            }
+        )
+    }
 
     CenterTopAppBar(
         title = "Deposit List",
@@ -86,8 +103,11 @@ fun DepositListScreen(
                 items(items) { item ->
                     DepositItem(
                         term = item,
-                        onClick = { term -> onSingleTermClick(term) },
-                        onOptionClick = {}
+                        onClick = { onSingleTermClick(item) },
+                        onOptionClick = {
+                            selectedTerm = item
+                            popupMenuDialog = true
+                        }
                     )
                 }
             }

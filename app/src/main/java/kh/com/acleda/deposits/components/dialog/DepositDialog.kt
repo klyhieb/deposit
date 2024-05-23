@@ -49,16 +49,12 @@ fun BaseDialog(
         onDismissRequest = onDismissRequest,
     ) {
         Card(
-            modifier = modifier,
             colors = CardDefaults.cardColors(
                 containerColor = containerColor
             ),
             shape = RoundedCornerShape(16.dp)
         ) {
-            Box(modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 24.dp)
-            ) {
+            Box(modifier = modifier) {
                 Column {
                     content()
                 }
@@ -77,7 +73,9 @@ fun CloseTermDialog(
 
     BaseDialog(
         containerColor = warningContainerColor,
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 24.dp),
         onDismissRequest = onDismissRequest
     ) {
         Row {

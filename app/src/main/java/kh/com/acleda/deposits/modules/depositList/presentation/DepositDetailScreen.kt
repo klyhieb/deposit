@@ -39,7 +39,7 @@ import kh.com.acleda.deposits.ui.theme.Red5
 fun DepositDetailScreen(
     modifier: Modifier = Modifier,
     term: DepositItemModel,
-    isFromCloseTermRequested: Boolean = false,
+    isFromCloseRequest: Boolean = false,
     onBackPress: () -> Unit = {},
     onCloseTermDialogConfirm: () -> Unit = {}
 ) {
@@ -94,7 +94,7 @@ fun DepositDetailScreen(
 
             item {
                 /*Show btn when request Closing Term*/
-                if (isFromCloseTermRequested) {
+                if (isFromCloseRequest) {
                     BaseButton(
                         shape = RectangleShape,
                         text = "close term",

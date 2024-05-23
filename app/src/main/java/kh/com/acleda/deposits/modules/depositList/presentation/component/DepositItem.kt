@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -47,11 +46,8 @@ import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.GlowingBlue3
 import kh.com.acleda.deposits.ui.theme.Gold3
-import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray10
-import kh.com.acleda.deposits.ui.theme.Gray9
 import kh.com.acleda.deposits.ui.theme.Green0
-import kh.com.acleda.deposits.ui.theme.Green7
 import kh.com.acleda.deposits.ui.theme.Red0
 import kh.com.acleda.deposits.ui.theme.White
 
@@ -64,6 +60,7 @@ fun DepositList(
     val listGroupByDate = depositList.listMM.groupBy { it.ValueDateOri }
 
     LazyColumn(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         listGroupByDate.forEach { (date, items) ->
@@ -121,12 +118,12 @@ fun DepositDateHeader(
 fun DepositItem(
     modifier: Modifier = Modifier,
     term: DepositItemModel,
-    onClick: (DepositItemModel) -> Unit,
-    onOptionClick: (DepositItemModel) -> Unit
+    onClick: () -> Unit,
+    onOptionClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        onClick = { onClick(term) },
+        onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = getTermBackgroundColorByCcy(term.currency)
         ),
@@ -168,7 +165,7 @@ fun DepositItem(
                         modifier = Modifier
                             .size(24.dp)
                             .clip(CircleShape)
-                            .clickable { onOptionClick(term) }
+                            .clickable { onOptionClick() }
                     )
                 }
 

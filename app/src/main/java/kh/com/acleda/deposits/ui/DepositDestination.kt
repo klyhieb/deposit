@@ -29,9 +29,16 @@ object DepositList: DepositDestination {
 object DepositDetail: DepositDestination {
     override val route = "deposit_detail"
     const val depositDetailWithTermArg = "term"
-    val routWithArg = "$route/{$depositDetailWithTermArg}"
+    const val isFromCloseRequestArg = "isFromCloseRequest"
+    val routWithArg = "$route/{$depositDetailWithTermArg}?$isFromCloseRequestArg={$isFromCloseRequestArg}"
     val argument = listOf(
-        navArgument(depositDetailWithTermArg) { type = NavType.StringType }
+        navArgument(depositDetailWithTermArg) {
+            type = NavType.StringType
+        },
+        navArgument(isFromCloseRequestArg) {
+            defaultValue = false
+            type = NavType.BoolType
+        }
     )
 }
 

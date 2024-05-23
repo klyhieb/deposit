@@ -14,10 +14,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.gson.Gson
-import kh.com.acleda.deposits.components.dialog.CloseTermDialog
 import kh.com.acleda.deposits.core.fromJson
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
+import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenu
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.presentation.HomeScreen
 import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
@@ -73,7 +73,18 @@ fun DepositNavHost(
                 onBackPress = { navController.navigateClearTop(Home.route, navController) },
                 onSingleTermClick = { term ->
                     val dataString = gson.toJson(term)
-                    navController.navigateDepositDetailDefault(dataString)
+                    navController.navigateToDepositDetail(dataString, isFromCloseRequest = false)
+                },
+                onPopupMenuClick = { menu, term ->
+                    val dataString = gson.toJson(term)
+                    when(menu) {
+                        DepositMenu.RENEWAL -> {/*TODO*/}
+                        DepositMenu.STOP_RENEWAL -> {/*TODO*/}
+                        DepositMenu.E_CERTIFICATE -> {/*TODO*/}
+                        DepositMenu.CLOSE_TERM -> {
+                            navController.navigateToDepositDetail(term = dataString, isFromCloseRequest = true)
+                        }
+                    }
                 }
             )
         }
@@ -85,9 +96,12 @@ fun DepositNavHost(
             val termObjectString: String =
                 backStackEntry.arguments?.getString(DepositDetail.depositDetailWithTermArg) ?: ""
             val term: DepositItemModel = gson.fromJson(termObjectString)
+
+            val isFromCloseRequest: Boolean = backStackEntry.arguments?.getBoolean(DepositDetail.isFromCloseRequestArg) ?: false
+
             DepositDetailScreen(
                 term = term,
-                isFromCloseTermRequested = true,
+                isFromCloseRequest = isFromCloseRequest,
                 onBackPress = { navController.popBackStack() },
                 onCloseTermDialogConfirm = { /*TODO*/}
             )
@@ -148,12 +162,8 @@ fun NavHostController.navigateClearTop(toRoute: String, navController: NavHostCo
         launchSingleTop = true
     }
 
-private fun NavHostController.navigateDepositDetail(term: String) {
-    this.navigateSingleTopTo("${DepositDetail.route}/$term")
-}
-
-private fun NavHostController.navigateDepositDetailDefault(term: String) {
-    this.navigate("${DepositDetail.route}/$term")
+private fun NavHostController.navigateToDepositDetail(term: String, isFromCloseRequest: Boolean) {
+    this.navigate("${DepositDetail.route}/$term?${DepositDetail.isFromCloseRequestArg}=$isFromCloseRequest")
 }
 
 // ================================================================================================
