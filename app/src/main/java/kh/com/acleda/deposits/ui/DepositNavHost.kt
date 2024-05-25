@@ -30,6 +30,7 @@ import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSucces
 import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalConfirmScreen
+import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalSuccessScreen
 
 @Composable
 fun DepositNavHost(
@@ -210,7 +211,15 @@ fun DepositNavHost(
             StopRenewalConfirmScreen(
                 model = model,
                 onBackPress = { navController.popBackStack() },
-                onConfirmClick = { }
+                onConfirmClick = {
+                    navController.navigateSingleTopTo(StopRenewalSuccess.route)
+                }
+            )
+        }
+
+        composable( route = StopRenewalSuccess.route) {
+            StopRenewalSuccessScreen(
+                onClick = { navController.navigateClearTop(DepositList.route, navController) }
             )
         }
     }

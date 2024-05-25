@@ -71,7 +71,7 @@ fun BaseSuccess(
                     shape = RoundedCornerShape(14.dp),
                     color = containerColor,
                     modifier = Modifier
-                        .padding(horizontal = 32.dp)
+                        .padding(horizontal = 24.dp)
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,

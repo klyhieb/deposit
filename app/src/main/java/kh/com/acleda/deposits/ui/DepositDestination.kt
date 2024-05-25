@@ -83,6 +83,18 @@ object StopRenewalConfirm: DepositDestination {
     )
 }
 
+object StopRenewalSuccess: DepositDestination {
+    override val route = "stop_renewal_auth"
+    const val modelArg = "modelArg"
+    val routWithArg = "${route}?$modelArg={$modelArg}"
+    val argument = listOf(
+        navArgument(modelArg) {
+            type = NavType.StringType
+            defaultValue = ""
+        }
+    )
+}
+
 object ECertificate: DepositDestination {
     override val route = "e_certificate"
     const val modelArg = "modelArg"
