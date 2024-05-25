@@ -95,7 +95,7 @@ fun Ticket(
                     modifier = Modifier
                         .weight(1 - middlePercentage)
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp, horizontal = 10.dp)
+                        .padding(vertical = 8.dp, horizontal = 4.dp)
                 ) {
                     contentBottom()
                 }
@@ -111,7 +111,7 @@ private fun TicketShapeDemoPreview() {
         Ticket(
             modifier = Modifier
                 .height(200.dp)
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 24.dp),
             middlePercentage = 0.6f,
             contentTop = {
                 Column(

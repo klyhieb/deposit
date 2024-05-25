@@ -59,7 +59,7 @@ fun OpenNewTermConfirmScreen(
                 Ticket(
                     modifier = Modifier
                         .height(240.dp)
-                        .padding(horizontal = 32.dp),
+                        .padding(horizontal = 24.dp),
                     middlePercentage = 0.4f,
                     contentTop = {
                         Column(

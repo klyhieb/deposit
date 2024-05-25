@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -29,8 +30,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.shape.BottomCurveShape
@@ -38,10 +41,14 @@ import kh.com.acleda.deposits.modules.depositList.presentation.convertToDetailLi
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
+import kh.com.acleda.deposits.ui.theme.Blue0
+import kh.com.acleda.deposits.ui.theme.Blue1
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gray2
+import kh.com.acleda.deposits.ui.theme.Gray6
+import kh.com.acleda.deposits.ui.theme.Gray9
 import kh.com.acleda.deposits.ui.theme.Red10
 import kh.com.acleda.deposits.ui.theme.Red4
 import kh.com.acleda.deposits.ui.theme.White
@@ -145,64 +152,87 @@ fun DepositDetailHeader(
 fun DetailListItem(
     modifier: Modifier = Modifier,
     data: DetailListItemModel,
+    textStyle: TextStyle = MaterialTheme.typography.titleSmall,
     backgroundColor: Color
 ) {
     var corner = RoundedCornerShape(0.dp)
     var extraPadding = PaddingValues()
 
     when (data.cornerType) {
-        CornerType.NON -> { /*use default inited */}
+        CornerType.NON -> { /*use default inited */
+        }
+
         CornerType.TOP -> {
             corner = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
             extraPadding = PaddingValues(top = 8.dp)
         }
+
         CornerType.BOTTOM -> {
             corner = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
             extraPadding = PaddingValues(bottom = 8.dp)
         }
     }
 
-    when (data.type)
-    {
-        DetailListItemType.DEFAULT ->
-        {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = modifier
+    when (data.type) {
+        DetailListItemType.DEFAULT -> {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
                     .clip(corner)
                     .background(backgroundColor)
-                    .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 4.dp)
                     .padding(extraPadding)
             ) {
-                Text(
-                    text = data.title,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = DepositsTheme.colors.textSupport
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = data.title,
+                        style = textStyle,
+                        color = data.titleColor,
+                        maxLines = 1,
+                    )
 
-                Text(
-                    text = data.value,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = DepositsTheme.colors.textHelp,
-                    textAlign = TextAlign.End
-                )
-            } 
+                    Text(
+                        text = data.value,
+                        style = textStyle,
+                        color = data.valueColor,
+                        textAlign = TextAlign.End,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                if (data.hasLine) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(top = 10.dp),
+                        color = White.copy(alpha = 0.3f)
+                    )
+                }
+            }
         }
 
-        DetailListItemType.BREAK_LINE ->
-        {
-            Spacer(modifier = modifier.height(8.dp).background(Color.Transparent))
+        DetailListItemType.BREAK_LINE -> {
+            Spacer(
+                modifier = modifier
+                    .height(8.dp)
+                    .background(Color.Transparent)
+            )
         }
     }
 }
 
 data class DetailListItemModel(
-    val type: DetailListItemType,
+    val type: DetailListItemType = DetailListItemType.DEFAULT,
     val cornerType: CornerType = CornerType.NON,
     val title: String = "",
-    val value: String = ""
+    val value: String = "",
+    val titleColor: Color = Blue1, /*Gray6*/
+    val valueColor: Color = Blue0, /*Gray9*/
+    val hasLine: Boolean = false
 )
 
 enum class DetailListItemType {
@@ -214,13 +244,12 @@ enum class CornerType {
 }
 
 
-
 @Preview
 @Composable
 private fun Preview() {
     DepositsTheme {
 
-        val termList = DepositListRepo.getDepositList(LocalContext.current)
+        /*val termList = DepositListRepo.getDepositList(LocalContext.current)
         val term: DepositItemModel = termList.listMM.last()
 
         DepositDetailHeader(
@@ -235,13 +264,14 @@ private fun Preview() {
             termIcon = {
                 getTermIconById(term.termTypeId)
             }
-        )
+        )*/
 
-        /*val convertedListData = convertToDetailList()
+        val convertedListData = convertToDetailList()
+        val item = convertedListData[4]
 
         DetailListItem(
             backgroundColor = Gray2.copy(alpha = 0.8f),
-            data = convertedListData[4]
-        )*/
+            data = item
+        )
     }
 }

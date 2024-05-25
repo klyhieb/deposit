@@ -32,8 +32,11 @@ import kh.com.acleda.deposits.modules.depositList.presentation.component.getTerm
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermIndicatorColorById
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.ui.theme.Blue2
+import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gray1
 import kh.com.acleda.deposits.ui.theme.Gray2
+import kh.com.acleda.deposits.ui.theme.Gray6
+import kh.com.acleda.deposits.ui.theme.Gray9
 import kh.com.acleda.deposits.ui.theme.Red5
 
 @Composable
@@ -130,54 +133,63 @@ class TopWithFooter(private val paddingBottom: Dp = 0.dp) : Arrangement.Vertical
 fun convertToDetailList(/*term: DepositItemModel*/): List<DetailListItemModel> {
     return listOf(
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             title = "Deposit Account:",
-            value = "Mario Liza-T"
+            value = "Mario Liza-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
-            value = "0001-04690-96007-13 (KHR)-T"
+            value = "0001-04690-96007-13 (KHR)-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             title = "Deposit Amount:",
-            value = "100.00 USD-T"
+            value = "100.00 USD-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             title = "Deposit Term:",
-            value = "36 Months-T"
+            value = "36 Months-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             cornerType = CornerType.BOTTOM,
             title = "Interest Rate:",
-            value = "4.25%-T"
+            value = "4.25%-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
             type = DetailListItemType.BREAK_LINE,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             cornerType = CornerType.TOP,
             title = "Effective Date:",
-            value = "March 03, 2024-T"
+            value = "March 03, 2024-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             title = "Maturity Date:",
-            value = "April 03, 2024-T"
+            value = "April 03, 2024-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             title = "Rollover time:",
-            value = "2 Times-T"
+            value = "2 Times-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         ),
         DetailListItemModel(
-            type = DetailListItemType.DEFAULT,
             cornerType = CornerType.BOTTOM,
             title = "Auto-Renewal:",
-            value = "Renewal with principal-T"
+            value = "Renewal with principal-T",
+            titleColor = Gray6,
+            valueColor = Gray9,
         )
     )
 }
@@ -186,8 +198,7 @@ fun convertToDetailList(/*term: DepositItemModel*/): List<DetailListItemModel> {
 @Preview
 @Composable
 private fun Preview() {
-    /*DepositsTheme{
+    /*DepositsTheme {
         DepositDetailScreen()
     }*/
-
 }

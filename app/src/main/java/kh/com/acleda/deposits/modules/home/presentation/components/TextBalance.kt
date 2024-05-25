@@ -19,11 +19,12 @@ fun TextBalance(
     textStyle: TextStyle = MaterialTheme.typography.headlineMedium,
     decimalPartColor: Color = White,
     floatingPartColor: Color = Gray3,
+    showCcySymbol: Boolean = false,
     balance: String,
     ccy: CCY
 ) {
     val values: List<String> = balance.split('.')
-    val currency = when (ccy) {
+    val currencySymbol = when (ccy) {
         CCY.DOLLAR -> "$"
         CCY.RIEL -> " ៛"
         CCY.DEFAULT -> ""
@@ -42,7 +43,10 @@ fun TextBalance(
     Text(
         modifier = modifier,
         text = buildAnnotatedString {
-            append("$currency ") // currency
+            if (showCcySymbol) {
+                append("$currencySymbol ") // currency symbol
+            }
+
             append(decimal)   // decimal
             append(".") // dot sign
             withStyle(style = SpanStyle(color = floatingPartColor)) {// floating point

@@ -22,13 +22,14 @@ import kh.com.acleda.deposits.modules.depositList.presentation.component.Deposit
 import kh.com.acleda.deposits.modules.eCertificate.domain.model.ECertificateModel
 import kh.com.acleda.deposits.modules.eCertificate.presentation.ECertificateScreen
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
-import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.HomeScreen
 import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSuccessScreen
 import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
+import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
+import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalConfirmScreen
 
 @Composable
 fun DepositNavHost(
@@ -83,7 +84,25 @@ fun DepositNavHost(
                     val dataString = gson.toJson(term)
                     when(menu) {
                         DepositMenu.RENEWAL -> {/*TODO*/}
-                        DepositMenu.STOP_RENEWAL -> {/*TODO*/}
+
+                        DepositMenu.STOP_RENEWAL -> {
+                            val testModel = StopRenewalConfirmModel(
+                                depositAmount = "400000",
+                                ccy = "KHR",
+                                mmNumber = "MM2331400003",
+                                depositTypeId = "21011",
+                                depositTerm = "36",
+                                autoRenewal = "Renewal with principal",
+                                rolloverTime = "12",
+                                maturityDate = "April 03, 2026",
+                                newRolloverTime = "0",
+                                newMaturityDate = "April 03, 2024",
+                            )
+
+                            val modelStr = gson.toJson(testModel)
+                            navController.navigateToStopRenewalConfirm(modelStr)
+                        }
+
                         DepositMenu.E_CERTIFICATE -> {
                             val model = ECertificateModel(
                                 termTypeId = term.termTypeId ?: "",
@@ -96,6 +115,7 @@ fun DepositNavHost(
 
                             navController.navigateToECertificate(modelString)
                         }
+
                         DepositMenu.CLOSE_TERM -> {
                             navController.navigateToDepositDetail(term = dataString, isFromCloseRequest = true)
                         }
@@ -179,6 +199,20 @@ fun DepositNavHost(
                 onBackPress = { navController.popBackStack() }
             )
         }
+
+        composable(
+            route = StopRenewalConfirm.routWithArg,
+            arguments = StopRenewalConfirm.argument
+        ) {  backStackEntry ->
+            val modelObjectString: String = backStackEntry.arguments?.getString(StopRenewalConfirm.modelArg) ?: ""
+            val model: StopRenewalConfirmModel = gson.fromJson(modelObjectString)
+
+            StopRenewalConfirmScreen(
+                model = model,
+                onBackPress = { navController.popBackStack() },
+                onConfirmClick = { }
+            )
+        }
     }
 }
 
@@ -218,6 +252,11 @@ private fun NavHostController.navigateToCloseTermSuccess(totalReceiveAmount: Flo
 private fun NavHostController.navigateToECertificate(model: String) {
     this.navigate("${ECertificate.route}?${ECertificate.modelArg}=$model")
 }
+
+private fun NavHostController.navigateToStopRenewalConfirm(model: String) {
+    this.navigate("${StopRenewalConfirm.route}?${StopRenewalConfirm.modelArg}=$model")
+}
+
 
 // ================================================================================================
 
