@@ -47,5 +47,8 @@ data class TermAmountModel(
 }
 
 enum class TermType(val id: String, val mName: String) {
-    HI_INCOME("21010", "Hi-Income"), HI_GROWTH("21011", "Hi-Growth"), LONG_TERM("21034", "Long Term")
+    DEFAULT("", ""),
+    HI_INCOME("21010", "Hi-Income"),
+    HI_GROWTH("21011", "Hi-Growth"),
+    LONG_TERM("21034", "Long Term")
 }

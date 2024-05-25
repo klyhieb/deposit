@@ -99,6 +99,7 @@ object DepositRateRepo {
             TermType.HI_INCOME -> depositRate.hiIncome!!
             TermType.HI_GROWTH -> depositRate.hiGrowth!!
             TermType.LONG_TERM -> depositRate.longTerm!!
+            TermType.DEFAULT -> DepositRateObjectModel()
         }
     }
 

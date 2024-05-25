@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
@@ -71,7 +72,7 @@ fun DepositDetailScreen(
                 .fillMaxHeight(),
             contentPadding = PaddingValues(bottom = 16.dp),
             state = state,
-            verticalArrangement = TopWithFooter
+            verticalArrangement = TopWithFooter()
         ) {
             item {
                 DepositDetailHeader(
@@ -109,7 +110,7 @@ fun DepositDetailScreen(
     }
 }
 
-object TopWithFooter : Arrangement.Vertical {
+class TopWithFooter(private val paddingBottom: Dp = 0.dp) : Arrangement.Vertical {
     override fun Density.arrange(totalSize: Int, sizes: IntArray, outPositions: IntArray) {
         var y = 0
         sizes.forEachIndexed { index, size ->
@@ -119,7 +120,7 @@ object TopWithFooter : Arrangement.Vertical {
 
         if (y < totalSize) {
             val lastIndex = outPositions.lastIndex
-            val remainBottomPadding: Int = 14.dp.roundToPx()
+            val remainBottomPadding: Int = (16.dp - paddingBottom).roundToPx()
             outPositions[lastIndex] = (totalSize + remainBottomPadding) - sizes.last()
         }
     }

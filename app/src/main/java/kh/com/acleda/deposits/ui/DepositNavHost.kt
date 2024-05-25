@@ -19,7 +19,10 @@ import kh.com.acleda.deposits.modules.closeTerm.presentation.CloseTermSuccessScr
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenu
+import kh.com.acleda.deposits.modules.eCertificate.domain.model.ECertificateModel
+import kh.com.acleda.deposits.modules.eCertificate.presentation.ECertificateScreen
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
+import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.HomeScreen
 import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
@@ -81,7 +84,18 @@ fun DepositNavHost(
                     when(menu) {
                         DepositMenu.RENEWAL -> {/*TODO*/}
                         DepositMenu.STOP_RENEWAL -> {/*TODO*/}
-                        DepositMenu.E_CERTIFICATE -> {/*TODO*/}
+                        DepositMenu.E_CERTIFICATE -> {
+                            val model = ECertificateModel(
+                                termTypeId = term.termTypeId ?: "",
+                                mmNumber = term.mm ?: "",
+                                depositAmount = term.AmountOri.toString(),
+                                ccy = term.currency ?: ""
+                            )
+
+                            val modelString = gson.toJson(model)
+
+                            navController.navigateToECertificate(modelString)
+                        }
                         DepositMenu.CLOSE_TERM -> {
                             navController.navigateToDepositDetail(term = dataString, isFromCloseRequest = true)
                         }
@@ -152,9 +166,21 @@ fun DepositNavHost(
                 }
             )
         }
+
+        composable(
+            route = ECertificate.routWithArg,
+            arguments = ECertificate.argument
+        ) { backStackEntry ->
+            val modelObjectString: String = backStackEntry.arguments?.getString(ECertificate.modelArg) ?: ""
+            val model: ECertificateModel = gson.fromJson(modelObjectString)
+
+            ECertificateScreen(
+                model = model,
+                onBackPress = { navController.popBackStack() }
+            )
+        }
     }
 }
-
 
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
@@ -187,6 +213,10 @@ private fun NavHostController.navigateToDepositDetail(term: String, isFromCloseR
 
 private fun NavHostController.navigateToCloseTermSuccess(totalReceiveAmount: Float, ccy: String?) {
     this.navigate("${CloseTermSuccess.route}?${CloseTermSuccess.totalReceivedArg}=$totalReceiveAmount&${CloseTermSuccess.ccyArg}=$ccy")
+}
+
+private fun NavHostController.navigateToECertificate(model: String) {
+    this.navigate("${ECertificate.route}?${ECertificate.modelArg}=$model")
 }
 
 // ================================================================================================

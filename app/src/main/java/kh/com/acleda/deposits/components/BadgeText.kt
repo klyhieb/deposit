@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.components
 
+import android.content.ContentValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +24,8 @@ fun BadgeWithText(
     textColor: Color = DepositsTheme.colors.textPrimary,
     containerColor: Color = White.copy(alpha = 0.3f),
     shape: Shape = RoundedCornerShape(4.dp),
-    textStyle: TextStyle = MaterialTheme.typography.labelSmall
+    textStyle: TextStyle = MaterialTheme.typography.labelSmall,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
 ) {
     Surface(
         shape = shape,
@@ -33,7 +36,7 @@ fun BadgeWithText(
             text,
             style = textStyle,
             color = textColor,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(contentPadding)
         )
     }
 }

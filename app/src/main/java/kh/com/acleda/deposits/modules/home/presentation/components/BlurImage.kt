@@ -1,39 +1,32 @@
 package kh.com.acleda.deposits.modules.home.presentation.components
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.renderscript.Allocation
-import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
-import android.util.DisplayMetrics
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import kh.com.acleda.deposits.R
-import kotlinx.coroutines.delay
 
 
 @Composable
 fun BlurImage(
     bitmap: Bitmap,
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
 ) {
     Image(
         bitmap = bitmap.asImageBitmap(),
@@ -45,7 +38,7 @@ fun BlurImage(
 
 @Composable
 fun LegacyBlurImage(
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
     bitmap: Bitmap,
     blurRadio: Float
 ) {
@@ -63,18 +56,24 @@ fun LegacyBlurImage(
 }
 
 @Composable
-fun ViewGirl() {
-    val bitmap = BitmapFactory
-        .decodeResource(LocalContext.current.resources, R.drawable.img)
+fun BlurryImage(
+    modifier: Modifier = Modifier,
+    @DrawableRes image: Int,
+    blurRadio: Dp,
+) {
+    val bitmap = BitmapFactory.decodeResource(LocalContext.current.resources, image)
 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-        LegacyBlurImage(bitmap = bitmap, blurRadio = 25f)
+        LegacyBlurImage(
+            modifier = modifier,
+            bitmap = bitmap,
+            blurRadio = blurRadio.value
+        )
     } else {
         BlurImage(
             bitmap,
-            Modifier
-                .fillMaxSize()
-                .blur(radiusX = 15.dp, radiusY = 15.dp)
+            modifier
+                .blur(radiusX = blurRadio, radiusY = blurRadio)
         )
     }
 }
@@ -83,5 +82,9 @@ fun ViewGirl() {
 @Preview
 @Composable
 private fun ViewGirlPreview() {
-    ViewGirl()
+    BlurryImage(
+        modifier = Modifier.fillMaxSize(),
+        image = R.drawable.img,
+        blurRadio = 25.dp
+    )
 }

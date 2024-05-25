@@ -263,6 +263,15 @@ fun getCcyEnum(ccy: String?): CCY {
     }
 }
 
+fun getTermTypeEnum(termTypeId: String?): TermType {
+    return when(termTypeId) {
+        TermType.HI_GROWTH.id -> TermType.HI_GROWTH
+        TermType.HI_INCOME.id -> TermType.HI_INCOME
+        TermType.LONG_TERM.id -> TermType.LONG_TERM
+        else -> TermType.DEFAULT
+    }
+}
+
 @Composable
 private fun TermIndicator(color: Color, modifier: Modifier = Modifier) {
     Spacer(

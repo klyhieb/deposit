@@ -30,7 +30,7 @@ fun TextBalance(
     }
 
     val dec = DecimalFormat("#,###.##")
-    val decimal = dec.format(values[0].toInt())
+    val decimal = dec.format(values[0].toLong())
     val float = if (values.size > 1)
         when {
             values[1].toInt() == 0 -> "00"
