@@ -32,7 +32,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.shape.BottomCurveShape
 import kh.com.acleda.deposits.modules.depositList.presentation.convertToDetailList
@@ -44,6 +43,7 @@ import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gray2
 import kh.com.acleda.deposits.ui.theme.Red10
+import kh.com.acleda.deposits.ui.theme.Red4
 import kh.com.acleda.deposits.ui.theme.White
 
 @Composable
@@ -129,6 +129,7 @@ fun DepositDetailHeader(
                 .offset(y = (-20).dp)
                 .border(width = 2.dp, color = White, shape = CircleShape)
                 .shadow(elevation = 3.dp, shape = CircleShape)
+                .background(termTypeColor())
         ) {
             Icon(
                 painter = painterResource(termIcon()),
@@ -146,8 +147,8 @@ fun DetailListItem(
     data: DetailListItemModel,
     backgroundColor: Color
 ) {
-    var corner: RoundedCornerShape = RoundedCornerShape(0.dp)
-    var extraPadding: PaddingValues = PaddingValues()
+    var corner = RoundedCornerShape(0.dp)
+    var extraPadding = PaddingValues()
 
     when (data.cornerType) {
         CornerType.NON -> { /*use default inited */}
@@ -222,7 +223,7 @@ private fun Preview() {
         val termList = DepositListRepo.getDepositList(LocalContext.current)
         val term: DepositItemModel = termList.listMM.last()
 
-        /*DepositDetailHeader(
+        DepositDetailHeader(
             term = term,
             backgroundColor = { Red10 },
             currencyColor = {
@@ -234,14 +235,13 @@ private fun Preview() {
             termIcon = {
                 getTermIconById(term.termTypeId)
             }
-        )*/
+        )
 
-        val convertedListData = convertToDetailList()
-
+        /*val convertedListData = convertToDetailList()
 
         DetailListItem(
             backgroundColor = Gray2.copy(alpha = 0.8f),
             data = convertedListData[4]
-        )
+        )*/
     }
 }
