@@ -26,16 +26,25 @@ inline fun <reified T> Gson.fromJson(json: String): T = fromJson(json, object : 
 {}.type)  // covert from Json string to object
 
 /**
- * our singular/plural word format Ex: 1 Time, 2 Times
+ * our singular/plural word format
+ * Ex:
+ * - withNumber = true,  str = "time" -> 1 Time, 2 Times
+ * - withNumber = false, str = "time" -> Time, Times
  */
-fun singularPluralWordFormat(numberString: String, str: String): String {
+fun singularPluralWordFormat(numberString: String, str: String, withNumber: Boolean = true): String {
     val number = numberString.toIntOrNull()
 
-    number?.let {
+    if (withNumber) number?.let {
         return when (it) {
             0, 1 -> "$it $str"
             else -> "$it ${str}s"
         }
+    } else number?.let {
+        return when (it) {
+            0, 1 -> str
+            else -> "${str}s"
+        }
     }
+
     return "Invalid"
 }

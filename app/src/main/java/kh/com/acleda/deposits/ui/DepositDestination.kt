@@ -44,6 +44,13 @@ object DepositDetail: DepositDestination {
 
 object OpenNewTerm: DepositDestination {
     override val route = "open_new_term"
+    const val termTypeIdArg = "termType"
+    val routWithArg = "${route}/{$termTypeIdArg}"
+    val argument = listOf(
+        navArgument(termTypeIdArg) {
+            type = NavType.StringType
+        }
+    )
 }
 
 object OpenNewTermConfirm: DepositDestination {

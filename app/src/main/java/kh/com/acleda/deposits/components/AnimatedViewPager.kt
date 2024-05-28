@@ -1,10 +1,11 @@
-package kh.com.acleda.deposits.modules.openNewTerm.presentation.components.termHorizontalPager
+package kh.com.acleda.deposits.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,20 +17,28 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.core.modifier.pagerAnimation
+import kh.com.acleda.deposits.modules.home.data.repository.DepositRateRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositRateDetailsModel
+import kh.com.acleda.deposits.modules.home.domain.model.TermType
+import kh.com.acleda.deposits.modules.home.presentation.components.CCY
+import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.TermItem
+import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun AnimatedViewPagerTermMonth(
+internal fun <T> AnimatedViewPager(
     modifier: Modifier = Modifier,
     pageWidth: Dp,
     pageHeight: Dp,
-    items: ArrayList<DepositRateDetailsModel>,
+    items: ArrayList<T>,
     onCurrentSelect: (Int) -> Unit,
+    itemView: @Composable (pageIndex: Int, pagerState: PagerState) -> Unit
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -55,18 +64,10 @@ internal fun AnimatedViewPagerTermMonth(
     HorizontalPager(
         modifier = modifier,
         state = pagerState,
-        contentPadding = PaddingValues(horizontal = pageWidth + (pageHeight/2)),
+        contentPadding = PaddingValues(horizontal = pageWidth + (pageHeight / 2)),
         verticalAlignment = Alignment.CenterVertically,
-    ) { thisPageIndex ->
-        TermItem(
-            termDetail = items[thisPageIndex],
-            modifier = Modifier
-                .width(pageWidth + pageWidth)
-                .height(pageHeight)
-                .pagerAnimation(
-                    pagerState = pagerState,
-                    thisPageIndex = thisPageIndex,
-                )
-        )
+    ) { pageIndex ->
+        /* Actual Composable item for ViewPager */
+        itemView(pageIndex, pagerState)
     }
 }

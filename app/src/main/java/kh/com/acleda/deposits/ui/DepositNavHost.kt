@@ -19,6 +19,7 @@ import kh.com.acleda.deposits.modules.closeTerm.presentation.CloseTermSuccessScr
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenu
+import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermTypeEnum
 import kh.com.acleda.deposits.modules.eCertificate.domain.model.ECertificateModel
 import kh.com.acleda.deposits.modules.eCertificate.presentation.ECertificateScreen
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
@@ -68,8 +69,8 @@ fun DepositNavHost(
                 onClickViewDepositList = {
                     navController.navigateSingleTopTo(DepositList.route)
                 },
-                onClickOpenNewTerm = {
-                    navController.navigateSingleTopTo(OpenNewTerm.route)
+                onClickOpenNewTerm = { termType ->
+                    navController.navigateToOpenNewTerm(termType.id)
                 }
             )
         }
@@ -145,8 +146,13 @@ fun DepositNavHost(
             )
         }
 
-        composable(route = OpenNewTerm.route) {
+        composable(
+            route = OpenNewTerm.routWithArg,
+            arguments = OpenNewTerm.argument
+        ) {  backStackEntry ->
+            val termTypeId: String = backStackEntry.arguments?.getString(OpenNewTerm.termTypeIdArg) ?: ""
             OpenNewTermScreen(
+                termType = getTermTypeEnum(termTypeId),
                 onBackPress = { navController.popBackStack() },
                 onClickDeposit = {
                     navController.navigateSingleTopTo(OpenNewTermConfirm.route)
@@ -250,6 +256,9 @@ fun NavHostController.navigateClearTop(toRoute: String, navController: NavHostCo
         launchSingleTop = true
     }
 
+private fun NavHostController.navigateToOpenNewTerm(termTypeId: String) {
+    this.navigate("${OpenNewTerm.route}/$termTypeId")
+}
 private fun NavHostController.navigateToDepositDetail(term: String, isFromCloseRequest: Boolean) {
     this.navigate("${DepositDetail.route}/$term?${DepositDetail.isFromCloseRequestArg}=$isFromCloseRequest")
 }

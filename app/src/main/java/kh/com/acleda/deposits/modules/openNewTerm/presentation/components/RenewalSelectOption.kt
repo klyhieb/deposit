@@ -112,8 +112,10 @@ class SelectionOption(val model: RenewalItemModel, var initialSelectedValue: Boo
 }
 
 data class RenewalItemModel(
+    val id: String,
     val title: String,
-    val des: String
+    val des: String,
+    val isRenewal: Boolean = true
 )
 
 
@@ -122,6 +124,7 @@ data class RenewalItemModel(
 private fun Preview() {
     val selectionOption = SelectionOption(
         model = RenewalItemModel(
+            id = "RO1",
             title = "No Renewal",
             des = "Principal will be credit to your account on maturity date"
         ),

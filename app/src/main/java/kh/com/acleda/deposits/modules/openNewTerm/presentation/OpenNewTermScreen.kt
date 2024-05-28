@@ -43,6 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OpenNewTermScreen(
     modifier: Modifier = Modifier,
+    termType: TermType,
     onBackPress: () -> Unit = {},
     onClickDeposit: () -> Unit = {}
 ) {
@@ -51,7 +52,7 @@ fun OpenNewTermScreen(
 
     var sourceAccount by remember {  mutableStateOf("") }
 
-    val rates = getDepositRateByTypeAndCcy(context, TermType.LONG_TERM, CCY.DOLLAR)
+    val rates = getDepositRateByTypeAndCcy(context, termType, CCY.DOLLAR)
 
     val totalInterest by remember { mutableFloatStateOf(0.0f) }
 
@@ -90,7 +91,7 @@ fun OpenNewTermScreen(
                 .verticalScroll(scrollState)
         ) {
             TermDescription(
-                title = "Long Term Deposit",
+                title = "${termType.mName} Deposit",
                 icon = R.drawable.ic_long_term,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,6 +101,7 @@ fun OpenNewTermScreen(
             OpenNewTermInput(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 context = context,
+                termType = termType,
                 sourceAccount = sourceAccount,
                 rates = rates,
                 totalInterest = totalInterest,
@@ -150,7 +152,7 @@ fun OpenNewTermScreen(
 @Composable
 private fun OpenNewTermScreenPreview() {
     DepositsTheme {
-        OpenNewTermScreen()
+        OpenNewTermScreen(termType = TermType.HI_INCOME)
     }
 }
 
