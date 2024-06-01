@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.renewal.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
+import kh.com.acleda.deposits.core.calculate.RenewalCalculator
 import kh.com.acleda.deposits.core.singularPluralWordFormat
 import kh.com.acleda.deposits.modules.depositList.data.repository.ViewTermDetailRepo
 import kh.com.acleda.deposits.modules.depositList.domain.model.ViewTermDetailModel
@@ -52,6 +59,7 @@ import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.Renewa
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.SelectionOption
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.SingleSelectionList
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.getRenewalTimeListByMaxTime
+import kh.com.acleda.deposits.modules.renewal.domain.model.UnAuthRenewalModel
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
@@ -63,20 +71,28 @@ import kh.com.acleda.deposits.ui.theme.Gray6
 import kh.com.acleda.deposits.ui.theme.Gray9
 import kh.com.acleda.deposits.ui.theme.White
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RenewalScreen(
     modifier: Modifier = Modifier,
     model: ViewTermDetailModel,
     onBackPress: () -> Unit,
-    onRenewalClick: () -> Unit
+    onRenewalClick: (UnAuthRenewalModel) -> Unit
 ) {
     val termDetailList = convertToTermDetailList(model)
     val renewalOptions = getRenewalOption()
+    val calculator = RenewalCalculator()
+    val unAuthModel= UnAuthRenewalModel()
 
-    /*-------------------------------------------------------------------------------------------*/
+    var totalInterest = 0.0
+    var taxAmount = 0.0
+    var netMonthlyInterest = 0.0
+    var totalToReceive = 0.0
+
+    /*-------------------------------------------------------------------------------------------------------------------*/
     // auto select only with this condition
     fun showSelectRenewalOption(): Boolean = model.isNeverRenewal == "Y" && (model.termId ?: "") == TermType.HI_GROWTH.id
-    /*-------------------------------------------------------------------------------------------*/
+    /*-------------------------------------------------------------------------------------------------------------------*/
 
     CenterTopAppBar(
         title = "Renewal",
@@ -85,6 +101,65 @@ fun RenewalScreen(
 
         val state = rememberLazyListState()
         val background = Color(0xFFEEE9E9).copy(alpha = 0.5f)
+
+        var renewalTime by remember { mutableIntStateOf(1) }  // 1 for default select renewal time
+        val mNewMaturityDate = calculator.calculateNewMaturityDate(
+            originalDate = model.maturityDate ?: "",
+            renewalCount = renewalTime,
+            termMonths = model.depositTerm?.toLongOrNull() ?: 0
+        )
+
+        /*-------------------------------------------------------------------------------------------------------------------*/
+        fun calculations() {
+            val amountAfterRenewals = calculator.calculateAmountAfterRenewals(
+                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
+                annualRate = model.interest?.toFloatOrNull() ?: 0.0f,
+                renewalTime = renewalTime,
+                termMonths = model.depositTerm?.toIntOrNull() ?: 0
+            )
+
+            totalInterest = calculator.calculateTotalInterest(
+                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
+                amountAfterRenewals = amountAfterRenewals
+            )
+
+            taxAmount = calculator.calculateTax(
+                totalInterest = totalInterest,
+                taxRate = model.taxPercentage?.toDoubleOrNull() ?: 0.0
+            )
+
+            val netInterestAfterTax = totalInterest - taxAmount
+            val totalMonths = (model.depositTerm?.toIntOrNull() ?: 0).times(other = renewalTime)
+            netMonthlyInterest = calculator.calculateNetMonthlyInterest(
+                netInterestAfterTax = netInterestAfterTax,
+                totalMonths = totalMonths
+            )
+
+            totalToReceive = calculator.calculateTotalToReceive(
+                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
+                netInterestAfterTax = netInterestAfterTax
+            )
+        }
+
+        fun setModelData() {
+            unAuthModel.apply {
+                depositAmount = model.depositAmount?.toDoubleOrNull() ?: 0.0
+                contactNumber = model.mm ?: ""
+                depositType = model.termName ?: ""
+                depositTerm = model.depositTerm?.toIntOrNull() ?: 0
+                rolloverTime = model.rolloverTime?.toIntOrNull() ?: 0
+                autoRenewal = model.autoRenewal ?: ""
+
+                // fields has effect update
+                newRolloverTime = renewalTime
+                newMaturityDate = mNewMaturityDate
+                newTotalInterest = totalInterest
+                newTax = taxAmount
+                newNetMonthlyInterest = netMonthlyInterest
+                newTotalToReceiveAtFinalMaturity = totalToReceive
+            }
+        }
+        /*-------------------------------------------------------------------------------------------------------------------*/
 
         LazyColumn(
             modifier = modifier
@@ -106,8 +181,11 @@ fun RenewalScreen(
                     renewalOptions = renewalOptions,
                     maxRenewalTime = model.maxRenewalTime?.toIntOrNull() ?: 1,
                     showRenewalOption = showSelectRenewalOption(),
+                    newMaturityDate = calculator.convertDateFormat(mNewMaturityDate),
                     onChooseRenewalOption = {/*TODO*/},
-                    onCurrentRenewalTimeSelect = {/*TODO*/}
+                    onCurrentRenewalTimeSelect = {
+                        renewalTime = it + 1 // plus 1 to its index
+                    }
                 )
             }
 
@@ -117,14 +195,18 @@ fun RenewalScreen(
                     text = "renewal",
                     textColor = Gray1,
                     bodyColor = Gold6,
-                    onClick = onRenewalClick
+                    onClick = {
+                        calculations()
+                        setModelData()
+                        onRenewalClick(unAuthModel)
+                    }
                 )
             }
         }
     }
 }
 
-/* No Renewal can't be here */
+/* 'No Renewal' (option) can't be here */
 private fun getRenewalOption(): List<SelectionOption> {
     val renewalList = RenewalOption.list.filter { it.model.id != "REO1" }
     renewalList[0].selected = true // set select for default
@@ -217,6 +299,7 @@ fun Rollover(
     renewalOptions: List<SelectionOption> = arrayListOf(),
     maxRenewalTime: Int,
     showRenewalOption: Boolean,
+    newMaturityDate: String,
     onChooseRenewalOption: (RenewalItemModel) -> Unit,
     onCurrentRenewalTimeSelect: (Int) -> Unit
 ) {
@@ -286,7 +369,7 @@ fun Rollover(
                         )
 
                         Text(
-                            text = "Just fixed",
+                            text = newMaturityDate,
                             style = textStyle,
                             color = Gold7,
                             textAlign = TextAlign.End,
@@ -371,13 +454,13 @@ fun convertToTermDetailList(model: ViewTermDetailModel) =
         DetailListItemModel(
             cornerType = CornerType.BOTTOM,
             title = "Maturity data:",
-            value = model.maturityDate ?: "",
+            value = model.maturityDateDisplay ?: "",
             titleColor = Gray6,
             valueColor = Gray9
         )
     )
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun TicketShapePreview() {

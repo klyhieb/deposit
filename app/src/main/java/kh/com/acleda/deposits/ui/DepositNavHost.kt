@@ -1,5 +1,8 @@
 package kh.com.acleda.deposits.ui
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -36,8 +39,8 @@ import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalConfirmScreen
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalSuccessScreen
-import kh.com.acleda.deposits.temp.deposit.model.RenewalModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DepositNavHost(
     modifier: Modifier = Modifier,
@@ -228,7 +231,9 @@ fun DepositNavHost(
             RenewalScreen(
                 model = model,
                 onBackPress = { navController.popBackStack() },
-                onRenewalClick = {/*TODO*/}
+                onRenewalClick = {
+                    Log.e("TAG", "DepositNavHost: $it")
+                }
             )
         }
 

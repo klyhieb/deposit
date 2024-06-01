@@ -109,13 +109,13 @@ fun ImageProfile(
         modifier = HzPadding.statusBarsPadding()
     ) {
         Image(
-            painter = painterResource(R.drawable.img),
+            painter = painterResource(R.drawable.just_profile),
             contentDescription = "avatar",
             contentScale = ContentScale.Crop,
             modifier = modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .border(2.dp, color = White, CircleShape)
+                .border(2.dp, color = White.copy(alpha = 0.5f), CircleShape)
         )
 
         Column (modifier = Modifier
