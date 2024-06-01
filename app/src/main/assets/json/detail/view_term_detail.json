@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "termId": "21011",
+  "termName": "Hi-Growth",
+  "mm": "MM2334800004",
+  "depositAmount": "400000",
+  "currency": "KHR",
+  "depositAccountName": "Khon Lyhieb",
+  "depositAccountNumber": "0001-04704825-12 (USD)",
+  "depositTerm": "7",
+  "interest": "5.75",
+  "autoRenewal": "Renewal with principal",
+  "rolloverTime": "0",
+  "maturityDate": "April 03, 2024",
+  "ref": "33480036283",
+  "companyCode": "KH0010001",
+  "isNeverRenewal": "Y",
+  "remainCycle": "0",
+  "maxRenewalTime": "10",
+  "msg": ""
+}

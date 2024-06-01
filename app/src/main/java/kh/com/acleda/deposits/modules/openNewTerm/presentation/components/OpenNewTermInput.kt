@@ -237,7 +237,7 @@ object RenewalOption {
                 id = "REO1",
                 title = "No Renewal",
                 des = "Principal will be credit to your account on maturity date",
-                isRenewal = false
+                isRenewal = true
             ),
             initialSelectedValue = false
         ),

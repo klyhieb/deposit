@@ -9,6 +9,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,8 @@ import androidx.navigation.compose.composable
 import com.google.gson.Gson
 import kh.com.acleda.deposits.core.fromJson
 import kh.com.acleda.deposits.modules.closeTerm.presentation.CloseTermSuccessScreen
+import kh.com.acleda.deposits.modules.depositList.data.repository.ViewTermDetailRepo
+import kh.com.acleda.deposits.modules.depositList.domain.model.ViewTermDetailModel
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositDetailScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.DepositListScreen
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositMenu
@@ -28,10 +31,12 @@ import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositMo
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSuccessScreen
+import kh.com.acleda.deposits.modules.renewal.presentation.RenewalScreen
 import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalConfirmScreen
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalSuccessScreen
+import kh.com.acleda.deposits.temp.deposit.model.RenewalModel
 
 @Composable
 fun DepositNavHost(
@@ -39,6 +44,7 @@ fun DepositNavHost(
     navController: NavHostController
 ) {
     val gson = Gson()
+    val context = LocalContext.current
 
     NavHost(
         navController = navController,
@@ -85,7 +91,12 @@ fun DepositNavHost(
                 onPopupMenuClick = { menu, term ->
                     val dataString = gson.toJson(term)
                     when(menu) {
-                        DepositMenu.RENEWAL -> {/*TODO*/}
+                        DepositMenu.RENEWAL -> {
+                            val testModel = ViewTermDetailRepo.getViewTermDetail(context)
+                            val modelStr = gson.toJson(testModel)
+
+                            navController.navigateToRenewal(modelStr)
+                        }
 
                         DepositMenu.STOP_RENEWAL -> {
                             val testModel = StopRenewalConfirmModel(
@@ -208,6 +219,20 @@ fun DepositNavHost(
         }
 
         composable(
+            route = Renewal.routWithArg,
+            arguments = Renewal.argument
+        ) { backStackEntry ->
+            val modelObjectString: String = backStackEntry.arguments?.getString(Renewal.modelArg) ?: ""
+            val model: ViewTermDetailModel = gson.fromJson(modelObjectString)
+
+            RenewalScreen(
+                model = model,
+                onBackPress = { navController.popBackStack() },
+                onRenewalClick = {/*TODO*/}
+            )
+        }
+
+        composable(
             route = StopRenewalConfirm.routWithArg,
             arguments = StopRenewalConfirm.argument
         ) {  backStackEntry ->
@@ -269,6 +294,10 @@ private fun NavHostController.navigateToCloseTermSuccess(totalReceiveAmount: Flo
 
 private fun NavHostController.navigateToECertificate(model: String) {
     this.navigate("${ECertificate.route}?${ECertificate.modelArg}=$model")
+}
+
+private fun NavHostController.navigateToRenewal(model: String) {
+    this.navigate("${Renewal.route}?${Renewal.modelArg}=$model")
 }
 
 private fun NavHostController.navigateToStopRenewalConfirm(model: String) {

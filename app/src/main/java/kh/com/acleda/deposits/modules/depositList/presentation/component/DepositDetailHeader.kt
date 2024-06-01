@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,7 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.shape.BottomCurveShape
 import kh.com.acleda.deposits.modules.depositList.presentation.convertToDetailList
-import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
 import kh.com.acleda.deposits.ui.theme.Blue0
@@ -47,10 +45,6 @@ import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gray2
-import kh.com.acleda.deposits.ui.theme.Gray6
-import kh.com.acleda.deposits.ui.theme.Gray9
-import kh.com.acleda.deposits.ui.theme.Red10
-import kh.com.acleda.deposits.ui.theme.Red4
 import kh.com.acleda.deposits.ui.theme.White
 
 @Composable
@@ -174,7 +168,20 @@ fun DetailListItem(
     }
 
     when (data.type) {
-        DetailListItemType.DEFAULT -> {
+        DetailListItemType.TITLE -> {
+            Text(
+                text = data.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = data.titleColor,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .padding(extraPadding)
+            )
+        }
+
+        DetailListItemType.ITEM -> {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -209,7 +216,7 @@ fun DetailListItem(
                 if (data.hasLine) {
                     HorizontalDivider(
                         modifier = Modifier.padding(top = 10.dp),
-                        color = White.copy(alpha = 0.3f)
+                        color = data.lineColor
                     )
                 }
             }
@@ -226,17 +233,18 @@ fun DetailListItem(
 }
 
 data class DetailListItemModel(
-    val type: DetailListItemType = DetailListItemType.DEFAULT,
+    val type: DetailListItemType = DetailListItemType.ITEM,
     val cornerType: CornerType = CornerType.NON,
     val title: String = "",
     val value: String = "",
     val titleColor: Color = Blue1, /*Gray6*/
     val valueColor: Color = Blue0, /*Gray9*/
+    val lineColor: Color = White.copy(alpha = 0.3f),
     val hasLine: Boolean = false
 )
 
 enum class DetailListItemType {
-    DEFAULT, BREAK_LINE
+    TITLE, ITEM, BREAK_LINE
 }
 
 enum class CornerType {

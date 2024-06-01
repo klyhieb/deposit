@@ -121,6 +121,17 @@ fun getRenewalTimeList(termMonth: Int): ArrayList<Int> {
     return nthList
 }
 
+fun getRenewalTimeListByMaxTime(maxTime: Int): ArrayList<Int> {
+    val nthList: ArrayList<Int> = ArrayList()
+
+    for (x in 0 until maxTime) {
+        val numberTime = x + 1
+        nthList.add(numberTime)
+    }
+
+    return nthList
+}
+
 private fun getCurrentYear(): String {
     val renewDate = Calendar.getInstance()
     renewDate.add(Calendar.DAY_OF_MONTH, 0)

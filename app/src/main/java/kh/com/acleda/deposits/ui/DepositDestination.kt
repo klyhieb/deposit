@@ -78,6 +78,18 @@ object CloseTermSuccess: DepositDestination {
     )
 }
 
+object Renewal: DepositDestination {
+    override val route = "renewal"
+    const val modelArg = "modelArg"
+    val routWithArg = "${route}?$modelArg={$modelArg}"
+    val argument = listOf(
+        navArgument(modelArg) {
+            type = NavType.StringType
+            defaultValue = ""
+        }
+    )
+}
+
 object StopRenewalConfirm: DepositDestination {
     override val route = "stop_renewal_un_auth"
     const val modelArg = "modelArg"
