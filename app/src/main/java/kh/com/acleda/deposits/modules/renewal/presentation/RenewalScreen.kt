@@ -41,6 +41,8 @@ import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
 import kh.com.acleda.deposits.core.calculate.RenewalCalculator
+import kh.com.acleda.deposits.core.convertDateFormat
+import kh.com.acleda.deposits.core.roundDoubleAmount
 import kh.com.acleda.deposits.core.singularPluralWordFormat
 import kh.com.acleda.deposits.modules.depositList.data.repository.ViewTermDetailRepo
 import kh.com.acleda.deposits.modules.depositList.domain.model.ViewTermDetailModel
@@ -108,6 +110,7 @@ fun RenewalScreen(
             renewalCount = renewalTime,
             termMonths = model.depositTerm?.toLongOrNull() ?: 0
         )
+        val modelCcy = getCcyEnum(model.currency)
 
         /*-------------------------------------------------------------------------------------------------------------------*/
         fun calculations() {
@@ -144,19 +147,21 @@ fun RenewalScreen(
         fun setModelData() {
             unAuthModel.apply {
                 depositAmount = model.depositAmount?.toDoubleOrNull() ?: 0.0
-                contactNumber = model.mm ?: ""
+                ccy = model.currency ?: ""
+                mm = model.mm ?: ""
                 depositType = model.termName ?: ""
                 depositTerm = model.depositTerm?.toIntOrNull() ?: 0
                 rolloverTime = model.rolloverTime?.toIntOrNull() ?: 0
+                maturityDate = model.maturityDate?: ""
                 autoRenewal = model.autoRenewal ?: ""
 
                 // fields has effect update
                 newRolloverTime = renewalTime
                 newMaturityDate = mNewMaturityDate
-                newTotalInterest = totalInterest
-                newTax = taxAmount
-                newNetMonthlyInterest = netMonthlyInterest
-                newTotalToReceiveAtFinalMaturity = totalToReceive
+                newTotalInterest = roundDoubleAmount(amount = totalInterest, ccy = modelCcy)
+                newTax = roundDoubleAmount(amount = taxAmount, ccy = modelCcy)
+                newNetMonthlyInterest = roundDoubleAmount(amount = netMonthlyInterest, ccy = modelCcy)
+                newTotalToReceiveAtFinalMaturity = roundDoubleAmount(amount = totalToReceive, ccy = modelCcy)
             }
         }
         /*-------------------------------------------------------------------------------------------------------------------*/
@@ -181,7 +186,7 @@ fun RenewalScreen(
                     renewalOptions = renewalOptions,
                     maxRenewalTime = model.maxRenewalTime?.toIntOrNull() ?: 1,
                     showRenewalOption = showSelectRenewalOption(),
-                    newMaturityDate = calculator.convertDateFormat(mNewMaturityDate),
+                    newMaturityDate = convertDateFormat(mNewMaturityDate),
                     onChooseRenewalOption = {/*TODO*/},
                     onCurrentRenewalTimeSelect = {
                         renewalTime = it + 1 // plus 1 to its index
@@ -463,7 +468,7 @@ fun convertToTermDetailList(model: ViewTermDetailModel) =
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-fun TicketShapePreview() {
+fun Preview() {
     DepositsTheme {
         val testModel = ViewTermDetailRepo.getViewTermDetail(LocalContext.current)
 

@@ -1,13 +1,11 @@
 package kh.com.acleda.deposits.core
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.MarqueeSpacing
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,14 +18,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
-import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.White
 import java.text.DecimalFormat
 
@@ -44,7 +38,6 @@ fun formatAmount(amount: Float?): String {
     return AmountDecimalFormat.format(amount)
 }
 
-private val AccountDecimalFormat = DecimalFormat("####")
 private val AmountDecimalFormat = DecimalFormat("#,###.##")
 
 /**

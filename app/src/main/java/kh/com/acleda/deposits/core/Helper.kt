@@ -1,9 +1,15 @@
 package kh.com.acleda.deposits.core
 
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import kh.com.acleda.deposits.core.util.ExchangeRate
-import kh.com.acleda.deposits.modules.home.domain.model.TermAmountModel
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 fun <T> safeConvertAccountBalance(
     model: T,
@@ -47,4 +53,55 @@ fun singularPluralWordFormat(numberString: String, str: String, withNumber: Bool
     }
 
     return "Invalid"
+}
+
+/**
+ * Round Double number into appropriate Double format
+ * Original num = 234.4321323
+ *  - KHR -> 200
+ *  - USD -> 234.43
+ */
+@SuppressLint("DefaultLocale")
+fun roundDoubleAmount(amount: Double, ccy: CCY): BigDecimal {
+    val bigDecimalValue = BigDecimal(amount)
+    return when(ccy) {
+        CCY.RIEL -> {
+            bigDecimalValue.divide(BigDecimal(100), RoundingMode.HALF_UP)
+                .setScale(0, RoundingMode.HALF_UP)
+                .multiply(BigDecimal(100))
+                /*.toDouble()  // add later*/
+        }
+        CCY.DOLLAR -> {
+            bigDecimalValue.setScale(2, RoundingMode.HALF_UP)
+                /*.toDouble() // add later*/
+        }
+        CCY.DEFAULT -> {
+            bigDecimalValue
+        }
+    }
+}
+
+/**
+ * Formatting Double amount into String
+ * Original amount = 143373943.94
+ *  - KHR = 143,373,943.94 KHR
+ *  - USD = 143,373,943.94 USD
+ */
+private val AmountDecimalFormat = java.text.DecimalFormat("#,###.##")
+fun formatAmountWithCcy(amount: BigDecimal, ccy: String) = "${AmountDecimalFormat.format(amount)} $ccy"
+
+/**
+ * Convert format date form 'yyyy-MM-dd' -> 'MMMM dd, yyyy'
+ * - Ex: 2026-01-03 -> June 03, 2026
+ */
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertDateFormat(inputDate: String): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val outputFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
+
+    // Parse the input date string to a LocalDate object
+    val date = LocalDate.parse(inputDate, inputFormatter)
+
+    // Format the LocalDate object to the desired output format
+    return date.format(outputFormatter)
 }

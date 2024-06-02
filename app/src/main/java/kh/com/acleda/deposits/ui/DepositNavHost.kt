@@ -34,6 +34,8 @@ import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositMo
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSuccessScreen
+import kh.com.acleda.deposits.modules.renewal.domain.model.UnAuthRenewalModel
+import kh.com.acleda.deposits.modules.renewal.presentation.RenewalConfirmScreen
 import kh.com.acleda.deposits.modules.renewal.presentation.RenewalScreen
 import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
@@ -231,9 +233,26 @@ fun DepositNavHost(
             RenewalScreen(
                 model = model,
                 onBackPress = { navController.popBackStack() },
-                onRenewalClick = {
-                    Log.e("TAG", "DepositNavHost: $it")
+                onRenewalClick = { unAuthModel ->
+                    val modelString = gson.toJson(unAuthModel)
+                    Log.e("TAG", "DepositNavHost: $modelString")
+
+                    navController.navigateToRenewalConfirm(modelString)
                 }
+            )
+        }
+
+        composable(
+            route = RenewalConfirm.routWithArg,
+            arguments = RenewalConfirm.argument
+        ) { backStackEntry ->
+            val modelObjectString: String = backStackEntry.arguments?.getString(RenewalConfirm.modelArg) ?: ""
+            val model: UnAuthRenewalModel = gson.fromJson(modelObjectString)
+
+            RenewalConfirmScreen(
+                model = model,
+                onBackPress = { navController.popBackStack() },
+                onConfirmClick = {/*TODO*/}
             )
         }
 
@@ -303,6 +322,10 @@ private fun NavHostController.navigateToECertificate(model: String) {
 
 private fun NavHostController.navigateToRenewal(model: String) {
     this.navigate("${Renewal.route}?${Renewal.modelArg}=$model")
+}
+
+private fun NavHostController.navigateToRenewalConfirm(model: String) {
+    this.navigate("${RenewalConfirm.route}?${RenewalConfirm.modelArg}=$model")
 }
 
 private fun NavHostController.navigateToStopRenewalConfirm(model: String) {

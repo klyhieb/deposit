@@ -17,19 +17,6 @@ class OpenTermCalculator {
         return newMaturityDate.format(formatter)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun convertDateFormat(inputDate: String): String {
-        // Define the input and output date formats
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        val outputFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy")
-
-        // Parse the input date string to a LocalDate object
-        val date = LocalDate.parse(inputDate, inputFormatter)
-
-        // Format the LocalDate object to the desired output format
-        return date.format(outputFormatter)
-    }
-
     // Function to calculate the amount after renewals using compound interest
     fun calculateAmountAfterRenewals(principal: Double, annualRate: Double, renewalCount: Int, termYears: Double): Double {
         val ratePerTerm = annualRate * termYears
