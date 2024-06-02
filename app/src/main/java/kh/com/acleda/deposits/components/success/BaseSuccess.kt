@@ -1,5 +1,6 @@
 package kh.com.acleda.deposits.components.success
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,11 @@ fun BaseSuccess(
 ) {
 
     var isClickable by remember { mutableStateOf(false) }
+
+    BackHandler {
+        /*Handle back pressed */
+        onClick()
+    }
 
     CenterTopAppBar(
         title = title,

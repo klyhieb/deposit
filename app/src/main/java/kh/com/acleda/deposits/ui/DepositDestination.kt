@@ -102,6 +102,10 @@ object RenewalConfirm: DepositDestination {
     )
 }
 
+object RenewalSuccess: DepositDestination {
+    override val route = "renewal_auth"
+}
+
 object StopRenewalConfirm: DepositDestination {
     override val route = "stop_renewal_un_auth"
     const val modelArg = "modelArg"

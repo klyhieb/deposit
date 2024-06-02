@@ -59,7 +59,7 @@ fun RenewalConfirmScreen(
     )
 
     CenterTopAppBar(
-        title = "Stop Renewal",
+        title = "Renewal",
         onBackClick = onBackPress
     ) { innerPadding ->
         Column(

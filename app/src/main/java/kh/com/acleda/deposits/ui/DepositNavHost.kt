@@ -37,6 +37,7 @@ import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSucces
 import kh.com.acleda.deposits.modules.renewal.domain.model.UnAuthRenewalModel
 import kh.com.acleda.deposits.modules.renewal.presentation.RenewalConfirmScreen
 import kh.com.acleda.deposits.modules.renewal.presentation.RenewalScreen
+import kh.com.acleda.deposits.modules.renewal.presentation.RenewalSuccessScreen
 import kh.com.acleda.deposits.modules.splashScreen.SplashScreen
 import kh.com.acleda.deposits.modules.stopRenewal.domain.model.StopRenewalConfirmModel
 import kh.com.acleda.deposits.modules.stopRenewal.presentation.StopRenewalConfirmScreen
@@ -235,7 +236,6 @@ fun DepositNavHost(
                 onBackPress = { navController.popBackStack() },
                 onRenewalClick = { unAuthModel ->
                     val modelString = gson.toJson(unAuthModel)
-                    Log.e("TAG", "DepositNavHost: $modelString")
 
                     navController.navigateToRenewalConfirm(modelString)
                 }
@@ -252,7 +252,15 @@ fun DepositNavHost(
             RenewalConfirmScreen(
                 model = model,
                 onBackPress = { navController.popBackStack() },
-                onConfirmClick = {/*TODO*/}
+                onConfirmClick = {
+                    navController.navigateSingleTopTo(RenewalSuccess.route)
+                }
+            )
+        }
+
+        composable(route = RenewalSuccess.route) {
+            RenewalSuccessScreen(
+                onClick = { navController.navigateClearTop(DepositList.route, navController) }
             )
         }
 
