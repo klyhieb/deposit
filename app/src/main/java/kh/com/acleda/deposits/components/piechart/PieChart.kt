@@ -63,14 +63,16 @@ fun <T> PieChart(
                         textStyle = MaterialTheme.typography.labelLarge,
                         balance = amountsTotalInRiel.toString(),
                         ccy = CCY.RIEL,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        showCcySymbol = true
                     )
 
                     TextBalance(
                         textStyle = MaterialTheme.typography.labelLarge,
                         balance = amountsTotalInDollar.toString(),
                         ccy = CCY.DOLLAR,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        showCcySymbol = true
                     )
                 }
             }

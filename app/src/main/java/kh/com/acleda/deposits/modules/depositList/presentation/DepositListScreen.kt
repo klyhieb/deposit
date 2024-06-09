@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.depositList.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +33,7 @@ import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DepositListScreen(
@@ -44,7 +47,7 @@ fun DepositListScreen(
     val expandHeight = if(expended) 220.dp else 90.dp
 
     val depositList = DepositListRepo.getDepositList(LocalContext.current)
-    val listGroupByDate = depositList.listMM.groupBy { it.ValueDateOri }
+    val listGroupByDate = depositList.listMM.groupBy { it.effectiveDate }
 
     var popupMenuDialog by remember { mutableStateOf(false) }
     var selectedTerm by remember { mutableStateOf(DepositItemModel()) }
@@ -98,7 +101,7 @@ fun DepositListScreen(
 
             listGroupByDate.forEach { (date, items) ->
                 stickyHeader {
-                    DepositDateHeader(date = date.toString())
+                    DepositDateHeader(date = date)
                 }
                 items(items) { item ->
                     DepositItem(

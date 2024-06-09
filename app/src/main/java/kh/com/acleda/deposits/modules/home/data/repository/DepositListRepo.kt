@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import kh.com.acleda.deposits.core.fromJson
 import kh.com.acleda.deposits.core.util.ExchangeRate
 import kh.com.acleda.deposits.core.util.JsonFile
-import kh.com.acleda.deposits.modules.home.domain.model.AccountListModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositListModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositTypeModel
 import kh.com.acleda.deposits.modules.home.domain.model.SummaryCurrencyModel
@@ -14,13 +13,11 @@ import kh.com.acleda.deposits.modules.home.domain.model.TermAmountModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.ui.theme.Blue3
-import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.GlowingBlue3
 import kh.com.acleda.deposits.ui.theme.Gold3
 import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray0
 import kh.com.acleda.deposits.ui.theme.Green2
-import kh.com.acleda.deposits.ui.theme.Green7
 import kh.com.acleda.deposits.ui.theme.Red2
 
 /**
@@ -49,51 +46,51 @@ object DepositListRepo {
         // total in KHR
         val totalAmountInRiel = depositList.listMM
                 .filter{ it.currency == CCY.RIEL.dec.uppercase() }
-            .map { it.AmountOri }.sum()
+            .map { it.depositAmount }.sum()
 
         // total in US
         val totalAmountInDollar = depositList.listMM
             .filter{ it.currency == CCY.DOLLAR.dec.uppercase() }
-            .map { it.AmountOri }.sum()
+            .map { it.depositAmount }.sum()
 
 
         // Hi-Income
         val totalHiIncomeInDollar = depositList.listMM.filter {
             it.termTypeId == TermType.HI_INCOME.id && it.currency == CCY.DOLLAR.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         val totalHiIncomeInRiel = depositList.listMM.filter {
             it.termTypeId == TermType.HI_INCOME.id && it.currency == CCY.RIEL.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         // Hi-Growth
         val totalHiGrowthInDollar = depositList.listMM.filter {
             it.termTypeId == TermType.HI_GROWTH.id && it.currency == CCY.DOLLAR.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         val totalHiGrowthInRiel = depositList.listMM.filter {
             it.termTypeId == TermType.HI_GROWTH.id && it.currency == CCY.RIEL.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         // Long-Term
         val totalLongTermInDollar = depositList.listMM.filter {
             it.termTypeId == TermType.LONG_TERM.id && it.currency == CCY.DOLLAR.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         val totalLongTermInRiel = depositList.listMM.filter {
             it.termTypeId == TermType.LONG_TERM.id && it.currency == CCY.RIEL.dec.uppercase()
         }.map {
-            it.AmountOri
+            it.depositAmount
         }.sum()
 
         return SummaryDepositModel(

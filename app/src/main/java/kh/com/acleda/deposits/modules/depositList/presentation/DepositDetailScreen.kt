@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.depositList.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
 import kh.com.acleda.deposits.components.dialog.CloseTermDialog
+import kh.com.acleda.deposits.core.convertDateFormat
+import kh.com.acleda.deposits.core.singularPluralWordFormat
 import kh.com.acleda.deposits.modules.depositList.presentation.component.CornerType
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DepositDetailHeader
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItem
@@ -48,7 +52,7 @@ fun DepositDetailScreen(
     onCloseTermDialogConfirm: (DepositItemModel) -> Unit = {}
 ) {
 
-    val convertedListData = convertToDetailList()
+    val convertedListData = convertToDetailList(term)
 
     CenterTopAppBar(
         title = "Deposit Detail",
@@ -130,35 +134,36 @@ class TopWithFooter(private val paddingBottom: Dp = 0.dp) : Arrangement.Vertical
 }
 
 
-fun convertToDetailList(/*term: DepositItemModel*/): List<DetailListItemModel> {
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertToDetailList(term: DepositItemModel): List<DetailListItemModel> {
     return listOf(
         DetailListItemModel(
             title = "Deposit Account:",
-            value = "Mario Liza-T",
+            value = term.depositAccountName,
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
-            value = "0001-04690-96007-13 (KHR)-T",
+            value = term.depositAccountNumber,
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             title = "Deposit Amount:",
-            value = "100.00 USD-T",
+            value = term.depositAmount.toString(),
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             title = "Deposit Term:",
-            value = "36 Months-T",
+            value = singularPluralWordFormat(term.depositTerm, "Month"),
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             cornerType = CornerType.BOTTOM,
             title = "Interest Rate:",
-            value = "4.25%-T",
+            value = "${term.interestRate} %",
             titleColor = Gray6,
             valueColor = Gray9,
         ),
@@ -168,26 +173,26 @@ fun convertToDetailList(/*term: DepositItemModel*/): List<DetailListItemModel> {
         DetailListItemModel(
             cornerType = CornerType.TOP,
             title = "Effective Date:",
-            value = "March 03, 2024-T",
+            value = convertDateFormat(term.effectiveDate),
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             title = "Maturity Date:",
-            value = "April 03, 2024-T",
+            value = convertDateFormat(term.maturityDate),
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             title = "Rollover time:",
-            value = "2 Times-T",
+            value = singularPluralWordFormat(term.rolloverTime, "Time"),
             titleColor = Gray6,
             valueColor = Gray9,
         ),
         DetailListItemModel(
             cornerType = CornerType.BOTTOM,
             title = "Auto-Renewal:",
-            value = "Renewal with principal-T",
+            value = term.autoRenewal,
             titleColor = Gray6,
             valueColor = Gray9,
         )

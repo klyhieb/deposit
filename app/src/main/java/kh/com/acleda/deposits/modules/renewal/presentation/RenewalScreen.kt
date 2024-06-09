@@ -32,12 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.components.CenterTopAppBar
@@ -46,14 +44,13 @@ import kh.com.acleda.deposits.core.calculate.RenewalCalculator
 import kh.com.acleda.deposits.core.convertDateFormat
 import kh.com.acleda.deposits.core.roundDoubleAmount
 import kh.com.acleda.deposits.core.singularPluralWordFormat
-import kh.com.acleda.deposits.modules.depositList.data.repository.ViewTermDetailRepo
-import kh.com.acleda.deposits.modules.depositList.domain.model.ViewTermDetailModel
 import kh.com.acleda.deposits.modules.depositList.presentation.component.CornerType
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItem
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItemModel
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItemType
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getCcyEnum
 import kh.com.acleda.deposits.modules.depositList.presentation.component.getTermBackgroundColorByCcy
+import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import kh.com.acleda.deposits.modules.home.presentation.components.TextBalance
@@ -66,7 +63,6 @@ import kh.com.acleda.deposits.modules.openNewTerm.presentation.components.getRen
 import kh.com.acleda.deposits.modules.renewal.domain.model.UnAuthRenewalModel
 import kh.com.acleda.deposits.ui.theme.Blue7
 import kh.com.acleda.deposits.ui.theme.Blue9
-import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gold6
 import kh.com.acleda.deposits.ui.theme.Gold7
 import kh.com.acleda.deposits.ui.theme.Gray1
@@ -79,7 +75,7 @@ import kh.com.acleda.deposits.ui.theme.White
 @Composable
 fun RenewalScreen(
     modifier: Modifier = Modifier,
-    model: ViewTermDetailModel,
+    model: DepositItemModel,
     onBackPress: () -> Unit,
     onRenewalClick: (UnAuthRenewalModel) -> Unit
 ) {
@@ -93,9 +89,11 @@ fun RenewalScreen(
     var netMonthlyInterest = 0.0
     var totalToReceive = 0.0
 
+    val taxRate = 6.0
+
     /*-------------------------------------------------------------------------------------------------------------------*/
     // auto select only with this condition
-    fun showSelectRenewalOption(): Boolean = model.isNeverRenewal == "Y" && (model.termId ?: "") == TermType.HI_GROWTH.id
+    fun showSelectRenewalOption(): Boolean = model.isNeverRenewal == "Y" && (model.termId) == TermType.HI_GROWTH.id
     /*-------------------------------------------------------------------------------------------------------------------*/
 
     CenterTopAppBar(
@@ -108,57 +106,57 @@ fun RenewalScreen(
 
         var renewalTime by remember { mutableIntStateOf(1) }  // 1 for default select renewal time
         val mNewMaturityDate = calculator.calculateNewMaturityDate(
-            originalDate = model.maturityDate ?: "",
+            originalDate = model.maturityDate,
             renewalCount = renewalTime,
-            termMonths = model.depositTerm?.toLongOrNull() ?: 0
+            termMonths = model.depositTerm.toLongOrNull() ?: 0
         )
         val modelCcy = getCcyEnum(model.currency)
 
         /*-------------------------------------------------------------------------------------------------------------------*/
         fun calculations() {
             val amountAfterRenewals = calculator.calculateAmountAfterRenewals(
-                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
-                annualRate = model.interest?.toFloatOrNull() ?: 0.0f,
+                principal = model.depositAmount.toDouble(),
+                annualRate = model.interestRate.toFloatOrNull() ?: 0.0f,
                 renewalTime = renewalTime,
-                termMonths = model.depositTerm?.toIntOrNull() ?: 0
+                termMonths = model.depositTerm.toIntOrNull() ?: 0
             )
 
             totalInterest = calculator.calculateTotalInterest(
-                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
+                principal = model.depositAmount.toDouble(),
                 amountAfterRenewals = amountAfterRenewals
             )
 
             taxAmount = calculator.calculateTax(
                 totalInterest = totalInterest,
-                taxRate = model.taxPercentage?.toDoubleOrNull() ?: 0.0
+                taxRate = taxRate
             )
 
             val netInterestAfterTax = totalInterest - taxAmount
-            val totalMonths = (model.depositTerm?.toIntOrNull() ?: 0).times(other = renewalTime)
+            val totalMonths = (model.depositTerm.toIntOrNull() ?: 0).times(other = renewalTime)
             netMonthlyInterest = calculator.calculateNetMonthlyInterest(
                 netInterestAfterTax = netInterestAfterTax,
                 totalMonths = totalMonths
             )
 
             totalToReceive = calculator.calculateTotalToReceive(
-                principal = model.depositAmount?.toDoubleOrNull() ?: 0.0,
+                principal = model.depositAmount.toDouble(),
                 netInterestAfterTax = netInterestAfterTax
             )
         }
 
         fun setModelData() {
             unAuthModel.apply {
-                depositAmount = model.depositAmount?.toDoubleOrNull() ?: 0.0
-                ccy = model.currency ?: ""
-                mm = model.mm ?: ""
-                depositType = model.termName ?: ""
-                depositTerm = model.depositTerm?.toIntOrNull() ?: 0
-                rolloverTime = model.rolloverTime?.toIntOrNull() ?: 0
-                maturityDate = model.maturityDate?: ""
-                autoRenewal = model.autoRenewal ?: ""
+                depositAmount = model.depositAmount.toDouble()
+                ccy = model.currency
+                mm = model.mm
+                depositType = model.termName
+                depositTerm = model.depositTerm.toIntOrNull() ?: 0
+                rolloverTime = model.rolloverTime.toIntOrNull() ?: 0
+                maturityDate = model.maturityDate
+                autoRenewal = model.autoRenewal
 
                 // fields has effect update
-                newRolloverTime = renewalTime
+                newRolloverTime = renewalTime + (model.rolloverTime.toIntOrNull() ?: 0)
                 newMaturityDate = mNewMaturityDate
                 newTotalInterest = roundDoubleAmount(amount = totalInterest, ccy = modelCcy)
                 newTax = roundDoubleAmount(amount = taxAmount, ccy = modelCcy)
@@ -186,7 +184,7 @@ fun RenewalScreen(
             item {
                 Rollover(
                     renewalOptions = renewalOptions.value,
-                    maxRenewalTime = model.maxRenewalTime?.toIntOrNull() ?: 1,
+                    maxRenewalTime = model.maxRenewalTime.toIntOrNull() ?: 1,
                     showRenewalOption = showSelectRenewalOption(),
                     newMaturityDate = convertDateFormat(mNewMaturityDate),
                     onChooseRenewalOption = {/*TODO*/},
@@ -223,9 +221,9 @@ private fun getRenewalOption(): List<SelectionOption> {
 @Composable
 fun RenewalHeader(
     modifier: Modifier = Modifier,
-    model: ViewTermDetailModel
+    model: DepositItemModel
 ) {
-    val icon = getRenewalIconByCcy(model.currency ?: "")
+    val icon = getRenewalIconByCcy(model.currency)
     val color = getTermBackgroundColorByCcy(model.currency)
     val ccyTextStyle = MaterialTheme.typography.headlineMedium.copy(
         fontWeight = FontWeight.Bold
@@ -253,7 +251,7 @@ fun RenewalHeader(
                     .padding(vertical = 12.dp)
             ) {
                 Text(
-                    text = model.termName ?: "",
+                    text = model.termName,
                     style = MaterialTheme.typography.titleMedium,
                     color = Gray9
                 )
@@ -261,7 +259,7 @@ fun RenewalHeader(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = model.mm ?: "",
+                    text = model.mm,
                     style = MaterialTheme.typography.headlineMedium,
                     color = Gray9
                 )
@@ -280,7 +278,7 @@ fun RenewalHeader(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextBalance(
-                        balance = model.depositAmount ?: "",
+                        balance = model.depositAmount.toString(),
                         ccy = getCcyEnum(model.currency),
                         textStyle = ccyTextStyle,
                         decimalPartColor = Blue9,
@@ -290,7 +288,7 @@ fun RenewalHeader(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = model.currency ?: "",
+                        text = model.currency,
                         style = ccyTextStyle,
                         color = Blue9
                     )
@@ -413,7 +411,8 @@ private fun getRenewalIconByCcy(ccy: String) =
         CCY.DEFAULT -> R.drawable.ic_renewal
     }
 
-fun convertToTermDetailList(model: ViewTermDetailModel) =
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertToTermDetailList(model: DepositItemModel) =
     arrayListOf(
         DetailListItemModel(
             type = DetailListItemType.TITLE,
@@ -423,31 +422,31 @@ fun convertToTermDetailList(model: ViewTermDetailModel) =
         DetailListItemModel(
             cornerType = CornerType.TOP,
             title = "Deposit Account:",
-            value = model.depositAccountName ?: "",
+            value = model.depositAccountName,
             titleColor = Gray6,
             valueColor = Gray9
         ),
         DetailListItemModel(
             title = "",
-            value = model.depositAccountNumber ?: "",
+            value = model.depositAccountNumber,
             titleColor = Gray6,
             valueColor = Gray9
         ),
         DetailListItemModel(
             title = "Deposit Term:",
-            value = singularPluralWordFormat(model.depositTerm ?: "", "Month"),
+            value = singularPluralWordFormat(model.depositTerm, "Month"),
             titleColor = Gray6,
             valueColor = Gray9
         ),
         DetailListItemModel(
             title = "Interest Rate:",
-            value = "${model.interest}%",
+            value = "${model.interestRate}%",
             titleColor = Gray6,
             valueColor = Gray9
         ),
         DetailListItemModel(
             title = "Auto-Renewal:",
-            value = model.autoRenewal ?: "",
+            value = model.autoRenewal,
             hasLine = true,
             lineColor = Color(0xFFCECCCC),
             titleColor = Gray6,
@@ -455,30 +454,15 @@ fun convertToTermDetailList(model: ViewTermDetailModel) =
         ),
         DetailListItemModel(
             title = "Rollover time:",
-            value = singularPluralWordFormat(model.rolloverTime ?: "", "Time"),
+            value = singularPluralWordFormat(model.rolloverTime, "Time"),
             titleColor = Gray6,
             valueColor = Gray9
         ),
         DetailListItemModel(
             cornerType = CornerType.BOTTOM,
             title = "Maturity data:",
-            value = model.maturityDateDisplay ?: "",
+            value = convertDateFormat(model.maturityDate),
             titleColor = Gray6,
             valueColor = Gray9
         )
     )
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-fun Preview() {
-    DepositsTheme {
-        val testModel = ViewTermDetailRepo.getViewTermDetail(LocalContext.current)
-
-        RenewalScreen(
-            model = testModel,
-            onBackPress = {},
-            onRenewalClick = {}
-        )
-    }
-}

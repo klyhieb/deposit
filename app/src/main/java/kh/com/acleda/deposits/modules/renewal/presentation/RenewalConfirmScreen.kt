@@ -76,7 +76,8 @@ fun RenewalConfirmScreen(
             ) {
                 Ticket(
                     modifier = Modifier
-                        .height(500.dp)
+                        /*.height(500.dp)*/
+                        .height(400.dp)
                         .padding(horizontal = 24.dp),
                     middlePercentage = 0.22f,
                     contentTop = {
@@ -172,7 +173,7 @@ fun convertModelToListDetail(model: UnAuthRenewalModel) =
             value = convertDateFormat(model.newMaturityDate),
             valueColor = Gold2
         ),
-        DetailListItemModel(
+        /*DetailListItemModel(
             title = "Total Interest*:",
             value = formatAmountWithCcy(model.newTotalInterest, model.ccy),
             valueColor = Gold2
@@ -191,7 +192,7 @@ fun convertModelToListDetail(model: UnAuthRenewalModel) =
             title = "Total to Receive*:",
             value = formatAmountWithCcy(model.newTotalToReceiveAtFinalMaturity, model.ccy),
             valueColor = Gold2
-        )
+        )*/
     )
 
 @RequiresApi(Build.VERSION_CODES.O)

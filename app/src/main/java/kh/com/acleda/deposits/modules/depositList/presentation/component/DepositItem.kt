@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.depositList.presentation.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.R
+import kh.com.acleda.deposits.core.convertDateFormat
 import kh.com.acleda.deposits.modules.home.data.repository.DepositListRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
@@ -57,7 +60,7 @@ fun DepositList(
     modifier: Modifier = Modifier
 ) {
     val depositList = DepositListRepo.getDepositList(LocalContext.current)
-    val listGroupByDate = depositList.listMM.groupBy { it.ValueDateOri }
+    val listGroupByDate = depositList.listMM.groupBy { it.effectiveDate }
 
     LazyColumn(
         modifier = modifier,
@@ -65,7 +68,7 @@ fun DepositList(
     ) {
         listGroupByDate.forEach { (date, items) ->
             stickyHeader {
-                DepositDateHeader(date = date.toString())
+                DepositDateHeader(date = date)
             }
             items(items) { item ->
                 DepositItem(
@@ -78,6 +81,7 @@ fun DepositList(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DepositDateHeader(
     modifier: Modifier = Modifier,
@@ -104,7 +108,7 @@ fun DepositDateHeader(
             Spacer(modifier = Modifier.width(4.dp))
 
             Text(
-                text = date,
+                text = convertDateFormat(date),
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -114,6 +118,7 @@ fun DepositDateHeader(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DepositItem(
     modifier: Modifier = Modifier,
@@ -157,7 +162,7 @@ fun DepositItem(
 
                         Spacer(modifier = Modifier.width(8.dp))
 
-                        OutlineBadge(text = term.termName ?: "")
+                        OutlineBadge(text = term.termName)
                     }
 
                     Icon(painterResource(id = R.drawable.ic_more),
@@ -172,7 +177,7 @@ fun DepositItem(
                 Spacer(modifier = Modifier.height(7.dp))
 
                 Text(
-                    text = term.mm ?: "",
+                    text = term.mm,
                     style = MaterialTheme.typography.titleSmall,
                     color = Black
                 )
@@ -180,7 +185,7 @@ fun DepositItem(
                 Spacer(modifier = Modifier.height(7.dp))
 
                 Text(
-                    text = /*term.interestRate*/ "1.00%-T",
+                    text = "Interest: ${term.interestRate} %",
                     style = MaterialTheme.typography.labelSmall,
                     color = DepositsTheme.colors.textSupport
                 )
@@ -193,7 +198,7 @@ fun DepositItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = term.maturityDate ?: "",
+                        text = convertDateFormat(term.maturityDate),
                         style = MaterialTheme.typography.labelSmall,
                         color = DepositsTheme.colors.textSupport
                     )
@@ -205,7 +210,7 @@ fun DepositItem(
                             textStyle = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
-                            balance = term.AmountOri.toString(),
+                            balance = term.depositAmount.toString(),
                             ccy = getCcyEnum(term.currency),
                             decimalPartColor = Blue9,
                             floatingPartColor = Blue7
@@ -214,7 +219,7 @@ fun DepositItem(
                         Spacer(modifier = Modifier.width(2.dp))
 
                         Text(
-                            text = term.currency ?: "",
+                            text = term.currency,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),

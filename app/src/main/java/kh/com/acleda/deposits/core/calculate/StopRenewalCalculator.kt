@@ -9,7 +9,18 @@ class StopRenewalCalculator {
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateNewMaturityDate(originalDate: String, renewalCount: Int, termMonths: Long): String {
         val originalMaturityDate = LocalDate.parse(originalDate)
-        val totalMonths = termMonths * (renewalCount + 1)  // 1 represent the default term period
+        val totalMonths = termMonths * (renewalCount)
         return originalMaturityDate.minusMonths(totalMonths).toString()
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun main() {
+    val originalDate = "2024-12-09"
+    val renewalCount = 2
+    val termMonths = 2L
+
+    val newMaturitiyDate = StopRenewalCalculator().calculateNewMaturityDate(originalDate, renewalCount, termMonths)
+    println(newMaturitiyDate)
+
 }

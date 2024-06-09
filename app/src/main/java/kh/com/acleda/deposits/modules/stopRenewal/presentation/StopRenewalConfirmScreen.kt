@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.stopRenewal.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +29,7 @@ import kh.com.acleda.deposits.components.BadgeWithText
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.Ticket
 import kh.com.acleda.deposits.components.button.BaseButton
+import kh.com.acleda.deposits.core.convertDateFormat
 import kh.com.acleda.deposits.core.singularPluralWordFormat
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItem
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItemModel
@@ -129,6 +132,7 @@ fun StopRenewalConfirmScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun convertModelToListDetail(model: StopRenewalConfirmModel) =
     arrayListOf(
         DetailListItemModel(
@@ -154,7 +158,7 @@ fun convertModelToListDetail(model: StopRenewalConfirmModel) =
         ),
         DetailListItemModel(
             title = "Maturity data:",
-            value = model.maturityDate,
+            value = convertDateFormat(model.maturityDate),
             hasLine = true
         ),
         DetailListItemModel(
@@ -164,13 +168,10 @@ fun convertModelToListDetail(model: StopRenewalConfirmModel) =
         ),
         DetailListItemModel(
             title = "Maturity data*:",
-            value = model.newMaturityDate,
+            value = convertDateFormat(model.newMaturityDate),
             valueColor = Gold2
         )
     )
-
-
-
 
 @Preview
 @Composable

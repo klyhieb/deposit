@@ -70,7 +70,7 @@ fun DepositMenuDialog(
                         TextBalance(
                             textStyle = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
                             decimalPartColor = White,
-                            balance = term.AmountOri.toString(),
+                            balance = term.depositAmount.toString(),
                             ccy = getCcyEnum(term.currency)
                         )
 

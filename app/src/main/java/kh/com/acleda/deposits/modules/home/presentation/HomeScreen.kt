@@ -75,7 +75,7 @@ fun HomeScreen(
                         preferStroke = 16.dp,
                         modifier = Modifier
                             .weight(0.55f)
-                            .height(200.dp)
+                            .height(190.dp)
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -130,12 +130,6 @@ fun HomeScreen(
             PromoCashWithdrawal(onClick = {})
 
             Spacer(modifier = Modifier.height(20.dp))
-
-            Section(label = "My investments") {}
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Section(label = "Exchange rates") {}
         }
     }
 }

@@ -28,9 +28,9 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
 
     /* cal. the maturity date */
     @RequiresApi(Build.VERSION_CODES.O)
-    fun maturityDate(renewalTime: Int): String {
+    fun maturityDate(startDate: LocalDate = getStartDate(), renewalTime: Int): String {
         val totalMonths = termMonths * actualRenewalTime(renewalTime)
-        return getStartDate().plusMonths(totalMonths.toLong()).toString()
+        return startDate.plusMonths(totalMonths.toLong()).toString()
     }
 
     /* cal. interest amount for the given term */
@@ -171,17 +171,19 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
     // Given data
-    val depositTenor = 2
-    val renewalTime = 4
-    val depositAmount = 100.00
+    val depositTenor = 5
+    val renewalTime = 2
+    val depositAmount = 400000.0
     val annualRate = 1.99 // 4.50%  // 0.0475
     val taxRate = 6.00 // 6.00%
     val termtype = TermType.HI_GROWTH
-    val renewalOption = "Principal & Interest"
+    val renewalOption = "Principal"
+    val startDAteStr = "2024-05-25"
+    val startDate = LocalDate.parse(startDAteStr)
 
     // Calculations
     val calculator = OpenTermCalculator(termType = termtype, termMonths = depositTenor)
-    val maturityDate = calculator.maturityDate(renewalTime = renewalTime)
+    val maturityDate = calculator.maturityDate(startDate = startDate, renewalTime = renewalTime)
     val interestAmount = calculator.totalInterestAmountByTermType(principalAmount = depositAmount, annualRate = annualRate)
     val taxAmount = calculator.taxAmount(totalInterestAmount = interestAmount, taxRate = taxRate)
     val netInterest = calculator.netInterestByTermType(totalInterestAmount = interestAmount, taxAmount = taxAmount)

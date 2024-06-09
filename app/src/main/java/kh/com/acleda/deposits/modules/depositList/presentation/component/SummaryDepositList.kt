@@ -114,13 +114,15 @@ fun SummaryDepositList(
                         TextBalance(
                             balance = totalKHR.toString(),
                             ccy = CCY.RIEL,
-                            textStyle = MaterialTheme.typography.titleLarge
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            showCcySymbol = true
                         )
 
                         TextBalance(
                             balance = totalInUSD.toString(),
                             ccy = CCY.DOLLAR,
-                            textStyle = MaterialTheme.typography.titleLarge
+                            textStyle = MaterialTheme.typography.titleLarge,
+                            showCcySymbol = true
                         )
                     }
 

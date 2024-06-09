@@ -88,7 +88,7 @@ fun DepositDetailHeader(
                     TextBalance(
                         decimalPartColor = Blue9,
                         floatingPartColor = Blue7,
-                        balance = term.AmountOri.toString(),
+                        balance = term.depositAmount.toString(),
                         ccy = getCcyEnum(term.currency),
                         textStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
                     )
@@ -249,37 +249,4 @@ enum class DetailListItemType {
 
 enum class CornerType {
     NON, TOP, BOTTOM
-}
-
-
-@Preview
-@Composable
-private fun Preview() {
-    DepositsTheme {
-
-        /*val termList = DepositListRepo.getDepositList(LocalContext.current)
-        val term: DepositItemModel = termList.listMM.last()
-
-        DepositDetailHeader(
-            term = term,
-            backgroundColor = { Red10 },
-            currencyColor = {
-                getTermBackgroundColorByCcy(term.currency)
-            },
-            termTypeColor = {
-                getTermIndicatorColorById(term.termTypeId)
-            },
-            termIcon = {
-                getTermIconById(term.termTypeId)
-            }
-        )*/
-
-        val convertedListData = convertToDetailList()
-        val item = convertedListData[4]
-
-        DetailListItem(
-            backgroundColor = Gray2.copy(alpha = 0.8f),
-            data = item
-        )
-    }
 }
