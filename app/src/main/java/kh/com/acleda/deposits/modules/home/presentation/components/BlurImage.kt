@@ -84,7 +84,7 @@ fun BlurryImage(
 private fun ViewGirlPreview() {
     BlurryImage(
         modifier = Modifier.fillMaxSize(),
-        image = R.drawable.img,
+        image = R.drawable.just_profile,
         blurRadio = 25.dp
     )
 }

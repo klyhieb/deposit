@@ -55,6 +55,14 @@ object OpenNewTerm: DepositDestination {
 
 object OpenNewTermConfirm: DepositDestination {
     override val route = "open_new_term_un_ath"
+    const val modelArg = "modelArg"
+    val routWithArg = "${route}?$modelArg={$modelArg}"
+    val argument = listOf(
+        navArgument(modelArg) {
+            type = NavType.StringType
+            defaultValue = ""
+        }
+    )
 }
 
 object OpenNewTermSuccess: DepositDestination {

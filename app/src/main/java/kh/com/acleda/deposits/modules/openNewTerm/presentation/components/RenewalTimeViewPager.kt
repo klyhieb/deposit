@@ -34,6 +34,7 @@ import java.util.Calendar
 fun RenewalTimeViewPager(
     modifier: Modifier = Modifier,
     nthList: ArrayList<Int>,
+    isVisible: Boolean,
     onCurrentSelect: (Int) -> Unit
 ) {
     val mPageWidth = 96.dp
@@ -44,6 +45,7 @@ fun RenewalTimeViewPager(
         pageWidth = mPageWidth,
         pageHeight = mPageHeight,
         items = nthList,
+        isVisible = isVisible,
         onCurrentSelect = onCurrentSelect
     ) { pageIndex, pagerState ->
         RenewalTimeItem(
@@ -108,18 +110,55 @@ fun RenewalTimeItem(
  * Its helper function to get the nthList for RenewalTime
  */
 fun getRenewalTimeList(termMonth: Int): ArrayList<Int> {
-    val maxAllowYearFromNow = 50
-    val time = ((maxAllowYearFromNow * 12) / termMonth) - 1 // 12 is Months, and 1 for default term
-
+    val maxRenewalTime = getMaxRenewalTime(depositTermPeriod = termMonth)
     val nthList: ArrayList<Int> = ArrayList()
 
-    for (x in 0 until time) {
+    for (x in 0 until maxRenewalTime) {
         val numberTime = x + 1
         nthList.add(numberTime)
     }
 
     return nthList
 }
+
+private fun getMaxRenewalTime(depositTermPeriod: Int): Int {
+    // maxHolidayT24Data: 2073-12-31
+    val calendar = Calendar.getInstance()
+    calendar.set(2073, 11, 31) // month = 11: mean December in Calendar
+    val maxHolidayT24Year = calendar[Calendar.YEAR]
+    val maxHolidayT24Month = calendar[Calendar.MONTH] + 1 // 0 -> JANUARY.... 11 -> DECEMBER
+
+    val currentYear = getCurrentYear()
+    val currentMonth = getCurrentMonth()
+
+    val months: Int = ((maxHolidayT24Year - currentYear) * 12) + (maxHolidayT24Month - currentMonth)
+    val maxRenewal = (months / depositTermPeriod) - 1 // 1 for default Term Period
+    return maxRenewal
+}
+
+private fun getCurrentYear(): Int {
+    val renewDate = Calendar.getInstance()
+    return renewDate[Calendar.YEAR]
+}
+
+private fun getCurrentMonth(): Int {
+    val renewDate = Calendar.getInstance()
+    return renewDate[Calendar.MONTH] + 1 // 0 -> JANUARY.... 11 -> DECEMBER
+}
+
+fun main() {
+    val currentYear = getCurrentYear()
+    val currentMonth = getCurrentMonth()
+
+    val maxRenewalTime = getMaxRenewalTime(depositTermPeriod = 7)
+    val renewalTimeList = getRenewalTimeList(termMonth = 7)
+
+    println(currentYear)
+    println(currentMonth)
+    println(maxRenewalTime)
+    println(renewalTimeList)
+}
+
 
 fun getRenewalTimeListByMaxTime(maxTime: Int): ArrayList<Int> {
     val nthList: ArrayList<Int> = ArrayList()
@@ -132,12 +171,6 @@ fun getRenewalTimeListByMaxTime(maxTime: Int): ArrayList<Int> {
     return nthList
 }
 
-private fun getCurrentYear(): String {
-    val renewDate = Calendar.getInstance()
-    renewDate.add(Calendar.DAY_OF_MONTH, 0)
-    return (renewDate[Calendar.YEAR]).toString()
-}
-
 @Preview
 @Composable
 private fun Preview() {
@@ -146,6 +179,7 @@ private fun Preview() {
 
         RenewalTimeViewPager(
             nthList = mRateList,
+            isVisible = true,
             onCurrentSelect = {
 
             }

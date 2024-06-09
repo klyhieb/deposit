@@ -1,6 +1,5 @@
 package kh.com.acleda.deposits.modules.openNewTerm.presentation.components
 
-import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,13 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.R
-import kh.com.acleda.deposits.modules.home.data.repository.DepositRateRepo
 import kh.com.acleda.deposits.modules.home.domain.model.DepositRateDetailsModel
 import kh.com.acleda.deposits.modules.home.domain.model.DepositRateObjectModel
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
@@ -33,16 +33,16 @@ import kh.com.acleda.deposits.ui.theme.Gray9
 @Composable
 fun OpenNewTermInput(
     modifier: Modifier = Modifier,
-    context: Context,
-    termType: TermType,
     sourceAccount: String,
     rates: DepositRateObjectModel,
-    totalInterest: Float,
+    renewalOptionList: List<SelectionOption>,
+    totalInterest: String,
     onSelectSourceAccountClick: () -> Unit,
     onSwitchCurrency: (CCY) -> Unit,
     onInputAmount: (TextFieldValue) -> Unit,
     onChooseTerm: (DepositRateDetailsModel) -> Unit,
-    onChooseRenewalOption: (RenewalItemModel) -> Unit
+    onChooseRenewalOption: (RenewalItemModel) -> Unit,
+    onChooseRenewalTime: (Int) -> Unit
 ) {
     val placeHolderText by remember { mutableStateOf("Select source account") }
 
@@ -56,19 +56,17 @@ fun OpenNewTermInput(
 
     var currencyIcon by remember { mutableIntStateOf(R.drawable.ic_dollar_bg) }
     val amount by remember { mutableStateOf(TextFieldValue()) }
-    var currentRate by remember { mutableStateOf(rates) }
-
-    var showRenewalTime by remember { mutableStateOf(false) }
-    val defaultTermTime = currentRate.rateDetails?.get(0)?.term?.toIntOrNull() ?: 0
+    var showRenewalTime by rememberSaveable { mutableStateOf(false) }
+    val defaultTermTime = rates.rateDetails?.get(0)?.term?.toIntOrNull() ?: 0
     var currentSelectedTermMonth by remember { mutableIntStateOf(defaultTermTime) }
     val renewalTimeList = getRenewalTimeList(currentSelectedTermMonth)
 
-    val renewalOptions = getAvailableOptionRenewal(currentSelectedTermMonth, termType)
+    var reselectRenewalTime by remember { mutableStateOf(true) }
 
     /*-------------------------------------------------------------------------*/
     fun selectionOptionSelected(selectedOption: SelectionOption) {
-        renewalOptions.forEach { it.selected = false }
-        renewalOptions.find { it.model == selectedOption.model }?.selected = true
+        renewalOptionList.forEach { it.selected = false }
+        renewalOptionList.find { it.model == selectedOption.model }?.selected = true
     }
     /*-------------------------------------------------------------------------*/
 
@@ -108,13 +106,6 @@ fun OpenNewTermInput(
                 onSelectionChange = { index, tabModel ->
                     selectedIndex = index
                     currencyIcon = tabModel.icon!!
-                    currentRate =
-                        DepositRateRepo.getDepositRateByTypeAndCcy(
-                            context,
-                            TermType.LONG_TERM,
-                            tabModel.ccy
-                        )
-
                     onSwitchCurrency(tabModel.ccy)
                 }
             )
@@ -145,9 +136,9 @@ fun OpenNewTermInput(
 
             TermViewPager(
                 modifier = Modifier.fillMaxWidth(),
-                rateList = currentRate.rateDetails ?: arrayListOf(),
+                rateList = rates.rateDetails ?: arrayListOf(),
                 onCurrentSelect = { index ->
-                    currentRate.rateDetails?.get(index)?.let {
+                    rates.rateDetails?.get(index)?.let {
                         currentSelectedTermMonth = it.term?.toIntOrNull() ?: 0
                         onChooseTerm(it)
                     }
@@ -157,8 +148,8 @@ fun OpenNewTermInput(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Total Interest: $totalInterest ${currencyList[selectedIndex].ccy.dec.uppercase()}",
-                style = MaterialTheme.typography.labelMedium,
+                text = "Total Interest: $totalInterest",
+                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                 color = DepositsTheme.colors.textSupport,
                 modifier = Modifier.padding(start = 20.dp)
             )
@@ -174,13 +165,14 @@ fun OpenNewTermInput(
             Spacer(modifier = Modifier.height(12.dp))
 
             SingleSelectionList(
-                options = renewalOptions,
+                options = renewalOptionList,
                 onOptionClicked = {
                     showRenewalTime = it.model.isRenewal
+                    reselectRenewalTime = !reselectRenewalTime
                     selectionOptionSelected(it)
                     onChooseRenewalOption(it.model)
                 },
-                modifier = Modifier.height((renewalOptions.size * 80).dp)
+                modifier = Modifier.height((renewalOptionList.size * 80).dp)
             )
 
             Column (
@@ -191,8 +183,9 @@ fun OpenNewTermInput(
             ) {
                 RenewalTime(
                     nthList = renewalTimeList,
+                    isVisible = reselectRenewalTime,
                     onCurrentSelect = {
-
+                        onChooseRenewalTime(it  + 1) // it wil zero for first index
                     }
                 )
             }
@@ -200,12 +193,12 @@ fun OpenNewTermInput(
     }
 }
 
-private fun getAvailableOptionRenewal(termMonth: Int, termType: TermType): List<SelectionOption> {
+fun getAvailableOptionRenewal(termMonth: Int, termType: TermType): List<SelectionOption> {
     val renewalOptionList = getDefaultRenewalOption(termType)
     if (termMonth != 0) {
         // if can't renewal term Coz it over 29 y or 248 months not allow to renewal
         if (isLongTermDeposit(termType)) {
-            return if (RenewalOption.list.isEmpty()) {
+            return if (RenewalOption.getList().isEmpty()) {
                 renewalOptionList.filter { it.model.id == "REO1" }
             }
             else {
@@ -221,7 +214,7 @@ private fun isLongTermDeposit(termType: TermType) = termType == TermType.LONG_TE
 private fun isNotHiGrowthDeposit(termType: TermType) = termType != TermType.HI_GROWTH
 
 private fun getDefaultRenewalOption(termType: TermType): List<SelectionOption> {
-    var renewalOptionList = RenewalOption.list
+    var renewalOptionList = RenewalOption.getList()
     // Only Hi_Grow have 3 option (last option) otherwise have 2
     if (isNotHiGrowthDeposit(termType)) {
         renewalOptionList = renewalOptionList.filterNot { it.model.id == "REO3" }
@@ -231,19 +224,21 @@ private fun getDefaultRenewalOption(termType: TermType): List<SelectionOption> {
 }
 
 object RenewalOption {
-    val list = listOf(
+    fun getList() = listOf(
         SelectionOption(
             model = RenewalItemModel(
                 id = "REO1",
+                value = "No Renewal",
                 title = "No Renewal",
                 des = "Principal will be credit to your account on maturity date",
-                isRenewal = true
+                isRenewal = false
             ),
-            initialSelectedValue = false
+            initialSelectedValue = true
         ),
         SelectionOption(
             model = RenewalItemModel(
                 id = "REO2",
+                value = "Principal",
                 title = "Renewal with principal",
                 des = "Principal will be deposit in new term"
             ),
@@ -252,6 +247,7 @@ object RenewalOption {
         SelectionOption(
             model = RenewalItemModel(
                 id = "REO3",
+                value = "Principal & Interest",
                 title = "Renewal with principal & Interest",
                 des = "Principal & Interest will be deposit in new term"
             ),
@@ -263,6 +259,7 @@ object RenewalOption {
 @Composable
 fun RenewalTime(
     nthList: ArrayList<Int>,
+    isVisible: Boolean,
     onCurrentSelect: (Int) -> Unit
 ) {
     Spacer(modifier = Modifier.height(16.dp))
@@ -277,6 +274,7 @@ fun RenewalTime(
 
     RenewalTimeViewPager(
         nthList = nthList,
+        isVisible = isVisible,
         onCurrentSelect = onCurrentSelect
     )
 }

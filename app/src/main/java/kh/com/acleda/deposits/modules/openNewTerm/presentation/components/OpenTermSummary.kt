@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.modules.openNewTerm.presentation.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,18 +17,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kh.com.acleda.deposits.core.DashLine
-import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
+import kh.com.acleda.deposits.core.convertDateFormat
+import kh.com.acleda.deposits.core.formatAmountWithCcy
+import kh.com.acleda.deposits.core.singularPluralWordFormat
+import kh.com.acleda.deposits.modules.openNewTerm.domain.model.UnAthOpenTermModel
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun OpenTermSummary(
     modifier: Modifier = Modifier,
-    taxDisplay: Float,
-    summary: OpenTermDepositModel
+    summary: UnAthOpenTermModel,
+    textStyle: TextStyle
 ) {
+
 
     Surface(
         color = Color.White
@@ -59,13 +68,13 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Deposit Type:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.type!!,
-                            style = MaterialTheme.typography.titleSmall,
+                            summary.type,
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -79,13 +88,13 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Deposit Term:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.term.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            singularPluralWordFormat(summary.term.toString(), "Month"),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -99,13 +108,13 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Deposit Amount:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.amount.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            summary.principalAmount.toString(),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -118,14 +127,14 @@ fun OpenTermSummary(
                             .padding(vertical = 4.dp)
                     ) {
                         Text(
-                            "Interest Rate",
-                            style = MaterialTheme.typography.titleSmall,
+                            "Interest amount ${singularPluralWordFormat(summary.creditMonths.toString(), "Month")}",
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.interestRate.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            formatAmountWithCcy(summary.interestInNMonths, summary.ccy),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -138,34 +147,14 @@ fun OpenTermSummary(
                             .padding(vertical = 4.dp)
                     ) {
                         Text(
-                            "Interest Amount",
-                            style = MaterialTheme.typography.titleSmall,
+                            "Tax ${summary.taxRate}%:",
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.interestRateAmount.toString(),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textHelpLabel
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp)
-                    ) {
-                        Text(
-                            "Tax $taxDisplay%:",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = DepositsTheme.colors.textSupport
-                        )
-
-                        Text(
-                            summary.tax.toString(),
-                            style = MaterialTheme.typography.titleSmall,
+                            formatAmountWithCcy(summary.taxAmount, summary.ccy),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -179,13 +168,13 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Effective Date:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.effectiveDate!!,
-                            style = MaterialTheme.typography.titleSmall,
+                            convertDateFormat(summary.effectiveDate),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -199,13 +188,33 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Maturity Date:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.maturityDate!!,
-                            style = MaterialTheme.typography.titleSmall,
+                            convertDateFormat(summary.maturityDate),
+                            style = textStyle,
+                            color = DepositsTheme.colors.textHelpLabel
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            "Rollover Time:",
+                            style = textStyle,
+                            color = DepositsTheme.colors.textSupport
+                        )
+
+                        Text(
+                            singularPluralWordFormat(summary.rolloverTime.toString(), "Time"),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -219,13 +228,13 @@ fun OpenTermSummary(
                     ) {
                         Text(
                             "Auto-Renewal:",
-                            style = MaterialTheme.typography.titleSmall,
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.autoRenewal!!,
-                            style = MaterialTheme.typography.titleSmall,
+                            summary.autoRenewal,
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -240,17 +249,78 @@ fun OpenTermSummary(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 20.dp)
+                            .padding(top = 16.dp)
+                            .padding(vertical = 4.dp)
                     ) {
                         Text(
-                            "Total to Receive:",
-                            style = MaterialTheme.typography.titleMedium,
+                            "Received at maturity:",
+                            style = textStyle,
                             color = DepositsTheme.colors.textSupport
                         )
 
                         Text(
-                            summary.totalToReceive.toString(),
-                            style = MaterialTheme.typography.titleMedium,
+                            formatAmountWithCcy(summary.totalReceivedAtMaturity, summary.ccy),
+                            style = textStyle,
+                            color = DepositsTheme.colors.textHelpLabel
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            "Received at Final maturity:",
+                            style = textStyle,
+                            color = DepositsTheme.colors.textSupport
+                        )
+
+                        Text(
+                            formatAmountWithCcy(summary.totalToReceiveAtFinalMaturity, summary.ccy),
+                            style = textStyle,
+                            color = DepositsTheme.colors.textHelpLabel
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            "Net Interest ${singularPluralWordFormat(summary.creditMonths.toString(), "Month")}:",
+                            style = textStyle.copy(fontSize = 14.sp),
+                            color = DepositsTheme.colors.textSupport
+                        )
+
+                        Text(
+                            formatAmountWithCcy(summary.netInterestInNMonths, summary.ccy),
+                            style = textStyle,
+                            color = DepositsTheme.colors.textHelpLabel
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            "Total Net Interest:",
+                            style = textStyle.copy(fontSize = 14.sp),
+                            color = DepositsTheme.colors.textSupport
+                        )
+
+                        Text(
+                            formatAmountWithCcy(summary.totalNetInterest, summary.ccy),
+                            style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
                     }
@@ -261,13 +331,14 @@ fun OpenTermSummary(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun Preview() {
     DepositsTheme {
         OpenTermSummary(
-            taxDisplay = 6.00f,
-            summary = OpenTermDepositModel()
+            summary = UnAthOpenTermModel(),
+            textStyle = MaterialTheme.typography.titleSmall.copy(fontSize = 12.sp)
         )
     }
 }

@@ -49,6 +49,7 @@ fun TermViewPager(
         pageWidth = mPageWidth,
         pageHeight = mPageHeight,
         items = rateList,
+        isVisible = false,
         onCurrentSelect = onCurrentSelect
     ) { pageIndex, pagerState ->
         TermItem(
@@ -111,7 +112,7 @@ internal fun TermItem(
             }
 
             Text(
-                text = termDetail.currentPA,
+                text = termDetail.currentPAString,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.labelLarge,
                 color = Gold7,

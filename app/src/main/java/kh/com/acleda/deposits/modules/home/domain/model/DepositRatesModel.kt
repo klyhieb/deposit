@@ -37,6 +37,7 @@ data class DepositRateDetailsModel(
 ) {
     var index: Int? = null
     var month: String = "Months"
-    var currentPA: String = ""
+    var currentPAString: String = ""
+    var currentPA: Double = 0.0
 }
 

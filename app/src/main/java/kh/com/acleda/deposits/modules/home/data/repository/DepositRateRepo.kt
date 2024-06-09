@@ -1,7 +1,6 @@
 package kh.com.acleda.deposits.modules.home.data.repository
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import kh.com.acleda.deposits.R
 import kh.com.acleda.deposits.core.fromJson
@@ -110,6 +109,7 @@ object DepositRateRepo {
             rateDetail.ccy = ccy
             rateDetail.index = index
             rateDetail.currentPA = getCurrentPAByCcy(rateDetail, ccy)
+            rateDetail.currentPAString = getCurrentPAByCcyString(rateDetail, ccy)
             if (rateDetail.term == "1") {
                 rateDetail.month = "Month"
             }
@@ -119,7 +119,15 @@ object DepositRateRepo {
         return rateByType
     }
 
-    private fun getCurrentPAByCcy(rate: DepositRateDetailsModel, ccy: CCY): String {
+    private fun getCurrentPAByCcy(rate: DepositRateDetailsModel, ccy: CCY): Double {
+        return when (ccy) {
+            CCY.RIEL -> rate.khrRate?.toDoubleOrNull() ?: 0.0
+            CCY.DOLLAR -> rate.usdRate?.toDoubleOrNull() ?: 0.0
+            CCY.DEFAULT -> 0.0
+        }
+    }
+
+    private fun getCurrentPAByCcyString(rate: DepositRateDetailsModel, ccy: CCY): String {
         return when (ccy) {
             CCY.RIEL -> "${rate.khrRate} p.a."
             CCY.DOLLAR -> "${rate.usdRate} p.a."

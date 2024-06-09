@@ -1,7 +1,6 @@
 package kh.com.acleda.deposits.ui
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -30,7 +29,7 @@ import kh.com.acleda.deposits.modules.eCertificate.domain.model.ECertificateMode
 import kh.com.acleda.deposits.modules.eCertificate.presentation.ECertificateScreen
 import kh.com.acleda.deposits.modules.home.domain.model.DepositItemModel
 import kh.com.acleda.deposits.modules.home.presentation.HomeScreen
-import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
+import kh.com.acleda.deposits.modules.openNewTerm.domain.model.UnAthOpenTermModel
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermConfirmScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermScreen
 import kh.com.acleda.deposits.modules.openNewTerm.presentation.OpenNewTermSuccessScreen
@@ -172,14 +171,21 @@ fun DepositNavHost(
                 termType = getTermTypeEnum(termTypeId),
                 onBackPress = { navController.popBackStack() },
                 onClickDeposit = {
-                    navController.navigateSingleTopTo(OpenNewTermConfirm.route)
+                    val modelStr = gson.toJson(it)
+                    navController.navigateToOpenNewTermConfirm(model = modelStr)
                 }
             )
         }
 
-        composable(route = OpenNewTermConfirm.route) {
+        composable(
+            route = OpenNewTermConfirm.routWithArg,
+            arguments = OpenNewTermConfirm.argument
+        ) { backStackEntry ->
+            val modelStr: String = backStackEntry.arguments?.getString(OpenNewTermConfirm.modelArg) ?: ""
+            val model: UnAthOpenTermModel = gson.fromJson(modelStr)
+
             OpenNewTermConfirmScreen(
-                summary = OpenTermDepositModel(),
+                model = model,
                 onBackPress = { navController.popBackStack() },
                 onClickConfirm = {
                     navController.navigateSingleTopTo(OpenNewTermSuccess.route)
@@ -316,6 +322,11 @@ fun NavHostController.navigateClearTop(toRoute: String, navController: NavHostCo
 private fun NavHostController.navigateToOpenNewTerm(termTypeId: String) {
     this.navigate("${OpenNewTerm.route}/$termTypeId")
 }
+
+private fun NavHostController.navigateToOpenNewTermConfirm(model: String) {
+    this.navigate("${OpenNewTermConfirm.route}?${OpenNewTermConfirm.modelArg}=$model")
+}
+
 private fun NavHostController.navigateToDepositDetail(term: String, isFromCloseRequest: Boolean) {
     this.navigate("${DepositDetail.route}/$term?${DepositDetail.isFromCloseRequestArg}=$isFromCloseRequest")
 }

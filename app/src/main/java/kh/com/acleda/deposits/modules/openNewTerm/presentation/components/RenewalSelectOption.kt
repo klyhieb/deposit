@@ -5,40 +5,30 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
-import kh.com.acleda.deposits.ui.theme.Gold10
 import kh.com.acleda.deposits.ui.theme.Gold8
-import kh.com.acleda.deposits.ui.theme.Gray0
-import kh.com.acleda.deposits.ui.theme.Gray1
-import kh.com.acleda.deposits.ui.theme.Gray2
 import kh.com.acleda.deposits.ui.theme.Gray3
-import kh.com.acleda.deposits.ui.theme.Gray4
-import kh.com.acleda.deposits.ui.theme.Gray5
 import kh.com.acleda.deposits.ui.theme.Gray6
-import kh.com.acleda.deposits.ui.theme.Gray9
 
 @Composable
 fun SingleSelectionList(
@@ -113,6 +103,7 @@ class SelectionOption(val model: RenewalItemModel, var initialSelectedValue: Boo
 
 data class RenewalItemModel(
     val id: String,
+    val value: String,
     val title: String,
     val des: String,
     val isRenewal: Boolean = true
@@ -125,6 +116,7 @@ private fun Preview() {
     val selectionOption = SelectionOption(
         model = RenewalItemModel(
             id = "RO1",
+            value = "No Renewal",
             title = "No Renewal",
             des = "Principal will be credit to your account on maturity date"
         ),

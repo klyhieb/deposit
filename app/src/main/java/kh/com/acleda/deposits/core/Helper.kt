@@ -105,3 +105,13 @@ fun convertDateFormat(inputDate: String): String {
     // Format the LocalDate object to the desired output format
     return date.format(outputFormatter)
 }
+
+/**
+ * Get percentage value as decimal floating point
+ */
+fun Double.percentageToDouble() = this.div(other = 100)
+
+/**
+ * Get Year form months
+ */
+fun Int.getYearAsDouble() = this.div(other = 12.0)

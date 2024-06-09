@@ -1,13 +1,15 @@
 package kh.com.acleda.deposits.modules.openNewTerm.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -15,30 +17,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kh.com.acleda.deposits.components.BadgeWithText
 import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.Ticket
 import kh.com.acleda.deposits.components.button.BaseButton
-import kh.com.acleda.deposits.modules.openNewTerm.domain.model.OpenTermDepositModel
-import kh.com.acleda.deposits.ui.theme.Blue0
-import kh.com.acleda.deposits.ui.theme.Blue1
+import kh.com.acleda.deposits.core.convertDateFormat
+import kh.com.acleda.deposits.core.formatAmountWithCcy
+import kh.com.acleda.deposits.core.singularPluralWordFormat
+import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItem
+import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItemModel
+import kh.com.acleda.deposits.modules.openNewTerm.domain.model.UnAthOpenTermModel
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 import kh.com.acleda.deposits.ui.theme.Gold2
 import kh.com.acleda.deposits.ui.theme.Gold6
 import kh.com.acleda.deposits.ui.theme.Gray1
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun OpenNewTermConfirmScreen(
     modifier: Modifier = Modifier,
-    summary: OpenTermDepositModel,
+    model: UnAthOpenTermModel,
     onBackPress: () -> Unit = {},
     onClickConfirm: () -> Unit = {}
 ) {
     val scrollState = rememberScrollState()
+    val convertList = convertModelToListDetail(model)
 
     CenterTopAppBar(
         title = "Open New Term",
@@ -58,18 +67,18 @@ fun OpenNewTermConfirmScreen(
             ) {
                 Ticket(
                     modifier = Modifier
-                        .height(240.dp)
+                        .height(530.dp)
                         .padding(horizontal = 24.dp),
-                    middlePercentage = 0.4f,
+                    middlePercentage = 0.18f,
                     contentTop = {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.SpaceEvenly,
                         ) {
-                            BadgeWithText(text = "Total to Receive:")
+                            BadgeWithText(text = "Total Net Interest to Receive:")
 
                             Text(
-                                "103.06 USD",
+                                formatAmountWithCcy(model.totalNetInterest, model.ccy),
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -78,106 +87,14 @@ fun OpenNewTermConfirmScreen(
                         }
                     },
                     contentBottom = {
-                        Column(
-                            verticalArrangement = Arrangement.Center
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    "Deposit Type:",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue1
-                                )
-
-                                Text(
-                                    summary.type!!,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue0
-                                )
-                            }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    "Deposit Term:",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue1
-                                )
-
-                                Text(
-                                    summary.term.toString(),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue0
-                                )
-                            }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    "Deposit Amount:",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue1
-                                )
-
-                                Text(
-                                    summary.amount.toString(),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue0
-                                )
-                            }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    "Rollover Time:",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue1
-                                )
-
-                                Text(
-                                    summary.rolloverTime.toString(),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue0
-                                )
-                            }
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp)
-                            ) {
-                                Text(
-                                    "Auto-Renewal:",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue1
-                                )
-
-                                Text(
-                                    summary.autoRenewal!!,
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Blue0
+                            items(convertList) { item ->
+                                DetailListItem(
+                                    data = item,
+                                    textStyle = MaterialTheme.typography.titleSmall.copy(fontSize = 12.sp),
+                                    backgroundColor = Color.Transparent
                                 )
                             }
                         }
@@ -196,13 +113,84 @@ fun OpenNewTermConfirmScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
+fun convertModelToListDetail(model: UnAthOpenTermModel) =
+    arrayListOf(
+        DetailListItemModel(
+            title = "Account:",
+            value = model.accountName,
+        ),
+        DetailListItemModel(
+            title = "",
+            value = model.showAccountNumber,
+            hasLine = true
+        ),
+        DetailListItemModel(
+            title = "Term Type:",
+            value = model.type
+        ),
+        DetailListItemModel(
+            title = "Term:",
+            value = singularPluralWordFormat(model.term.toString(), "Month")
+        ),
+        DetailListItemModel(
+            title = "Principal amount:",
+            value = formatAmountWithCcy(model.principalAmount, model.ccy)
+        ),
+        DetailListItemModel(
+            title = "Interest amount ${singularPluralWordFormat(model.creditMonths.toString(), "Month")}",
+            value = formatAmountWithCcy(model.interestInNMonths, model.ccy)
+        ),
+        DetailListItemModel(
+            title = "Tax ${"%.2f".format(model.taxRate)}%:",
+            value = formatAmountWithCcy(model.taxAmount, model.ccy)
+        ),
+        DetailListItemModel(
+            title = "Effective date:",
+            value = convertDateFormat(model.effectiveDate)
+        ),
+        DetailListItemModel(
+            title = "Maturity date:",
+            value = convertDateFormat(model.maturityDate)
+        ),
+        DetailListItemModel(
+            title = "Rollover time:",
+            value = singularPluralWordFormat(model.rolloverTime.toString(), "Time")
+        ),
+        DetailListItemModel(
+            title = "Auto-renewal:",
+            value = model.autoRenewal,
+            hasLine = true
+        ),
+        DetailListItemModel(
+            title = "Total to received:",
+            value = ""
+        ),
+        DetailListItemModel(
+            title = "*at maturity:",
+            value = formatAmountWithCcy(model.totalReceivedAtMaturity, model.ccy),
+            valueColor = Gold2
+        ),
+        DetailListItemModel(
+            title = "*at final maturity:",
+            value = formatAmountWithCcy(model.totalToReceiveAtFinalMaturity, model.ccy),
+            valueColor = Gold2
+        ),
+        DetailListItemModel(
+            title = "Net interest ${singularPluralWordFormat(model.creditMonths.toString(), "Month")}",
+            value = formatAmountWithCcy(model.netInterestInNMonths, model.ccy),
+            valueColor = Gold2
+        )
+    )
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun TicketShapePreview() {
     DepositsTheme {
         OpenNewTermConfirmScreen(
-            summary = OpenTermDepositModel()
+            model = UnAthOpenTermModel()
         )
     }
 

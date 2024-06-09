@@ -24,7 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,7 +84,7 @@ fun RenewalScreen(
     onRenewalClick: (UnAuthRenewalModel) -> Unit
 ) {
     val termDetailList = convertToTermDetailList(model)
-    val renewalOptions = getRenewalOption()
+    val renewalOptions = rememberSaveable { mutableStateOf(getRenewalOption()) }
     val calculator = RenewalCalculator()
     val unAuthModel= UnAuthRenewalModel()
 
@@ -183,7 +185,7 @@ fun RenewalScreen(
 
             item {
                 Rollover(
-                    renewalOptions = renewalOptions,
+                    renewalOptions = renewalOptions.value,
                     maxRenewalTime = model.maxRenewalTime?.toIntOrNull() ?: 1,
                     showRenewalOption = showSelectRenewalOption(),
                     newMaturityDate = convertDateFormat(mNewMaturityDate),
@@ -213,7 +215,7 @@ fun RenewalScreen(
 
 /* 'No Renewal' (option) can't be here */
 private fun getRenewalOption(): List<SelectionOption> {
-    val renewalList = RenewalOption.list.filter { it.model.id != "REO1" }
+    val renewalList = RenewalOption.getList().filter { it.model.id != "REO1" }
     renewalList[0].selected = true // set select for default
     return renewalList
 }
@@ -394,6 +396,7 @@ fun Rollover(
 
                 RenewalTime(
                     nthList = renewalTimeList,
+                    isVisible = false,
                     onCurrentSelect = onCurrentRenewalTimeSelect
                 )
 
