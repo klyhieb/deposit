@@ -42,7 +42,6 @@ import kh.com.acleda.deposits.components.CenterTopAppBar
 import kh.com.acleda.deposits.components.button.BaseButton
 import kh.com.acleda.deposits.core.calculate.RenewalCalculator
 import kh.com.acleda.deposits.core.convertDateFormat
-import kh.com.acleda.deposits.core.roundDoubleAmount
 import kh.com.acleda.deposits.core.singularPluralWordFormat
 import kh.com.acleda.deposits.modules.depositList.presentation.component.CornerType
 import kh.com.acleda.deposits.modules.depositList.presentation.component.DetailListItem
@@ -84,13 +83,6 @@ fun RenewalScreen(
     val calculator = RenewalCalculator()
     val unAuthModel= UnAuthRenewalModel()
 
-    var totalInterest = 0.0
-    var taxAmount = 0.0
-    var netMonthlyInterest = 0.0
-    var totalToReceive = 0.0
-
-    val taxRate = 6.0
-
     /*-------------------------------------------------------------------------------------------------------------------*/
     // auto select only with this condition
     fun showSelectRenewalOption(): Boolean = model.isNeverRenewal == "Y" && (model.termId) == TermType.HI_GROWTH.id
@@ -105,45 +97,12 @@ fun RenewalScreen(
         val background = Color(0xFFEEE9E9).copy(alpha = 0.5f)
 
         var renewalTime by remember { mutableIntStateOf(1) }  // 1 for default select renewal time
-        val mNewMaturityDate = calculator.calculateNewMaturityDate(
+        val mNewMaturityDate = calculator.newMaturityDate(
             originalDate = model.maturityDate,
-            renewalCount = renewalTime,
+            renewalTime = renewalTime,
             termMonths = model.depositTerm.toLongOrNull() ?: 0
         )
-        val modelCcy = getCcyEnum(model.currency)
-
         /*-------------------------------------------------------------------------------------------------------------------*/
-        fun calculations() {
-            val amountAfterRenewals = calculator.calculateAmountAfterRenewals(
-                principal = model.depositAmount.toDouble(),
-                annualRate = model.interestRate.toFloatOrNull() ?: 0.0f,
-                renewalTime = renewalTime,
-                termMonths = model.depositTerm.toIntOrNull() ?: 0
-            )
-
-            totalInterest = calculator.calculateTotalInterest(
-                principal = model.depositAmount.toDouble(),
-                amountAfterRenewals = amountAfterRenewals
-            )
-
-            taxAmount = calculator.calculateTax(
-                totalInterest = totalInterest,
-                taxRate = taxRate
-            )
-
-            val netInterestAfterTax = totalInterest - taxAmount
-            val totalMonths = (model.depositTerm.toIntOrNull() ?: 0).times(other = renewalTime)
-            netMonthlyInterest = calculator.calculateNetMonthlyInterest(
-                netInterestAfterTax = netInterestAfterTax,
-                totalMonths = totalMonths
-            )
-
-            totalToReceive = calculator.calculateTotalToReceive(
-                principal = model.depositAmount.toDouble(),
-                netInterestAfterTax = netInterestAfterTax
-            )
-        }
-
         fun setModelData() {
             unAuthModel.apply {
                 depositAmount = model.depositAmount.toDouble()
@@ -158,10 +117,8 @@ fun RenewalScreen(
                 // fields has effect update
                 newRolloverTime = renewalTime + (model.rolloverTime.toIntOrNull() ?: 0)
                 newMaturityDate = mNewMaturityDate
-                newTotalInterest = roundDoubleAmount(amount = totalInterest, ccy = modelCcy)
-                newTax = roundDoubleAmount(amount = taxAmount, ccy = modelCcy)
-                newNetMonthlyInterest = roundDoubleAmount(amount = netMonthlyInterest, ccy = modelCcy)
-                newTotalToReceiveAtFinalMaturity = roundDoubleAmount(amount = totalToReceive, ccy = modelCcy)
+                // another fields which on update yet for time purpose
+
             }
         }
         /*-------------------------------------------------------------------------------------------------------------------*/
@@ -201,7 +158,6 @@ fun RenewalScreen(
                     textColor = Gray1,
                     bodyColor = Gold6,
                     onClick = {
-                        calculations()
                         setModelData()
                         onRenewalClick(unAuthModel)
                     }

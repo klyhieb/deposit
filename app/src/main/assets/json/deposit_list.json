@@ -25,7 +25,7 @@
       "effectiveDate": "2024-05-08",
       "maturityDate": "2025-01-08",
       "maxRenewalTime": "600",
-      "autoRenewal": "Principal"
+      "autoRenewal": "No Renewal"
     },
     {
       "depositAccountName": "Khon Lyhieb",
@@ -171,7 +171,7 @@
       "currency": "USD",
       "depositAmount": 100,
       "interestRate": "6.30",
-      "rolloverTime": "5",
+      "rolloverTime": "0",
       "depositTerm": "60",
       "mm": "MM2334500006",
       "accountIdOri": "00010470482513",

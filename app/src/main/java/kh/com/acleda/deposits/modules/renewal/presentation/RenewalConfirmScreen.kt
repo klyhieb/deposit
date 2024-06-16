@@ -77,9 +77,9 @@ fun RenewalConfirmScreen(
                 Ticket(
                     modifier = Modifier
                         /*.height(500.dp)*/
-                        .height(400.dp)
+                        .height(360.dp)
                         .padding(horizontal = 24.dp),
-                    middlePercentage = 0.22f,
+                    middlePercentage = 0.25f,
                     contentTop = {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -103,7 +103,7 @@ fun RenewalConfirmScreen(
                                 Text(
                                     text = model.ccy,
                                     style = ccyTextStyle,
-                                    color = White
+                                    color = Gold2
                                 )
                             }
                         }

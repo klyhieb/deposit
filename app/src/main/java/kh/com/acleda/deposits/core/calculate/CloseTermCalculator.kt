@@ -2,9 +2,6 @@ package kh.com.acleda.deposits.core.calculate
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import kh.com.acleda.deposits.core.getYearAsDouble
-import kh.com.acleda.deposits.core.percentageToDouble
-import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit

@@ -114,7 +114,7 @@ fun DepositNavHost(
                                 maturityDate = term.maturityDate,
                                 newRolloverTime = "0",
                                 newMaturityDate = calculator.calculateNewMaturityDate(
-                                    originalMaturityDate = term.maturityDate,
+                                    originalMaturityDateStr = term.maturityDate,
                                     renewalCount = term.rolloverTime.toIntOrNull() ?: 0,
                                     termMonths = term.depositTerm.toLongOrNull() ?: 0
                                 )
