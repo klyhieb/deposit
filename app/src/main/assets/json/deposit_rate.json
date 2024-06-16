@@ -13,100 +13,99 @@
         "Term": "1",
         "Type": "MONTH",
         "RateTermMaxRange": "1",
-        "KhrRate": "2.40",
-        "UsdRate": "1.65"
+        "KhrRate": "2.05",
+        "UsdRate": "1.55"
       },
       {
         "Term": "2",
         "Type": "MONTH",
         "RateTermMaxRange": "3",
-        "KhrRate": "3.15",
-        "UsdRate": "1.99"
+        "KhrRate": "2.88",
+        "UsdRate": "1.80"
       },
       {
         "Term": "3",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "4.15",
-
-        "UsdRate": "2.50"
+        "KhrRate": "3.80",
+        "UsdRate": "2.30"
       },
       {
         "Term": "4",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "4.50",
-        "UsdRate": "3.00"
+        "KhrRate": "4.00",
+        "UsdRate": "2.35"
       },
       {
         "Term": "5",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "5.05",
-        "UsdRate": "3.40"
+        "KhrRate": "4.40",
+        "UsdRate": "2.50"
       },
       {
         "Term": "6",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.60",
-        "UsdRate": "3.90"
+        "KhrRate": "4.80",
+        "UsdRate": "3.30"
       },
       {
         "Term": "7",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.75",
-        "UsdRate": "4.00"
+        "KhrRate": "4.90",
+        "UsdRate": "3.35"
       },
       {
         "Term": "8",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.85",
-        "UsdRate": "4.15"
+        "KhrRate": "4.95",
+        "UsdRate": "3.40"
       },
       {
         "Term": "9",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "6.25",
-        "UsdRate": "4.30"
+        "KhrRate": "5.30",
+        "UsdRate": "3.80"
       },
       {
         "Term": "10",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "6.40",
-        "UsdRate": "4.45"
+        "KhrRate": "5.40",
+        "UsdRate": "3.85"
       },
       {
         "Term": "11",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "6.55",
-        "UsdRate": "4.60"
+        "KhrRate": "5.50",
+        "UsdRate": "3.90"
       },
       {
         "Term": "12",
         "Type": "MONTH",
         "RateTermMaxRange": "23",
-        "KhrRate": "6.90",
-        "UsdRate": "5.55"
+        "KhrRate": "6.05",
+        "UsdRate": "4.60"
       },
       {
         "Term": "18",
         "Type": "MONTH",
         "RateTermMaxRange": "0",
-        "KhrRate": "7.10",
-        "UsdRate": "5.60"
+        "KhrRate": "6.10",
+        "UsdRate": "4.65"
       },
       {
         "Term": "24",
         "Type": "MONTH",
         "RateTermMaxRange": "0",
-        "KhrRate": "7.30",
-        "UsdRate": "5.70"
+        "KhrRate": "6.15",
+        "UsdRate": "4.70"
       }
     ]
   },
@@ -122,99 +121,99 @@
         "Term": "1",
         "Type": "MONTH",
         "RateTermMaxRange": "1",
-        "KhrRate": "2.40",
-        "UsdRate": "1.60"
+        "KhrRate": "2.05",
+        "UsdRate": "1.55"
       },
       {
         "Term": "2",
         "Type": "MONTH",
         "RateTermMaxRange": "3",
-        "KhrRate": "2.50",
-        "UsdRate": "1.70"
+        "KhrRate": "2.15",
+        "UsdRate": "1.60"
       },
       {
         "Term": "3",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "3.65",
-        "UsdRate": "2.15"
+        "KhrRate": "3.30",
+        "UsdRate": "2.05"
       },
       {
         "Term": "4",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "4.35",
-        "UsdRate": "2.25"
+        "KhrRate": "3.35",
+        "UsdRate": "2.10"
       },
       {
         "Term": "5",
         "Type": "MONTH",
         "RateTermMaxRange": "5",
-        "KhrRate": "4.40",
-        "UsdRate": "2.50"
+        "KhrRate": "3.40",
+        "UsdRate": "2.15"
       },
       {
         "Term": "6",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.15",
-        "UsdRate": "3.65"
+        "KhrRate": "4.30",
+        "UsdRate": "3.05"
       },
       {
         "Term": "7",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.30",
-        "UsdRate": "3.75"
+        "KhrRate": "4.35",
+        "UsdRate": "3.10"
       },
       {
         "Term": "8",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.40",
-        "UsdRate": "3.85"
+        "KhrRate": "4.40",
+        "UsdRate": "3.15"
       },
       {
         "Term": "9",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.85",
-        "UsdRate": "4.00"
+        "KhrRate": "4.45",
+        "UsdRate": "3.20"
       },
       {
         "Term": "10",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "5.95",
-        "UsdRate": "4.10"
+        "KhrRate": "4.50",
+        "UsdRate": "3.25"
       },
       {
         "Term": "11",
         "Type": "MONTH",
         "RateTermMaxRange": "11",
-        "KhrRate": "6.05",
-        "UsdRate": "4.20"
+        "KhrRate": "4.55",
+        "UsdRate": "3.30"
       },
       {
         "Term": "12",
         "Type": "MONTH",
         "RateTermMaxRange": "23",
-        "KhrRate": "6.80",
-        "UsdRate": "5.20"
+        "KhrRate": "5.30",
+        "UsdRate": "4.30"
       },
       {
         "Term": "18",
         "Type": "MONTH",
         "RateTermMaxRange": "0",
-        "KhrRate": "6.85",
-        "UsdRate": "5.35"
+        "KhrRate": "5.35",
+        "UsdRate": "4.50"
       },
       {
         "Term": "24",
         "Type": "MONTH",
         "RateTermMaxRange": "0",
-        "KhrRate": "6.90",
-        "UsdRate": "5.55"
+        "KhrRate": "5.40",
+        "UsdRate": "4.40"
       }
     ]
   },
@@ -230,92 +229,92 @@
         "Term": "36",
         "Type": "MONTH",
         "RateTermMaxRange": "47",
-        "KhrRate": "7.45",
-        "UsdRate": "5.80"
+        "KhrRate": "6.20",
+        "UsdRate": "4.75"
       },
       {
         "Term": "48",
         "Type": "MONTH",
         "RateTermMaxRange": "59",
-        "KhrRate": "7.55",
-        "UsdRate": "6.10"
+        "KhrRate": "6.25",
+        "UsdRate": "4.80"
       },
       {
         "Term": "60",
         "Type": "MONTH",
         "RateTermMaxRange": "71",
-        "KhrRate": "7.65",
-        "UsdRate": "6.25"
+        "KhrRate": "6.30",
+        "UsdRate": "5.00"
       },
       {
         "Term": "72",
         "Type": "MONTH",
         "RateTermMaxRange": "83",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "84",
         "Type": "MONTH",
         "RateTermMaxRange": "95",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "96",
         "Type": "MONTH",
         "RateTermMaxRange": "107",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "108",
         "Type": "MONTH",
         "RateTermMaxRange": "119",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "120",
         "Type": "MONTH",
         "RateTermMaxRange": "131",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "132",
         "Type": "MONTH",
         "RateTermMaxRange": "143",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "144",
         "Type": "MONTH",
         "RateTermMaxRange": "155",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "156",
         "Type": "MONTH",
         "RateTermMaxRange": "167",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "168",
         "Type": "MONTH",
         "RateTermMaxRange": "179",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       },
       {
         "Term": "180",
         "Type": "MONTH",
         "RateTermMaxRange": "0",
-        "KhrRate": "7.75",
-        "UsdRate": "6.35"
+        "KhrRate": "6.66",
+        "UsdRate": "5.55"
       }
     ]
   }
