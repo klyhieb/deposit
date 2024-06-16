@@ -15,8 +15,8 @@ import java.time.temporal.ChronoUnit
  * Total Interest = (Principle * (interest rate/100) * number of day) /365
  */
 
-private const val PERCENTAGE_NUMBER = 100
-private const val YEAR_NUMBER = 365
+const val PERCENTAGE_NUMBER = 100
+const val YEAR_NUMBER = 365
 
 data class TotalReceivedModel(
     val interestWithTax: Double = 0.0,

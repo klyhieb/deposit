@@ -9,17 +9,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class CloseTermCalculator(private val termType: TermType, private val termMonths: Int) {
-
-    private fun getCreditMonthsByTermType(): Int {
-        return when(termType) {
-            TermType.HI_GROWTH -> termMonths
-            TermType.HI_INCOME -> 1
-            TermType.LONG_TERM -> 3
-            TermType.DEFAULT -> 0 // this case should not represents
-        }
-    }
-
+class CloseTermCalculator {
     @RequiresApi(Build.VERSION_CODES.O)
     fun getStartDate(): LocalDate = LocalDate.now() // we take current date as starting date
 
@@ -31,32 +21,31 @@ class CloseTermCalculator(private val termType: TermType, private val termMonths
     }
 
     /* cal. interest amount for the given term */
-    fun totalInterestAmount(principalAmount: Double, annualRate: Double): Double {
-        val yearlyInterest = principalAmount * annualRate.percentageToDouble()
-        val creditMonth = getCreditMonthsByTermType()
-        return yearlyInterest * creditMonth.getYearAsDouble()
+    fun interest(principalAmount: Double, annualRate: Double, numberOfDays: Long): Double {
+        return (principalAmount * (annualRate / PERCENTAGE_NUMBER) * numberOfDays) / YEAR_NUMBER
     }
 
-    fun dailyInterest(totalInterestAmount: Double): Double {
-        val totalDays = getCreditMonthsByTermType() * 30 // 30 days for 1 months
-        return totalInterestAmount / totalDays
+    /* cal. tax on interest */
+    fun tax(interestAmount: Double, taxRate: Double): Double {
+        return interestAmount * (taxRate / PERCENTAGE_NUMBER)
     }
 
-    fun receivedInterest(dailyInterest: Double, depositDays: Long): Double {
-        return dailyInterest * depositDays
+    /* cal. net interest amount, amount after tax */
+    fun netInterest(interestAmount: Double, taxAmount: Double): Double {
+        return interestAmount - taxAmount
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
-    val cal = CloseTermCalculator(TermType.HI_GROWTH, 5)
-    val numberdays = cal.depositDays(effectiveDateStr = "2024-05-11")
-    val totalInterestAmount = cal.totalInterestAmount(100.0, 3.40)
-    val dailyInterest = cal.dailyInterest(totalInterestAmount)
-    val recievedInterest = cal.receivedInterest(dailyInterest, numberdays)
+    val cal = CloseTermCalculator()
+    val depositDays = cal.depositDays(effectiveDateStr = "2024-02-14")
+    val interest = cal.interest(principalAmount = 100.0, annualRate = 2.35, numberOfDays = depositDays)
+    val tax = cal.tax(interestAmount = interest, taxRate = 6.0)
+    val netInterest = cal.netInterest(interestAmount = interest, taxAmount = tax)
 
-    println(numberdays)
-    println(totalInterestAmount)
-    println(dailyInterest)
-    println(recievedInterest)
+    println("Deposit days: $depositDays")
+    println("Interest: $interest")
+    println("Tax: $tax")
+    println("Net Interest: $netInterest")
 }

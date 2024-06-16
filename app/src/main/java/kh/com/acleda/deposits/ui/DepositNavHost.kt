@@ -145,8 +145,7 @@ fun DepositNavHost(
             route = DepositDetail.routWithArg,
             arguments = DepositDetail.argument
         ) { backStackEntry ->
-            val termObjectString: String =
-                backStackEntry.arguments?.getString(DepositDetail.depositDetailWithTermArg) ?: ""
+            val termObjectString: String = backStackEntry.arguments?.getString(DepositDetail.depositDetailWithTermArg) ?: ""
             val term: DepositItemModel = gson.fromJson(termObjectString)
 
             val isFromCloseRequest: Boolean = backStackEntry.arguments?.getBoolean(DepositDetail.isFromCloseRequestArg) ?: false
@@ -157,16 +156,16 @@ fun DepositNavHost(
                 onBackPress = { navController.popBackStack() },
                 onCloseTermDialogConfirm = { closeTerm ->
                     val ccy = getCcyEnum(closeTerm.currency)
-                    val calculator = CloseTermCalculator(termType = getTermTypeEnum(closeTerm.termTypeId), termMonths = closeTerm.depositTerm.toIntOrNull() ?: 0)
+                    val calculator = CloseTermCalculator()
                     val depositDays = calculator.depositDays(effectiveDateStr = closeTerm.effectiveDate)
-                    val totalInterestAmount = calculator.totalInterestAmount(principalAmount = closeTerm.depositAmount.toDouble(), annualRate = closeTerm.interestRate.toDoubleOrNull() ?: 0.0)
-                    val dailyInterest = calculator.dailyInterest(totalInterestAmount)
-                    val receivedInterest = calculator.receivedInterest(dailyInterest, depositDays)
+                    val interest = calculator.interest(principalAmount = closeTerm.depositAmount.toDouble(), annualRate = closeTerm.interestRate.toDoubleOrNull() ?: 0.0, numberOfDays = depositDays)
+                    val tax = calculator.tax(interestAmount = interest, taxRate = 6.0) // for now just fixed number
+                    val netInterest = calculator.netInterest(interestAmount = interest, taxAmount = tax)
 
                     val model = AuthCloseTermModel(
                         ccy = ccy,
                         depositDays = depositDays,
-                        receivedInterest = roundDoubleAmount(receivedInterest, ccy)
+                        receivedInterest = roundDoubleAmount(netInterest, ccy)
                     )
 
                     val modelStr: String = gson.toJson(model)
