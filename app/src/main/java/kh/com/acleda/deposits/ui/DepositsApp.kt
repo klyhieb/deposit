@@ -1,5 +1,7 @@
 package kh.com.acleda.deposits.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +37,7 @@ import kh.com.acleda.deposits.modules.home.presentation.components.TotalDepositB
 import kh.com.acleda.deposits.modules.home.presentation.components.TotalDepositByType
 import kh.com.acleda.deposits.ui.theme.DepositsTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun  DepositsApp() {
     DepositsTheme {
@@ -56,6 +59,7 @@ fun  DepositsApp() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppPreview() {

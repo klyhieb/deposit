@@ -96,7 +96,7 @@ fun DepositDetailHeader(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = term.currency ?: "",
+                        text = term.currency,
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                         color = Blue9
                     )
@@ -105,7 +105,7 @@ fun DepositDetailHeader(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = term.mm ?: "",
+                    text = term.mm,
                     style = MaterialTheme.typography.titleMedium,
                     color = DepositsTheme.colors.textHelp
                 )
@@ -113,7 +113,7 @@ fun DepositDetailHeader(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = term.termTypeName ?: "",
+                    text = term.termTypeName,
                     style = MaterialTheme.typography.titleMedium,
                     color = DepositsTheme.colors.textHelp
                 )

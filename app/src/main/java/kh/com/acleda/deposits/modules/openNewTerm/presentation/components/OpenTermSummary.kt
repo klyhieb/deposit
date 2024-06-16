@@ -133,7 +133,7 @@ fun OpenTermSummary(
                         )
 
                         Text(
-                            formatAmountWithCcy(summary.interestInNMonths, summary.ccy),
+                            formatAmountWithCcy(summary.interestInCreditMonths, summary.ccy),
                             style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
@@ -153,7 +153,7 @@ fun OpenTermSummary(
                         )
 
                         Text(
-                            formatAmountWithCcy(summary.taxAmount, summary.ccy),
+                            formatAmountWithCcy(summary.taxAmountInCreditMonth, summary.ccy),
                             style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
@@ -194,6 +194,26 @@ fun OpenTermSummary(
 
                         Text(
                             convertDateFormat(summary.maturityDate),
+                            style = textStyle,
+                            color = DepositsTheme.colors.textHelpLabel
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Text(
+                            "Final Maturity Date:",
+                            style = textStyle,
+                            color = DepositsTheme.colors.textSupport
+                        )
+
+                        Text(
+                            convertDateFormat(summary.finalMaturityDate),
                             style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )
@@ -249,27 +269,6 @@ fun OpenTermSummary(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .padding(vertical = 4.dp)
-                    ) {
-                        Text(
-                            "Received at maturity:",
-                            style = textStyle,
-                            color = DepositsTheme.colors.textSupport
-                        )
-
-                        Text(
-                            formatAmountWithCcy(summary.totalReceivedAtMaturity, summary.ccy),
-                            style = textStyle,
-                            color = DepositsTheme.colors.textHelpLabel
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
                             .padding(vertical = 4.dp)
                     ) {
                         Text(
@@ -299,7 +298,7 @@ fun OpenTermSummary(
                         )
 
                         Text(
-                            formatAmountWithCcy(summary.netInterestInNMonths, summary.ccy),
+                            formatAmountWithCcy(summary.netInterestInCreditMonths, summary.ccy),
                             style = textStyle,
                             color = DepositsTheme.colors.textHelpLabel
                         )

@@ -139,11 +139,11 @@ fun convertModelToListDetail(model: UnAthOpenTermModel) =
         ),
         DetailListItemModel(
             title = "Interest amount ${singularPluralWordFormat(model.creditMonths.toString(), "Month")}",
-            value = formatAmountWithCcy(model.interestInNMonths, model.ccy)
+            value = formatAmountWithCcy(model.interestInCreditMonths, model.ccy)
         ),
         DetailListItemModel(
             title = "Tax ${"%.2f".format(model.taxRate)}%:",
-            value = formatAmountWithCcy(model.taxAmount, model.ccy)
+            value = formatAmountWithCcy(model.taxAmountInCreditMonth, model.ccy)
         ),
         DetailListItemModel(
             title = "Effective date:",
@@ -152,6 +152,10 @@ fun convertModelToListDetail(model: UnAthOpenTermModel) =
         DetailListItemModel(
             title = "Maturity date:",
             value = convertDateFormat(model.maturityDate)
+        ),
+        DetailListItemModel(
+            title = "Final Maturity date:",
+            value = convertDateFormat(model.finalMaturityDate)
         ),
         DetailListItemModel(
             title = "Rollover time:",
@@ -167,22 +171,16 @@ fun convertModelToListDetail(model: UnAthOpenTermModel) =
             value = ""
         ),
         DetailListItemModel(
-            title = "*at maturity:",
-            value = formatAmountWithCcy(model.totalReceivedAtMaturity, model.ccy),
-            valueColor = Gold2
-        ),
-        DetailListItemModel(
             title = "*at final maturity:",
             value = formatAmountWithCcy(model.totalToReceiveAtFinalMaturity, model.ccy),
             valueColor = Gold2
         ),
         DetailListItemModel(
             title = "Net interest ${singularPluralWordFormat(model.creditMonths.toString(), "Month")}",
-            value = formatAmountWithCcy(model.netInterestInNMonths, model.ccy),
+            value = formatAmountWithCcy(model.netInterestInCreditMonths, model.ccy),
             valueColor = Gold2
         )
     )
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview

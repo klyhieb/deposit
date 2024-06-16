@@ -95,32 +95,29 @@ fun OpenNewTermScreen(
     val renewalOptions = rememberSaveable { getAvailableOptionRenewal(termMonths, termType) }
     var autoRenewal by rememberSaveable { mutableStateOf(getAutoRenewal(renewalOptions[0].model)) }
 
-    val calculator = OpenTermCalculator(termType= termType, termMonths = termMonths)
+    val calculator = OpenTermCalculator(termType = termType, termMonths = termMonths)
     calculator.checkInvalidAmount(principalAmount = depositAmount, ccy = selectedCcy)
 
-    val maturityDate = calculator.maturityDate(renewalTime = renewalTime)
-    val interestAmount = calculator.totalInterestAmountByTermType(principalAmount = depositAmount, annualRate = annualRate)
-    val taxAmount = calculator.taxAmount(totalInterestAmount = interestAmount, taxRate = taxRate)
-    val netInterest = calculator.netInterestByTermType(totalInterestAmount = interestAmount, taxAmount = taxAmount)
-    val totalReceivedAtMaturity = calculator.totalToReceiveAtMaturity(principalAmount = depositAmount, totalInterestAmount = interestAmount, taxRate = taxRate)
-    val totalToReceiveAtFinalMaturity = calculator.totalToReceiveAtFinalMaturityByType(
-        principalAmount = depositAmount,
-        renewalTime = renewalTime,
-        renewalOption = autoRenewal,
-        annualRate = annualRate,
-        taxRate = taxRate
-    )
-    val totalNetInterest = calculator.totalNetInterest(principalAmount = depositAmount, totalToReceiveAtFinalMaturity = totalToReceiveAtFinalMaturity)
+    val maturityDate = calculator.maturityDate()
+    val numberOfDays = calculator.numberOfDays(endDate = maturityDate)
+    val finalMaturityDate = calculator.finalMaturityDate(renewalTime = renewalTime)
 
-    val totalInterestAtFinalMaturityWithTax = calculator.totalToReceiveAtFinalMaturityByType(
-        principalAmount = depositAmount,
-        renewalTime = renewalTime,
+    // credit month
+    val interestAmountAtCreditMonth = calculator.interest(principalAmount = depositAmount, annualRate = annualRate, numberOfDays = numberOfDays)
+    val taxAmountAtCreditMonth = calculator.tax(interestAmount = interestAmountAtCreditMonth, taxRate = taxRate)
+    val netInterestAtCreditMonth = calculator.netInterest(interestAmount = interestAmountAtCreditMonth, taxAmount = taxAmountAtCreditMonth)
+    val totalReceivedAtAtCreditMonth = calculator.totalToReceive(principalAmount = depositAmount, netInterest = netInterestAtCreditMonth)
+
+    // Final Maturity Both Normal and Special case (Hi-Growth with Principal & Interest)
+    val finalToReceived = calculator.finalPrincipal(
+        initialPrincipal = depositAmount,
         renewalOption = autoRenewal,
+        renewalTimes = renewalTime,
         annualRate = annualRate,
-        taxRate = 0.0 // without minus tax
+        taxRate = taxRate,
     )
-    val totalInterestWithTax = calculator.totalInterestWithTax(principalAmount = depositAmount, totalInterestAtFinalMaturityWithTax = totalInterestAtFinalMaturityWithTax)
-    totalInterest = formatAmountWithCcy(roundDoubleAmount(totalInterestWithTax, selectedCcy), selectedCcy.dec.uppercase())
+
+    totalInterest = formatAmountWithCcy(roundDoubleAmount(finalToReceived.interestWithTax, selectedCcy), selectedCcy.dec.uppercase())
 
 
     val unAthOpenTermModel = UnAthOpenTermModel(
@@ -132,16 +129,17 @@ fun OpenNewTermScreen(
         ccy = selectedCcy.dec.uppercase(),
         taxRate = taxRate.toFloat(),
         creditMonths = calculator.getCreditMonthsByTermType(),
-        interestInNMonths = roundDoubleAmount(interestAmount, selectedCcy),
-        taxAmount = roundDoubleAmount(taxAmount, selectedCcy),
+        interestInCreditMonths = roundDoubleAmount(interestAmountAtCreditMonth, selectedCcy),
+        taxAmountInCreditMonth = roundDoubleAmount(taxAmountAtCreditMonth, selectedCcy),
         effectiveDate = calculator.getStartDate().toString(),
-        maturityDate = maturityDate,
+        maturityDate = maturityDate.toString(),
+        finalMaturityDate = finalMaturityDate.toString(),
         rolloverTime = renewalTime,
         autoRenewal = autoRenewal,
-        netInterestInNMonths = roundDoubleAmount(netInterest, selectedCcy),
-        totalReceivedAtMaturity = roundDoubleAmount(totalReceivedAtMaturity, selectedCcy),
-        totalToReceiveAtFinalMaturity = roundDoubleAmount(totalToReceiveAtFinalMaturity, selectedCcy),
-        totalNetInterest = roundDoubleAmount(totalNetInterest, selectedCcy)
+        netInterestInCreditMonths = roundDoubleAmount(netInterestAtCreditMonth, selectedCcy),
+        totalReceivedAtCreditMonths = roundDoubleAmount(totalReceivedAtAtCreditMonth, selectedCcy),
+        totalToReceiveAtFinalMaturity = roundDoubleAmount(finalToReceived.totalToReceive, selectedCcy),
+        totalNetInterest = roundDoubleAmount(finalToReceived.netInterest, selectedCcy)
     )
 
     CenterTopAppBar(
