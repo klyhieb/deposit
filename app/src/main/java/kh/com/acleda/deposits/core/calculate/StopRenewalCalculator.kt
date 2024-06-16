@@ -5,12 +5,12 @@ import androidx.annotation.RequiresApi
 import java.time.LocalDate
 
 class StopRenewalCalculator {
-    /* calculate new maturity date by deduct renewal times to zero (0) */
+    /* Calculate new maturity date by deducting renewal times to zero (0) */
     @RequiresApi(Build.VERSION_CODES.O)
-    fun calculateNewMaturityDate(originalDate: String, renewalCount: Int, termMonths: Long): String {
-        val originalMaturityDate = LocalDate.parse(originalDate)
-        val totalMonths = termMonths * (renewalCount)
-        return originalMaturityDate.minusMonths(totalMonths).toString()
+    fun calculateNewMaturityDate(originalMaturityDate: String, renewalCount: Int, termMonths: Long): String {
+        val originalMaturityDate = LocalDate.parse(originalMaturityDate)
+        val totalMonthsToDeduct = termMonths * (renewalCount)
+        return originalMaturityDate.minusMonths(totalMonthsToDeduct).toString()
     }
 }
 
@@ -20,7 +20,7 @@ fun main() {
     val renewalCount = 2
     val termMonths = 2L
 
-    val newMaturitiyDate = StopRenewalCalculator().calculateNewMaturityDate(originalDate, renewalCount, termMonths)
-    println(newMaturitiyDate)
+    val newMaturityDate = StopRenewalCalculator().calculateNewMaturityDate(originalDate, renewalCount, termMonths)
+    println(newMaturityDate)
 
 }

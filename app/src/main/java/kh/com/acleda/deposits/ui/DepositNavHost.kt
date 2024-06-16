@@ -113,7 +113,11 @@ fun DepositNavHost(
                                 rolloverTime = term.rolloverTime,
                                 maturityDate = term.maturityDate,
                                 newRolloverTime = "0",
-                                newMaturityDate = calculator.calculateNewMaturityDate(originalDate = term.maturityDate, renewalCount = term.rolloverTime.toIntOrNull() ?: 0, termMonths = term.depositTerm.toLongOrNull() ?: 0),
+                                newMaturityDate = calculator.calculateNewMaturityDate(
+                                    originalMaturityDate = term.maturityDate,
+                                    renewalCount = term.rolloverTime.toIntOrNull() ?: 0,
+                                    termMonths = term.depositTerm.toLongOrNull() ?: 0
+                                )
                             )
 
                             val modelStr = gson.toJson(model)
