@@ -38,6 +38,7 @@ import kh.com.acleda.deposits.ui.theme.Gold7
 @Composable
 fun TermViewPager(
     modifier: Modifier = Modifier,
+    stateKey: Any,
     rateList: ArrayList<DepositRateDetailsModel>,
     onCurrentSelect: (Int) -> Unit
 ) {
@@ -49,7 +50,7 @@ fun TermViewPager(
         pageWidth = mPageWidth,
         pageHeight = mPageHeight,
         items = rateList,
-        isVisible = false,
+        stateKey = stateKey,
         onCurrentSelect = onCurrentSelect
     ) { pageIndex, pagerState ->
         TermItem(
@@ -135,6 +136,7 @@ private fun Preview() {
         val mRateList = rates.rateDetails ?: ArrayList()
         TermViewPager(
             rateList = mRateList,
+            stateKey = true,
             onCurrentSelect = {
 
             }

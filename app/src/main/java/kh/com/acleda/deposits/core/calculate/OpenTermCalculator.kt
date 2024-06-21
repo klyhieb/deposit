@@ -2,6 +2,7 @@ package kh.com.acleda.deposits.core.calculate
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import kh.com.acleda.deposits.core.roundDoubleAmount
 import kh.com.acleda.deposits.modules.home.domain.model.TermType
 import kh.com.acleda.deposits.modules.home.presentation.components.CCY
 import java.time.LocalDate
@@ -9,7 +10,8 @@ import java.time.temporal.ChronoUnit
 
 /**
  * Base formula:
- * Total Interest = (Principle * (interest rate/100) * number of day) /365
+ * Total Interest = (principle * (interest_rate/100) * number_of_day) /365
+ * or             = (principle * interest_rate * number_of_day) / (365 * 100)
  */
 
 const val PERCENTAGE_NUMBER = 100
@@ -87,7 +89,7 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
     fun interest(principalAmount: Double, annualRate: Double, numberOfDays: Long): Double {
         if (invalidAmount) return 0.0
 
-        return (principalAmount * (annualRate / PERCENTAGE_NUMBER) * numberOfDays) / YEAR_NUMBER
+        return (principalAmount * annualRate * numberOfDays) / (YEAR_NUMBER * PERCENTAGE_NUMBER)
     }
 
     /* cal. tax on interest */
@@ -154,7 +156,7 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
 
     /* cal. total to received for special case */
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun totalReceivedNormalCase(initialPrincipal: Double, renewalTimes: Int, annualRate: Double, taxRate: Double): TotalReceivedModel {
+    private fun totalReceivedStandardCase(initialPrincipal: Double, renewalTimes: Int, annualRate: Double, taxRate: Double): TotalReceivedModel {
         val startDate = getStartDate()
 
         val finalMaturityDate = finalMaturityDate(startDate, renewalTime = renewalTimes)
@@ -175,6 +177,8 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
     /* cal. final total interest of renewal with principal and interest */
     @RequiresApi(Build.VERSION_CODES.O)
     fun finalPrincipal(initialPrincipal: Double, renewalOption: String, renewalTimes: Int, annualRate: Double, taxRate: Double): TotalReceivedModel {
+        if (invalidAmount) return TotalReceivedModel()
+
         if (isSpecialCase(renewalOption)) {
             return totalReceivedSpecialCase(
                 initialPrincipal = initialPrincipal,
@@ -184,7 +188,7 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
             )
         }
 
-        return totalReceivedNormalCase(
+        return totalReceivedStandardCase(
             initialPrincipal = initialPrincipal,
             renewalTimes = renewalTimes,
             annualRate = annualRate,
@@ -196,38 +200,30 @@ class OpenTermCalculator(private val termType: TermType, private val termMonths:
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
     // Given data
-    val depositTenor = 4 // in months
-    val renewalTime = 2
-    val renewalOption = "Principal & Interesteee"
-    val depositAmount = 100.0 // 100 USD
-    val annualRate = 2.35
-    val taxRate = 6.00
+    val depositTenor = 5 // in months
+    val renewalTime = 4
+    val renewalOption = "Principal & Interest-4444"
+    val depositAmount = 400000.0 // 100 USD
+    val annualRate = 4.40
+    val taxRate = 6.0
     val termType = TermType.HI_GROWTH
-    val startDateStr = "2024-06-16"
-    val startDate = LocalDate.parse(startDateStr)
+    val ccy = CCY.RIEL
 
     // Calculations
     val calculator = OpenTermCalculator(termType = termType, termMonths = depositTenor)
-    calculator.checkInvalidAmount(principalAmount = depositAmount, ccy = CCY.DOLLAR)
+    calculator.checkInvalidAmount(principalAmount = depositAmount, ccy = ccy)
 
-    val maturityDate = calculator.maturityDate(startDate)
-    val firstNumberOfDays = calculator.numberOfDays(startDate = startDate, endDate = maturityDate)
-    val finalMaturityDate = calculator.finalMaturityDate(startDate, renewalTime = renewalTime)
-    val finalNumberOfDays = calculator.numberOfDays(startDate = startDate, endDate = finalMaturityDate)
+    val maturityDate = calculator.maturityDate()
+    val numberOfDays = calculator.numberOfDays(endDate = maturityDate)
+    val finalMaturityDate = calculator.finalMaturityDate(renewalTime = renewalTime)
 
     // credit month
-    val interestAmountAtCreditMonth = calculator.interest(principalAmount = depositAmount, annualRate = annualRate, numberOfDays = firstNumberOfDays)
+    val interestAmountAtCreditMonth = calculator.interest(principalAmount = depositAmount, annualRate = annualRate, numberOfDays = numberOfDays)
     val taxAmountAtCreditMonth = calculator.tax(interestAmount = interestAmountAtCreditMonth, taxRate = taxRate)
     val netInterestAtCreditMonth = calculator.netInterest(interestAmount = interestAmountAtCreditMonth, taxAmount = taxAmountAtCreditMonth)
     val totalReceivedAtAtCreditMonth = calculator.totalToReceive(principalAmount = depositAmount, netInterest = netInterestAtCreditMonth)
 
-    // final maturity
-    val totalInterestAmount = calculator.interest(principalAmount = depositAmount, annualRate = annualRate, numberOfDays = finalNumberOfDays)
-    val totalTaxAmount = calculator.tax(interestAmount = totalInterestAmount, taxRate = taxRate)
-    val totalNetInterest = calculator.netInterest(interestAmount = totalInterestAmount, taxAmount = totalTaxAmount)
-    val totalToReceiveAtFinalMaturity = calculator.totalToReceive(principalAmount = depositAmount, netInterest = totalNetInterest)
-
-    // special case Hi-Growth with Principal & Interest
+    // Final Maturity Both Normal and Special case (Hi-Growth with Principal & Interest)
     val finalToReceived = calculator.finalPrincipal(
         initialPrincipal = depositAmount,
         renewalOption = renewalOption,
@@ -237,23 +233,17 @@ fun main() {
     )
 
     // Print results
-    println("Maturity Date: $maturityDate")
-    println("Final Maturity Date: $finalMaturityDate")
+    println("Maturity date: $maturityDate")
+    println("Final maturity date: $finalMaturityDate")
     println()
 
-    println("Number of days to Maturity: $firstNumberOfDays")
-    println("Number of days to Final Maturity: $finalNumberOfDays")
+    println("Interest at credit month: ${roundDoubleAmount(interestAmountAtCreditMonth, ccy)} ${ccy.dec.uppercase()}")
+    println("Tax amount at credit month: ${roundDoubleAmount(taxAmountAtCreditMonth, ccy)} ${ccy.dec.uppercase()}")
+    println("Net interest at credit month: ${roundDoubleAmount(netInterestAtCreditMonth, ccy)} ${ccy.dec.uppercase()}")
+    println("Total received at credit month : ${roundDoubleAmount(totalReceivedAtAtCreditMonth, ccy)} ${ccy.dec.uppercase()}")
     println()
 
-    println("Interest: %.2f USD".format(interestAmountAtCreditMonth))
-    println("Tax Amount: %.2f USD".format(taxAmountAtCreditMonth))
-    println("Net Interest: %.2f USD".format(netInterestAtCreditMonth))
-    println("Total Received At Maturity: %.2f USD".format(totalReceivedAtAtCreditMonth))
-    println()
-
-    println("Total Interest: %.2f USD".format(totalInterestAmount))
-    println("Total Tax Amount: %.2f USD".format(totalTaxAmount))
-    println("Total Net Interest: %.2f USD".format(totalNetInterest))
-    println("Total Received At Final Maturity: %.2f USD".format(totalToReceiveAtFinalMaturity))
-    println("Total Received At Final Maturity Special Case: $finalToReceived")
+    println("finalToReceived: $finalToReceived")
+    println("Net interest at final: ${roundDoubleAmount(finalToReceived.netInterest, ccy)} ${ccy.dec.uppercase()}")
+    println("Total received at final: ${roundDoubleAmount(finalToReceived.totalToReceive, ccy)} ${ccy.dec.uppercase()}")
 }

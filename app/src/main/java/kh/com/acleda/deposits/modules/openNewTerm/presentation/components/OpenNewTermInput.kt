@@ -62,6 +62,7 @@ fun OpenNewTermInput(
     val renewalTimeList = getRenewalTimeList(currentSelectedTermMonth)
 
     var reselectRenewalTime by remember { mutableStateOf(true) }
+    var reselectTermTime = true
 
     /*-------------------------------------------------------------------------*/
     fun selectionOptionSelected(selectedOption: SelectionOption) {
@@ -104,6 +105,7 @@ fun OpenNewTermInput(
                 selectedIndex = selectedIndex,
                 items = currencyList,
                 onSelectionChange = { index, tabModel ->
+                    reselectTermTime = !reselectTermTime
                     selectedIndex = index
                     currencyIcon = tabModel.icon!!
                     onSwitchCurrency(tabModel.ccy)
@@ -137,6 +139,7 @@ fun OpenNewTermInput(
             TermViewPager(
                 modifier = Modifier.fillMaxWidth(),
                 rateList = rates.rateDetails ?: arrayListOf(),
+                stateKey = currencyIcon,
                 onCurrentSelect = { index ->
                     rates.rateDetails?.get(index)?.let {
                         currentSelectedTermMonth = it.term?.toIntOrNull() ?: 0
@@ -183,7 +186,7 @@ fun OpenNewTermInput(
             ) {
                 RenewalTime(
                     nthList = renewalTimeList,
-                    isVisible = reselectRenewalTime,
+                    stateKey = reselectRenewalTime,
                     onCurrentSelect = {
                         onChooseRenewalTime(it  + 1) // it wil zero for first index
                     }
@@ -259,7 +262,7 @@ object RenewalOption {
 @Composable
 fun RenewalTime(
     nthList: ArrayList<Int>,
-    isVisible: Boolean,
+    stateKey: Boolean,
     onCurrentSelect: (Int) -> Unit
 ) {
     Spacer(modifier = Modifier.height(16.dp))
@@ -274,7 +277,7 @@ fun RenewalTime(
 
     RenewalTimeViewPager(
         nthList = nthList,
-        isVisible = isVisible,
+        stateKey = stateKey,
         onCurrentSelect = onCurrentSelect
     )
 }

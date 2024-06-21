@@ -19,7 +19,7 @@ class CloseTermCalculator {
 
     /* cal. interest amount for the given term */
     fun interest(principalAmount: Double, annualRate: Double, numberOfDays: Long): Double {
-        return (principalAmount * (annualRate / PERCENTAGE_NUMBER) * numberOfDays) / YEAR_NUMBER
+        return (principalAmount * annualRate * numberOfDays) / (YEAR_NUMBER * PERCENTAGE_NUMBER)
     }
 
     /* cal. tax on interest */

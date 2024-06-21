@@ -350,7 +350,7 @@ fun Rollover(
 
                 RenewalTime(
                     nthList = renewalTimeList,
-                    isVisible = false,
+                    stateKey = false,
                     onCurrentSelect = onCurrentRenewalTimeSelect
                 )
 

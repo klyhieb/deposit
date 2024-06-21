@@ -26,7 +26,7 @@ internal fun <T> AnimatedViewPager(
     pageHeight: Dp,
     items: ArrayList<T>,
     onCurrentSelect: (Int) -> Unit,
-    isVisible: Boolean = true,
+    stateKey: Any,
     itemView: @Composable (pageIndex: Int, pagerState: PagerState) -> Unit
 ) {
     val pagerState = rememberPagerState(
@@ -35,10 +35,8 @@ internal fun <T> AnimatedViewPager(
         pageCount = { items.size },
     )
 
-    LaunchedEffect(isVisible) {
-        if (isVisible) {
-            pagerState.scrollToPage(0)
-        }
+    LaunchedEffect(stateKey) {
+        pagerState.scrollToPage(0)
     }
 
     var currentPageIndex by remember { mutableIntStateOf(0) }

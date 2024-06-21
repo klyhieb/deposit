@@ -17,7 +17,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -79,21 +78,21 @@ fun OpenNewTermScreen(
         return renewalItemModel.value
     }
     // -----------------------------------------------------------------
-    var selectedCcy by rememberSaveable { mutableStateOf(CCY.DOLLAR) }
-    val rates = getDepositRateByTypeAndCcy(context, termType, selectedCcy)
-    val firstRateModel = rates.rateDetails?.firstOrNull()
+    var selectedCcy by remember { mutableStateOf(CCY.DOLLAR) }
+    val rates = remember { mutableStateOf(getDepositRateByTypeAndCcy(context, termType, selectedCcy)) }
+    val firstRateModel = rates.value.rateDetails?.firstOrNull()
     val defaultTermMonth = firstRateModel?.term?.toIntOrNull() ?: 0
     val defaultAnnualRate = firstRateModel?.currentPA ?: 0.0
 
-    var showAccountNumber by rememberSaveable { mutableStateOf(getShowAccountNumber(accountList[0])) }
-    var depositAmount by rememberSaveable { mutableDoubleStateOf(0.0) }
+    var showAccountNumber by remember { mutableStateOf(getShowAccountNumber(accountList[0])) }
+    var depositAmount by remember { mutableDoubleStateOf(0.0) }
 
     val taxRate = 6.00 // 6.00 %
-    var termMonths by rememberSaveable { mutableIntStateOf(defaultTermMonth) }
-    var annualRate by rememberSaveable { mutableDoubleStateOf(defaultAnnualRate) }
+    var termMonths by remember { mutableIntStateOf(defaultTermMonth) }
+    var annualRate by remember { mutableDoubleStateOf(defaultAnnualRate) }
     var renewalTime by remember { mutableIntStateOf(0) } // 0 for default renewal time
-    val renewalOptions = rememberSaveable { getAvailableOptionRenewal(termMonths, termType) }
-    var autoRenewal by rememberSaveable { mutableStateOf(getAutoRenewal(renewalOptions[0].model)) }
+    val renewalOptions = remember { getAvailableOptionRenewal(termMonths, termType) }
+    var autoRenewal by remember { mutableStateOf(getAutoRenewal(renewalOptions[0].model)) }
 
     val calculator = OpenTermCalculator(termType = termType, termMonths = termMonths)
     calculator.checkInvalidAmount(principalAmount = depositAmount, ccy = selectedCcy)
@@ -181,7 +180,7 @@ fun OpenNewTermScreen(
             OpenNewTermInput(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 sourceAccount = sourceAccount,
-                rates = rates,
+                rates = rates.value,
                 renewalOptionList = renewalOptions,
                 totalInterest = totalInterest,
                 onSelectSourceAccountClick = {
@@ -189,13 +188,20 @@ fun OpenNewTermScreen(
                 },
                 onSwitchCurrency = {
                     selectedCcy = it
+                    val updatedRates = getDepositRateByTypeAndCcy(context, termType, selectedCcy)
+                    rates.value = updatedRates // Ensure rates.value is updated
+                    val updatedFirstRateModel = updatedRates.rateDetails?.firstOrNull()
+                    termMonths = updatedFirstRateModel?.term?.toIntOrNull() ?: 0
+                    annualRate = updatedFirstRateModel?.currentPA ?: 0.0
                 },
                 onInputAmount = {
                     depositAmount = it.text.toDoubleOrNull() ?: 0.0
                 },
                 onChooseTerm = {
                     termMonths = it.term?.toIntOrNull() ?: 0
-                    annualRate = it.currentPA
+                    val updatedRates = getDepositRateByTypeAndCcy(context, termType, selectedCcy)
+                    val selectedTermRate = updatedRates.rateDetails?.find { rate -> rate.term == it.term }
+                    annualRate = selectedTermRate?.currentPA ?: 0.0
                 },
                 onChooseRenewalOption = {
                     autoRenewal = getAutoRenewal(it)

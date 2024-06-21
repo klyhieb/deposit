@@ -34,7 +34,7 @@ import java.util.Calendar
 fun RenewalTimeViewPager(
     modifier: Modifier = Modifier,
     nthList: ArrayList<Int>,
-    isVisible: Boolean,
+    stateKey: Boolean,
     onCurrentSelect: (Int) -> Unit
 ) {
     val mPageWidth = 96.dp
@@ -45,7 +45,7 @@ fun RenewalTimeViewPager(
         pageWidth = mPageWidth,
         pageHeight = mPageHeight,
         items = nthList,
-        isVisible = isVisible,
+        stateKey = stateKey,
         onCurrentSelect = onCurrentSelect
     ) { pageIndex, pagerState ->
         RenewalTimeItem(
@@ -179,7 +179,7 @@ private fun Preview() {
 
         RenewalTimeViewPager(
             nthList = mRateList,
-            isVisible = true,
+            stateKey = true,
             onCurrentSelect = {
 
             }
